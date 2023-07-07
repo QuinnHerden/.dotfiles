@@ -2,3 +2,5 @@
 [user]
 	name = Quinn Herden
 	email = herdenq@gmail.com
+[credential]
+	helper = osxkeychain

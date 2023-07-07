@@ -76,7 +76,6 @@ ZSH_THEME="nicoulaj"
 plugins=(
     git
     fasd
-    vi-mode
     zsh-autosuggestions
 )
 
@@ -119,7 +118,7 @@ alias pip='pip3'
 bindkey -v
 
 # File Tree
-source /Users/quinnherden/.config/broot/launcher/bash/br
+# source /Users/quinnherden/.config/broot/launcher/bash/br
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/Users/quinnherden/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/quinnherden/google-cloud-sdk/path.zsh.inc'; fi
