@@ -1,6 +1,12 @@
 # This is Git's per-user configuration file.
 [user]
 	name = Quinn Herden
-	email = herdenq@gmail.com
+	email = 55929299+QuinnHerden@users.noreply.github.com
 [credential]
 	helper = osxkeychain
+[init]
+	defaultBranch = main
+[color]
+	ui = auto
+[pull]
+	rebase = false
