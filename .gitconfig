@@ -10,3 +10,5 @@
 	ui = auto
 [pull]
 	rebase = false
+[core]
+	excludesfile = /Users/quinnherden/.gitignore_global
