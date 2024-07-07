@@ -10,5 +10,3 @@
 	ui = auto
 [pull]
 	rebase = false
-[core]
-	excludesfile = ${HOME}/.gitignore_global
