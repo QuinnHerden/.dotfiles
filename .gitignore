@@ -1,3 +1,9 @@
+# MacOS 
 .DS_Store
+
+# Vim
 .netrwhist
-.ssh/known_hosts
+
+# SSH
+.ssh/id_rsa*
+.ssh/known_hosts*
