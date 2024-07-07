@@ -1,98 +1,72 @@
-# Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
-
-# Path 
-export PATH=$HOME/bin:/usr/local/bin:$PATH
-
-# Set name of the theme to load 
+####################
+# ZSH
+#
+## Theme
 ZSH_THEME="nicoulaj"
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
+## Command auto-correction
+ENABLE_CORRECTION="false"
+## Completions
 HYPHEN_INSENSITIVE="true"
-
-# Uncomment one of the following lines to change the auto-update behavior
-# zstyle ':omz:update' mode disabled  # disable automatic updates
-# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
-zstyle ':omz:update' mode auto      # update automatically without asking
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
-
-# Uncomment the following line to enable command auto-correction.
-ENABLE_CORRECTION="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# change the command execution time stamp shown in the history command output.
-HIST_STAMPS="yyyy/mm/dd"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
+## Vim Bindings
+bindkey -v
+## Plugins
 plugins=(
-    fasd
-    poetry
     zsh-autosuggestions
 )
-
+## Command execution time stamp 
+HIST_STAMPS="yyyy/mm/dd"
+## Updates
+zstyle ':omz:update' mode auto
+## Source
+export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
 
-# User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
+###############
+# Aliases
+#
+## Tmux
+alias tmn='tmux new -s'
+alias tma='tmux attach-session -t'
+## Vim
+alias vi='nvim'
+alias vim='nvim'
+## Git
 alias gs='git status'
+alias gd='git diff'
+## Kubectl
 alias kl='kubectl'
-alias pip='pip3'
+## Python
 alias python='python3'
-alias tas='tmux attach-session -t'
+alias pip='pip3'
+## Terraform
 alias tf='terraform'
-alias tns='tmux new -s'
-alias vi='mvim -v'
-alias vim='mvim -v'
+## Tailscale
+alias ts='tailscale'
+alias tshr='ts switch herden.io; tailscale set --accept-routes=true;'
+alias tssc='ts switch sculpted.io; tailscale set --accept-routes=true;'
 
-# Vim Bindings
-bindkey -v
+###############
+# Editor
+#
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='nvim'
+fi
 
-# File Tree
-# source /Users/quinnherden/.config/broot/launcher/bash/br
+####################
+# Path
+# 
+## Binaries
+### Local
+export PATH=$PATH:$HOME/bin:/usr/local/bin
+### Pipx
+export PATH="$PATH:$HOME/.local/bin"
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/quinnherden/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/quinnherden/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/quinnherden/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/quinnherden/google-cloud-sdk/completion.zsh.inc'; fi
-
-# Display text on terminal init
-#figlet -d ~/figlet-fonts -f "sub-zero" Quinn
-#figlet -d ~/figlet-fonts -f "Alpha" Q
-figlet -d ~/figlet-fonts -f "Lean" QH
+###############
+# Display
+#
+figlet -d ~/figlet-fonts -f "sub-zero" QSH
+#figlet -d ~/figlet-fonts -f "Alpha" QSH
+#figlet -d ~/figlet-fonts -f "Lean" QSH
+###############
