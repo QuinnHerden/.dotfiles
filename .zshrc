@@ -25,8 +25,8 @@ source $ZSH/oh-my-zsh.sh
 # Aliases
 #
 ## Tmux
-alias tmn='tmux new -s'
-alias tma='tmux attach-session -t'
+alias tmns='tmux new -s'
+alias tmas='tmux attach-session -t'
 ## Vim
 alias vi='nvim'
 alias vim='nvim'
@@ -64,11 +64,14 @@ export PATH=$PATH:$HOME/bin:/usr/local/bin
 export PATH="$PATH:$HOME/.local/bin"
 
 ###############
-# OS Environments
+# Environments
 #
 if [[ "$OSTYPE" == "darwin"* ]]; then
 elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
 fi
+
+export LC_TIME=C
+export LANG=en_US.UTF-8
 ###############
 # Display
 #
