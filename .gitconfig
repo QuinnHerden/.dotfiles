@@ -11,4 +11,4 @@
 [pull]
 	rebase = false
 [core]
-	excludesfile = /Users/quinnherden/.gitignore_global
+	excludesfile = ${HOME}/.gitignore_global
