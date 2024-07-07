@@ -54,7 +54,7 @@ else
   export EDITOR='nvim'
 fi
 
-####################
+###############
 # Path
 # 
 ## Binaries
@@ -63,6 +63,12 @@ export PATH=$PATH:$HOME/bin:/usr/local/bin
 ### Pipx
 export PATH="$PATH:$HOME/.local/bin"
 
+###############
+# OS Environments
+#
+if [[ "$OSTYPE" == "darwin"* ]]; then
+elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
+fi
 ###############
 # Display
 #
