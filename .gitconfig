@@ -2,8 +2,6 @@
 [user]
 	name = Quinn Herden
 	email = 55929299+QuinnHerden@users.noreply.github.com
-[credential]
-	helper = osxkeychain
 [init]
 	defaultBranch = main
 [color]
