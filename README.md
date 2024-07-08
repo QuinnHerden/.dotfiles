@@ -1,5 +1,6 @@
 # Dotfiles
 ## Install
-Run `stow .` to create symlinks
-### MacOS
-Run `brew bundle --file .Brewfile`
+- install 'stow'
+- run `stow .` to create symlinks
+- install 'yadm'
+- run `ydm bootstrap`
