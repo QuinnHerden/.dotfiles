@@ -1,4 +1,10 @@
-#!/bin/sh
+#!/bin/bash
+
+mkdir -p $HOME/docs/oolessence/oolessence-io
+mkdir -p $HOME/docs/oolessence/sculpted-io
+mkdir -p $HOME/docs/oolessence/herden-io
+mkdir -p $HOME/docs/personal
+mkdir -p $HOME/docs/work
 
 system_type=$(uname -s)
 
