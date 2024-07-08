@@ -13,9 +13,6 @@ ln -s $HOME/dotfiles/.ssh/ $HOME
 # .tmux.conf
 ln -s $HOME/dotfiles/.tmux.conf $HOME/.tmux.conf
 
-# .vimrc
-ln -s $HOME/dotfiles/.vimrc $HOME/.vimrc
-
 # .zshrc
 ln -s $HOME/dotfiles/.zshrc $HOME/.zshrc
 
