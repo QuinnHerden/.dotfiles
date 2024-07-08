@@ -4,6 +4,9 @@
 # Vim
 .netrwhist
 
+# NeoVim
+lazy-lock.json
+
 # SSH
 .ssh/id_rsa*
 .ssh/known_hosts*
