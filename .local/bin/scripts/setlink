@@ -2,21 +2,21 @@
 
 # .config/nvim/
 mkdir -p $HOME/.config/
-ln -s $HOME/dotfiles/.config/nvim/ $HOME/.config
+ln -s $HOME/.dotfiles/.config/nvim/ $HOME/.config
 
 # .gitconfig
-ln -s $HOME/dotfiles/.gitconfig $HOME/.gitconfig
+ln -s $HOME/.dotfiles/.gitconfig $HOME/.gitconfig
 
 # .local/bin/scripts/
 mkdir -p $HOME/.local/bin/
-ln -s $HOME/dotfiles/.local/bin/scripts/ $HOME/.local/bin
+ln -s $HOME/.dotfiles/.local/bin/scripts/ $HOME/.local/bin
 
 # .ssh/
-ln -s $HOME/dotfiles/.ssh/ $HOME
+ln -s $HOME/.dotfiles/.ssh/ $HOME
 
 # .tmux.conf
-ln -s $HOME/dotfiles/.tmux.conf $HOME/.tmux.conf
+ln -s $HOME/.dotfiles/.tmux.conf $HOME/.tmux.conf
 
 # .zshrc
-ln -s $HOME/dotfiles/.zshrc $HOME/.zshrc
+ln -s $HOME/.dotfiles/.zshrc $HOME/.zshrc
 
