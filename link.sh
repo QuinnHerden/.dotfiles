@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 # .config/nvim/
 mkdir -p $HOME/.config/
