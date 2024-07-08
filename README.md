@@ -4,5 +4,4 @@
 
 - install 'stow'
 - run `stow .` to create symlinks
-- install 'yadm'
-- run `yadm bootstrap`
+- run `bootstrap` to install applications
