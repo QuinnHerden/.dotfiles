@@ -58,10 +58,14 @@ fi
 # Path
 # 
 ## Binaries
-### Local
-export PATH=$PATH:$HOME/bin:/usr/local/bin
-### Pipx
-export PATH="$PATH:$HOME/.local/bin"
+### Home Bin
+PATH=$PATH:$HOME/bin
+### Home Local Bin
+export PATH=$PATH:$HOME/.local/bin
+### Home Local Bin Scripts
+export PATH=$PATH:$HOME/.local/bin/scripts
+### User Local Bin
+export PATH=$PATH:/usr/local/bin
 
 ###############
 # Environments
