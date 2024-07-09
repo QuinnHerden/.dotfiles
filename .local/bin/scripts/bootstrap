@@ -1,14 +1,25 @@
 #!/bin/bash
 
-mkdir -p $HOME/docs/oolessence/oolessence-io
-mkdir -p $HOME/docs/oolessence/sculpted-io
-mkdir -p $HOME/docs/oolessence/herden-io
-mkdir -p $HOME/docs/personal
-mkdir -p $HOME/docs/work
+# Build Directory Structure
+mkdir_organization() {
+  local organization=$1
+  shift
+  local subsidiaries=("$@")
 
+  for sub in "${subsidiaries[@]}"; do
+    sub_base=${docs_base}/${organization}/${sub}
+    mkdir -p "$sub_base"
+  done
+}
+
+docs_base=$HOME/docs
+mkdir -p $docs_base/individual
+mkdir_organization "oolessence" 'oolessence-io' 'herden-io' 'sculpted-io' 'clayfield-io'
+
+# OS-Dependent Installs
 system_type=$(uname -s)
 
-if [ "$system_type" = "Darwin" ]; then
+if [ "$system_type" = "Darwin" ]; then # MacOS
 
   # install homebrew if it's missing
   if ! command -v brew >/dev/null 2>&1; then
