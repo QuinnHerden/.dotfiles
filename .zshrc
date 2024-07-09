@@ -27,6 +27,7 @@ source $ZSH/oh-my-zsh.sh
 #
 ## Tmux
 alias tmns='tmux new -s'
+alias tmls='tmux list-session'
 alias tmas='tmux attach-session -t'
 ## Vim
 alias vi='nvim'
