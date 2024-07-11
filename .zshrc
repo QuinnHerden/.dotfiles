@@ -23,6 +23,38 @@ source $ZSH/oh-my-zsh.sh
 ###############
 
 ###############
+# Environments
+#
+## General
+export LC_TIME=C
+export LANG=en_US.UTF-8
+## OS-Specific
+if [[ "$OSTYPE" == "darwin"* ]]; then
+elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
+fi
+## SSH-Dependent
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='nvim'
+fi
+###############
+
+###############
+# Path
+# 
+## Binaries
+### Home Bin
+PATH=$PATH:$HOME/bin
+### Home Local Bin
+export PATH=$PATH:$HOME/.local/bin
+### Home Local Bin Scripts
+export PATH=$PATH:$HOME/.local/bin/scripts
+### User Local Bin
+export PATH=$PATH:/usr/local/bin
+###############
+
+###############
 # Aliases
 #
 ## Tmux
@@ -49,38 +81,11 @@ alias tssc='ts switch sculpted.io; tailscale set --accept-routes=true;'
 ###############
 
 ###############
-# Editor
-#
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export EDITOR='nvim'
-fi
-###############
-
-###############
-# Path
-# 
-## Binaries
-### Home Bin
-PATH=$PATH:$HOME/bin
-### Home Local Bin
-export PATH=$PATH:$HOME/.local/bin
-### Home Local Bin Scripts
-export PATH=$PATH:$HOME/.local/bin/scripts
-### User Local Bin
-export PATH=$PATH:/usr/local/bin
-###############
-
-###############
-# Environments
-#
-export LC_TIME=C
-export LANG=en_US.UTF-8
-
-if [[ "$OSTYPE" == "darwin"* ]]; then
-elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
-fi
+# Evals
+## Zoxide
+eval "$(zoxide init --cmd cd zsh)"
+## TheFuck
+eval $(thefuck --alias f)
 ###############
 
 ###############
@@ -88,9 +93,4 @@ fi
 figlet -d ~/figlet-fonts -f "sub-zero" QSH
 #figlet -d ~/figlet-fonts -f "Alpha" QSH
 #figlet -d ~/figlet-fonts -f "Lean" QSH
-###############
-
-###############
-# Smart Navigation
-eval "$(zoxide init --cmd cd zsh)"
 ###############
