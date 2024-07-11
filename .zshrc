@@ -92,5 +92,5 @@ figlet -d ~/figlet-fonts -f "sub-zero" QSH
 
 ###############
 # Smart Navigation
-eval "$(zoxide init zsh)"
+eval "$(zoxide init --cmd cd zsh)"
 ###############
