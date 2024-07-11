@@ -89,3 +89,8 @@ figlet -d ~/figlet-fonts -f "sub-zero" QSH
 #figlet -d ~/figlet-fonts -f "Alpha" QSH
 #figlet -d ~/figlet-fonts -f "Lean" QSH
 ###############
+
+###############
+# Smart Navigation
+eval "$(zoxide init zsh)"
+###############
