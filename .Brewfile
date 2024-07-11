@@ -45,6 +45,7 @@ brew "typescript"
 brew "vault"
 brew "wget"
 brew "zoxide"
+
 cask "activitywatch"
 cask "affinity-designer" if OS.mac?
 cask "affinity-photo" if OS.mac?
