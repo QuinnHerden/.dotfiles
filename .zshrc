@@ -61,6 +61,8 @@ export PATH=$PATH:/usr/local/bin
 alias tmns='tmux new -s'
 alias tmls='tmux list-session'
 alias tmas='tmux attach-session -t'
+alias tmrs='tmux rename-session -t'
+alias tmks='tmux kill-session -t'
 ## Vim
 alias vi='nvim'
 alias vim='nvim'
