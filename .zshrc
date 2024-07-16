@@ -78,8 +78,9 @@ alias pip='pip3'
 alias tf='terraform'
 ## Tailscale
 alias ts='tailscale'
-alias tshr='ts switch herden.io; tailscale set --accept-routes=true;'
+alias tscf='ts switch clayfield.io; tailscale set --accept-routes=true;'
 alias tssc='ts switch sculpted.io; tailscale set --accept-routes=true;'
+alias tshr='ts switch herden.io; tailscale set --accept-routes=true;'
 ###############
 
 ###############
