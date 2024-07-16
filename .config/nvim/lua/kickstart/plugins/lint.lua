@@ -6,7 +6,9 @@ return {
     config = function()
       local lint = require 'lint'
       lint.linters_by_ft = {
+        json = { 'jsonlint' },
         markdown = { 'markdownlint' },
+        terraform = { 'tflint' },
       }
 
       -- To allow other plugins to add linters to require('lint').linters_by_ft,
