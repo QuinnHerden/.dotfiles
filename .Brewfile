@@ -47,6 +47,7 @@ brew "typescript"
 brew "unbound"
 brew "vault"
 brew "wget"
+brew "wireguard-tools"
 brew "zoxide"
 
 cask "activitywatch"
