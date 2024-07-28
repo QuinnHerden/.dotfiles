@@ -69,6 +69,7 @@ cask "karabiner-elements"
 cask "malwarebytes"
 cask "obs"
 cask "obsidian"
+cask "rocket" if OS.mac?
 cask "scroll-reverser" if OS.mac?
 cask "sound-control" if OS.mac?
 cask "spotify"
