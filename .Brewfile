@@ -19,6 +19,7 @@ brew "lazydocker"
 brew "lazygit"
 brew "lua"
 brew "markdownlint-cli"
+brew "mas"
 brew "neovim"
 brew "nmap"
 brew "ollama"
@@ -82,3 +83,5 @@ cask "vlc"
 cask "wacom-tablet"
 cask "wireshark"
 cask "yubico-yubikey-manager"
+
+mas "Keynote", id: 409183694
