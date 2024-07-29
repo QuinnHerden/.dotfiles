@@ -50,11 +50,13 @@ brew "wget"
 brew "wireguard-tools"
 brew "zoxide"
 
+cask_args appdir: "~/Applications", require_sha: true
+
 cask "activitywatch"
-cask "affinity-designer" if OS.mac?
-cask "affinity-photo" if OS.mac?
-cask "affinity-publisher" if OS.mac?
-cask "amethyst" if OS.mac?
+cask "affinity-designer"
+cask "affinity-photo"
+cask "affinity-publisher"
+cask "amethyst"
 cask "anki"
 cask "balenaetcher"
 cask "bitwarden"
@@ -63,21 +65,20 @@ cask "calibre"
 cask "discord"
 cask "docker" 
 cask "flux"
+cask "font-fira-code-nerd-font"
 cask "google-drive"
 cask "iterm2"
 cask "karabiner-elements"
 cask "malwarebytes"
 cask "obs"
 cask "obsidian"
-cask "rocket" if OS.mac?
-cask "scroll-reverser" if OS.mac?
-cask "sound-control" if OS.mac?
+cask "rocket"
+cask "scroll-reverser"
+cask "sound-control"
 cask "spotify"
-cask "vanilla" if OS.mac?
+cask "vanilla"
 cask "vb-cable"
 cask "vlc"
 cask "wacom-tablet"
 cask "wireshark"
 cask "yubico-yubikey-manager"
-
-cask "font-fira-code-nerd-font"
