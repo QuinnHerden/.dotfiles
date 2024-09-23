@@ -1,5 +1,6 @@
 brew "act"
 brew "ansible"
+brew "argocd"
 brew "awk"
 brew "awscli"
 brew "docker"
