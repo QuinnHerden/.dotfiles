@@ -54,6 +54,7 @@ brew "unbound"
 brew "vault"
 brew "wget"
 brew "wireguard-tools"
+brew "yt-dlp"
 brew "zoxide"
 
 cask_args appdir: "~/Applications", require_sha: true
