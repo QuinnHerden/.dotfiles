@@ -33,3 +33,6 @@ if [ "$system_type" = "Darwin" ]; then # MacOS
   fi
 
 fi
+
+# Install NPM-dependent tools
+npm install -g @mermaid-js/mermaid-cli
