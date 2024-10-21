@@ -52,6 +52,8 @@ export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$HOME/.local/bin/scripts
 ### User Local Bin
 export PATH=$PATH:/usr/local/bin
+### Cargo (Rust) Binaries
+export PATH=$PATH:$HOME/.cargo/bin
 ###############
 
 ###############
