@@ -83,6 +83,8 @@ alias ts='tailscale'
 alias tscf='ts switch clayfield.io; tailscale set --accept-routes=true;'
 alias tssc='ts switch sculpted.io; tailscale set --accept-routes=true;'
 alias tshr='ts switch herden.io; tailscale set --accept-routes=true;'
+## Obsidian-Hugo
+alias obshugo='obsidian-hugo "${HOME}/Documents/0_src/mixture/obsidian/Brain/05 Procedures/org-kiln" "${HOME}/repos/orgs/org-kiln/"'
 ###############
 
 ###############
