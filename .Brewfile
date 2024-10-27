@@ -106,3 +106,4 @@ cask "wireshark"
 cask "yubico-yubikey-manager"
 
 mas "Keynote", id: 409183694
+mas "Tailscale", id: 1475387142
