@@ -1,0 +1,56 @@
+#!/bin/bash
+
+# Function to display usage
+usage() {
+  echo "Usage: $0 <image-file> [-o output-name] [-i]"
+  exit 1
+}
+
+# Check if at least the first argument (input image file) is provided
+if [ -z "$1" ]; then
+  usage
+fi
+
+# Parse arguments
+input_file=""
+output_name=""
+invert_flag=""
+
+# Loop through arguments
+while [[ "$#" -gt 0 ]]; do
+  case "$1" in
+    -o)
+      output_name="$2"
+      shift 2
+      ;;
+    -i)
+      invert_flag="-i"
+      shift
+      ;;
+    *)
+      input_file="$1"
+      shift
+      ;;
+  esac
+done
+
+# If no input file is specified, show usage
+if [ -z "$input_file" ]; then
+  usage
+fi
+
+# Extract the base name of the input file (without extension)
+input_name="${input_file%.*}"
+
+# If output name is not provided, use the input name
+output_name="${output_name:-$input_name}"
+
+# Convert the image to BMP format using ffmpeg
+ffmpeg -i "$input_file" "${output_name}.bmp"
+
+# Convert the BMP file to SVG using potrace with optional invert flag
+potrace -b svg $invert_flag "${output_name}.bmp"
+
+echo "Conversion complete: ${output_name}.bmp and ${output_name}.svg"
+
+
