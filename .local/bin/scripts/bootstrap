@@ -39,3 +39,7 @@ npm install -g @mermaid-js/mermaid-cli
 
 # Install Cargo-dependent tools
 cargo install obsidian-export
+
+# Install Fabric
+go install github.com/danielmiessler/fabric@latest
+
