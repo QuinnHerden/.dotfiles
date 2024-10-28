@@ -96,6 +96,15 @@ eval $(thefuck --alias f)
 ###############
 
 ###############
+# Apps
+## Fabric
+### Golang environment variables
+export GOROOT=$(brew --prefix go)/libexec
+export GOPATH=$HOME/go
+export PATH=$GOPATH/bin:$GOROOT/bin:$HOME/.local/bin:$PATH
+###############
+
+###############
 # Display
 figlet -d ~/figlet-fonts -f "sub-zero" QSH
 #figlet -d ~/figlet-fonts -f "Alpha" QSH
