@@ -108,4 +108,3 @@ cask "yubico-yubikey-manager"
 mas "Amazon Kindle", id: 302584613
 mas "Keynote", id: 409183694
 mas "Tailscale", id: 1475387142
-mas "PDFgear: PDF Editor & Reader", id: 6469021132
