@@ -2,7 +2,8 @@
 
 # Function to display usage
 usage() {
-  echo "Usage: $0 <image-file> [-o output-name] [-i]"
+  echo "Usage: $0 <image-file> [-o output-name] [-i] [-k <value>]"
+  echo "  -k <value>   Optional value for the -k parameter in potrace"
   exit 1
 }
 
@@ -15,6 +16,7 @@ fi
 input_file=""
 output_name=""
 invert_flag=""
+k_value=""
 
 # Loop through arguments
 while [[ "$#" -gt 0 ]]; do
@@ -26,6 +28,10 @@ while [[ "$#" -gt 0 ]]; do
     -i)
       invert_flag="-i"
       shift
+      ;;
+    -k)
+      k_value="$2"
+      shift 2
       ;;
     *)
       input_file="$1"
@@ -48,9 +54,16 @@ output_name="${output_name:-$input_name}"
 # Convert the image to BMP format using ffmpeg
 ffmpeg -i "$input_file" "${output_name}.bmp"
 
-# Convert the BMP file to SVG using potrace with optional invert flag
-potrace -b svg $invert_flag "${output_name}.bmp"
+# Build the potrace command
+potrace_command="potrace -b svg $invert_flag"
+
+# Add the -k option to the command if it's specified
+if [ -n "$k_value" ]; then
+  potrace_command="$potrace_command -k $k_value"
+fi
+
+# Run the potrace command
+$potrace_command "${output_name}.bmp"
 
 echo "Conversion complete: ${output_name}.bmp and ${output_name}.svg"
-
 
