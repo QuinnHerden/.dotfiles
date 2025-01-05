@@ -1,6 +1,7 @@
 brew "act"
 brew "ansible"
 brew "argocd"
+brew "autotrace"
 brew "awk"
 brew "awscli"
 brew "cmake"
