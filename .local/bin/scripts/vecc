@@ -1,0 +1,66 @@
+#!/bin/bash
+
+# Function to display usage
+usage() {
+  echo "Usage: $0 <image-file> [-o output-name] [-l despeckle-level] [-t despeckle-tightness]"
+  echo "  <image-file>   The input image file to process"
+  echo "  -o output-name Optional name for the output file (default: input file name without extension)"
+  echo "  -l level       Optional despeckle level (default: 20)"
+  echo "  -t tightness   Optional despeckle tightness (default: 5)"
+  exit 1
+}
+
+# Check if at least the first argument (input image file) is provided
+if [ -z "$1" ]; then
+  usage
+fi
+
+# Capture the input file (first argument)
+input_file="$1"
+shift
+
+# Validate input file
+if [ ! -f "$input_file" ]; then
+  echo "Error: Input file '$input_file' does not exist."
+  exit 1
+fi
+
+# Extract the base name of the input file (without extension)
+input_name="${input_file%.*}"
+
+# Default values
+output_name=""
+despeckle_level=0
+despeckle_tightness=2.0
+
+# Parse remaining arguments
+while [[ "$#" -gt 0 ]]; do
+  case "$1" in
+    -o)
+      output_name="$2"
+      shift 2
+      ;;
+    -l)
+      despeckle_level="$2"
+      shift 2
+      ;;
+    -t)
+      despeckle_tightness="$2"
+      shift 2
+      ;;
+    *)
+      echo "Error: Unknown option '$1'"
+      usage
+      ;;
+  esac
+done
+
+# If output name is not provided, use the input name
+output_name="${output_name:-$input_name}"
+
+# Run the autotrace command
+autotrace "$input_file" -output-file "${output_name}.svg" -despeckle-level "$despeckle_level" -despeckle-tightness "$despeckle_tightness"
+
+# Notify user of completion
+echo "Conversion complete: ${output_name}.svg"
+
