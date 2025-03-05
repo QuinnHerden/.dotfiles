@@ -1,21 +1,5 @@
 #!/bin/bash
 
-# Build Directory Structure
-mkdir_organization() {
-  local organization=$1
-  shift
-  local subsidiaries=("$@")
-
-  for sub in "${subsidiaries[@]}"; do
-    sub_base=${docs_base}/${organization}/${sub}
-    mkdir -p "$sub_base"
-  done
-}
-
-docs_base=$HOME/docs
-mkdir -p $docs_base/individual
-mkdir_organization "oolessence" 'oolessence-io' 'herden-io' 'sculpted-io' 'clayfield-io'
-
 # OS-Dependent Installs
 system_type=$(uname -s)
 
@@ -33,13 +17,3 @@ if [ "$system_type" = "Darwin" ]; then # MacOS
   fi
 
 fi
-
-# Install NPM-dependent tools
-npm install -g @mermaid-js/mermaid-cli
-
-# Install Cargo-dependent tools
-cargo install obsidian-export
-
-# Install Fabric
-go install github.com/danielmiessler/fabric@latest
-
