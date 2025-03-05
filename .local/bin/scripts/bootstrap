@@ -3,7 +3,7 @@
 # Create Symlinks
 stow -d ~/.dotfiles -t ~/ .
 
-# ensure Nix is installed
+# install Nix
 if ! command -v nix >/dev/null 2>&1; then
     echo "Nix is not installed."
     echo "Installing Nix."
@@ -11,11 +11,11 @@ if ! command -v nix >/dev/null 2>&1; then
       sh -s -- install)"
 fi
 
-# OS-dependent installs
+# config (based on operating system type)
 system_type=$(uname -s)
 
-## MacOS
 if [ "$system_type" = "Darwin" ]; then
+  echo "Configuring MacOS."
 
   # activate configuration
   nix run nix-darwin --extra-experimental-features nix-command --extra-experimental-features flakes -- switch --flake ~/.dotfiles/.nix
