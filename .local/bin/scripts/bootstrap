@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Create Symlinks
+stow -d ~/.dotfiles -t ~/ .
+
 # OS-Dependent Installs
 system_type=$(uname -s)
 
