@@ -163,7 +163,7 @@
 
       fonts = {
         packages = [
-          pkgs.fira-code-nerdfont
+          pkgs.nerd-fonts.fira-code
         ];
       };
     };
