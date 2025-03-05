@@ -13,7 +13,6 @@
   let
     configuration = {pkgs, ... }: {
 
-        services.nix-daemon.enable = true;
         # Necessary for using flakes on this system.
         nix.settings.experimental-features = "nix-command flakes";
 
@@ -27,10 +26,14 @@
         # If you're on an Intel system, replace with "x86_64-darwin"
         nixpkgs.hostPlatform = "aarch64-darwin";
 
+        # Set the configured group ID to match the actual value
+        # Possible cause: trying a new Nix installation with a pre-existing installation
+        ids.gids.nixbld = 350;
+
         # Declare the user that will be running `nix-darwin`.
-        users.users.$USER = {
-            name = "$USER";
-            home = "/Users/$USER";
+        users.users.quinnherden = {
+            name = "quinnherden";
+            home = "/Users/quinnherden";
         };
 
         # Create /etc/zshrc that loads the nix-darwin environment.
@@ -40,7 +43,7 @@
     };
   in
   {
-    darwinConfigurations."$HOSTNAME" = nix-darwin.lib.darwinSystem {
+    darwinConfigurations."mbp-papi" = nix-darwin.lib.darwinSystem {
       modules = [
          configuration
       ];
