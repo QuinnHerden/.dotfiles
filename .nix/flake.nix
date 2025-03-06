@@ -17,24 +17,25 @@
     darwin,
     nixpkgs,
     ...
-  }@inputs:
+  }
+  @inputs:
   let
-    inherit (self.lib) # from https://github.com/malob/nixpkgs/blob/master/darwin/bootstrap.nix
-      attrValues
-      makeOverridable
-      mkForce
-      optionalAttrs
-      singleton
-    ;
+    
+    # …
+    # …
+    
   in {
     
     darwinConfigurations = {
+      
       "mbp-papi" = darwin.lib.darwinSystem {
         system = "aarch64-darwin";
         modules = [
           ./hosts/mbp-papi/configuration.nix
         ];
       };
+      
     };
+  
   };
 }
