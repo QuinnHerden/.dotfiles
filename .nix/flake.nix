@@ -3,6 +3,8 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    
+    # Environment / System management
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -33,8 +35,11 @@
 
       # Declare the user that will be running `nix-darwin`.
       users.users.quinnherden = {
-        name = "quinnherden";
-        home = "/Users/quinnherden";
+        openssh.authorizedKeys.keyFiles = [
+        ];
+        
+        packages = with pkgs; [
+        ];
       };
 
       # Create /etc/zshrc that loads the nix-darwin environment.
@@ -48,60 +53,60 @@
         allowUnfree = true; # allow paid licenses
       };
 
-      environment.systemPackages = [
-        pkgs.argocd
-        pkgs.awscli
-        pkgs.cmake
-        pkgs.duckdb
-        pkgs.ffmpeg
-        pkgs.figlet
-        pkgs.fzf
-        pkgs.gawk
-        pkgs.gh
-        pkgs.gnugrep
-        pkgs.gnupg
-        pkgs.go
-        pkgs.htop
-        pkgs.httrack
-        pkgs.hugo
-        pkgs.jq
-        pkgs.kubectx
-        pkgs.kubernetes-helm
-        pkgs.lazydocker
-        pkgs.lazygit
-        pkgs.markdownlint-cli
-        pkgs.neofetch
-        pkgs.neovim
-        pkgs.nmap
-        pkgs.nodejs_23
-        pkgs.ollama
-        pkgs.openssl
-        pkgs.pandoc
-        pkgs.pipx
-        pkgs.postgresql
-        pkgs.potrace
-        pkgs.pre-commit
-        pkgs.python310
-        pkgs.python311
-        pkgs.python312
-        pkgs.python313
-        pkgs.python314
-        pkgs.python39
-        pkgs.ripgrep
-        pkgs.stow
-        pkgs.talosctl
-        pkgs.terraform
-        pkgs.tflint
-        pkgs.thefuck
-        pkgs.tmux
-        pkgs.tree
-        pkgs.tree-sitter
-        pkgs.typescript
-        pkgs.uv
-        pkgs.vault
-        pkgs.wget
-        pkgs.yt-dlp
-        pkgs.zoxide
+      environment.systemPackages = with pkgs; [
+        argocd
+        awscli
+        cmake
+        duckdb
+        ffmpeg
+        figlet
+        fzf
+        gawk
+        gh
+        gnugrep
+        gnupg
+        go
+        htop
+        httrack
+        hugo
+        jq
+        kubectx
+        kubernetes-helm
+        lazydocker
+        lazygit
+        markdownlint-cli
+        neofetch
+        neovim
+        nmap
+        nodejs_23
+        ollama
+        openssl
+        pandoc
+        pipx
+        postgresql
+        potrace
+        pre-commit
+        python310
+        python311
+        python312
+        python313
+        python314
+        python39
+        ripgrep
+        stow
+        talosctl
+        terraform
+        tflint
+        thefuck
+        tmux
+        tree
+        tree-sitter
+        typescript
+        uv
+        vault
+        wget
+        yt-dlp
+        zoxide
       ];
 
       homebrew = {
