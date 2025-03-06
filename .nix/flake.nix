@@ -12,7 +12,7 @@
   outputs = inputs@{ self, nix-darwin, nixpkgs }:
   let
     configuration = {pkgs, ... }: {
-      # Docs: https://daiderd.com/nix-darwin/manual/index.htm
+      # Docs: https://daiderd.com/nix-darwin/manual/index.html
 
       # Necessary for using flakes on this system.
       nix.settings.experimental-features = "nix-command flakes";
@@ -40,8 +40,65 @@
       # Create /etc/zshrc that loads the nix-darwin environment.
       programs.zsh.enable = true;
 
+      # Configure package installation
+      nixpkgs.config = {
+        allowUnfree = true; # allow paid licenses
+      };
+
       environment.systemPackages = [
+        pkgs.argocd
+        pkgs.awscli
+        pkgs.cmake
+        pkgs.duckdb
+        pkgs.ffmpeg
+        pkgs.figlet
+        pkgs.fzf
+        pkgs.gawk
+        pkgs.gh
+        pkgs.gnugrep
+        pkgs.gnupg
+        pkgs.go
+        pkgs.htop
+        pkgs.httrack
+        pkgs.hugo
+        pkgs.jq
+        pkgs.kubectx
+        pkgs.kubernetes-helm
+        pkgs.lazydocker
+        pkgs.lazygit
+        pkgs.markdownlint-cli
         pkgs.neofetch
+        pkgs.neovim
+        pkgs.nmap
+        pkgs.nodejs_23
+        pkgs.ollama
+        pkgs.openssl
+        pkgs.pandoc
+        pkgs.pipx
+        pkgs.postgresql
+        pkgs.potrace
+        pkgs.pre-commit
+        pkgs.python310
+        pkgs.python311
+        pkgs.python312
+        pkgs.python313
+        pkgs.python314
+        pkgs.python39
+        pkgs.ripgrep
+        pkgs.stow
+        pkgs.talosctl
+        pkgs.terraform
+        pkgs.tflint
+        pkgs.thefuck
+        pkgs.tmux
+        pkgs.tree
+        pkgs.tree-sitter
+        pkgs.typescript
+        pkgs.uv
+        pkgs.vault
+        pkgs.wget
+        pkgs.yt-dlp
+        pkgs.zoxide
       ];
 
       homebrew = {
@@ -49,71 +106,10 @@
         onActivation.cleanup = "uninstall";
 
         taps = [
-          "hashicorp/tap"
-          "siderolabs/tap"
         ];
 
         brews = [
-          "ansible"
-          "argocd"
           "autotrace"
-          "awk"
-          "awscli"
-          "cmake"
-          "duckdb"
-          "ffmpeg"
-          "figlet"
-          "fzf"
-          "gh"
-          "gnupg"
-          "go"
-          "grep"
-          "helm"
-          "htop"
-          "httrack"
-          "hugo"
-          "jq"
-          "jupyterlab"
-          "kubectx"
-          "lazydocker"
-          "lazygit"
-          "lua"
-          "markdownlint-cli"
-          "mas"
-          "neovim"
-          "nmap"
-          "node"
-          "ollama"
-          "openssl@3"
-          "packer"
-          "pandoc"
-          "pipx"
-          "postgresql"
-          "potrace"
-          "pre-commit"
-          "python@3.10"
-          "python@3.13"
-          "ripgrep"
-          "rust"
-          "stow"
-          "syncthing"
-          "talosctl"
-          "tesseract"
-          "terraform"
-          "tesseract"
-          "tflint"
-          "thefuck"
-          "tmux"
-          "tree"
-          "tree-sitter"
-          "typescript"
-          "unbound"
-          "uv"
-          "vault"
-          "wget"
-          "wireguard-tools"
-          "yt-dlp"
-          "zoxide"
         ];
 
         casks = [
