@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Create Symlinks
-stow -d ~/.dotfiles -t ~/ .
-
 # install Nix
 if ! command -v nix >/dev/null 2>&1; then
     echo "Nix is not installed."
@@ -11,7 +8,7 @@ if ! command -v nix >/dev/null 2>&1; then
       sh -s -- install)"
 fi
 
-# config (based on operating system type)
+# config system (based on operating system type)
 system_type=$(uname -s)
 
 if [ "$system_type" = "Darwin" ]; then
@@ -34,3 +31,7 @@ if [ "$system_type" = "Darwin" ]; then
     darwin-rebuild switch --flake ~/.dotfiles/.nix
   fi
 fi
+
+# create Symlinks
+echo "Creating symlinks to home directory."
+stow -d ~/.dotfiles -t ~/ .
