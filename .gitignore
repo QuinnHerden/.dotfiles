@@ -1,9 +1,6 @@
 # General
 .git
 
-# MacOS 
-.DS_Store
-
 # NeoVim
 lazy-lock.json
 
