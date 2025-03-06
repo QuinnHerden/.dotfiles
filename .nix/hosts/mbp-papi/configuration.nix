@@ -130,6 +130,7 @@
       "obs"
       "obsidian"
       "postman"
+      "raspberry-pi-imager"
       "rocket"
       "spotify"
       "vb-cable"
