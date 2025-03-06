@@ -4,6 +4,13 @@
 }:
 
 {
+  imports = [
+    ./main-user.nix
+  ];
+
+  main-user.enable = true;
+  main-user.userName = "quinnherden";
+
   # Docs: https://daiderd.com/nix-darwin/manual/index.html
 
   # Necessary for using flakes on this system.
@@ -19,15 +26,6 @@
   # Set the configured group ID to match the actual value
   # Possible cause: trying a new Nix installation with a pre-existing installation
   ids.gids.nixbld = 350;
-
-  # Declare the user that will be running `nix-darwin`.
-  users.users.quinnherden = {
-    openssh.authorizedKeys.keyFiles = [
-    ];
-    
-    packages = with pkgs; [
-    ];
-  };
 
   # Enable sudo auth via touchID
   security.pam.services.sudo_local.touchIdAuth = true;
