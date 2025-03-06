@@ -39,6 +39,9 @@
 
       # Create /etc/zshrc that loads the nix-darwin environment.
       programs.zsh.enable = true;
+      
+      # Enable sudo auth via touchID
+      security.pam.services.sudo_local.touchIdAuth = true;
 
       # Configure package installation
       nixpkgs.config = {
