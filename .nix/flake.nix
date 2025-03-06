@@ -41,6 +41,16 @@
       };
       
     };
+
+    nixosConfigurations = {
+    
+      "nix-robin" = nixpkgs.lib.nixosSystem {
+        modules = [
+          ./hosts/nix-robin/configuration.nix
+        ];
+      };
+
+    };
   
   };
 }
