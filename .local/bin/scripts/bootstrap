@@ -5,7 +5,7 @@ if ! command -v nix >/dev/null 2>&1; then
     echo "Nix is not installed."
     echo "Installing Nix."
     /bin/bash -c "$(curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | \
-      sh -s -- install)"
+      sh -s -- install --no-confirm)"
 fi
 
 # config system (based on operating system type)
