@@ -35,6 +35,7 @@
         "balenaetcher"
         "betterdisplay"
         "bitwarden"
+        "brave-browser"
         "calibre"
         "dbeaver-community"
         "flux"
