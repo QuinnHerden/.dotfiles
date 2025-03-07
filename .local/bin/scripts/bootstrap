@@ -10,7 +10,8 @@ if ! command -v nix >/dev/null 2>&1; then
     echo "Finished installing Nix."
     echo "1. Restart your shell."
     echo "2. Run this script again."
-    exit(0)
+
+    exit 0
 fi
 
 # config system (based on operating system type)
