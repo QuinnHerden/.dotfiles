@@ -5,16 +5,15 @@
   ...
 }:
 
-let
-  cfg = config.main-user;
-in
-
 {
-  options.main-user = {
-    enable = lib.mkEnableOption "enable user module";
 
-    userName = lib.mkOption {
-      default = "driver";
+  options = {
+    main-user = {
+      enable = lib.mkEnableOption "enables main-user";
+
+      userName = lib.mkOption {
+        default = "driver";
+      };
     };
   };
   
@@ -25,4 +24,5 @@ in
       packages = with pkgs; [];
     };
   };
+
 }

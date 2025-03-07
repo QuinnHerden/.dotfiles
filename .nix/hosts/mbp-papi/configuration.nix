@@ -8,8 +8,10 @@
     ./main-user.nix
   ];
 
-  main-user.enable = true;
-  main-user.userName = "quinnherden";
+  main-user = {
+    enable = true;
+    userName = "quinnherden";
+  };
 
   # Docs: https://daiderd.com/nix-darwin/manual/index.html
 
