@@ -8,8 +8,8 @@
 {
 
   options = {
-    mainUsers = {
-      enable = lib.mkEnableOption "enables mainUsers";
+    driverUser = {
+      enable = lib.mkEnableOption "enables driverUser";
 
       userName = lib.mkOption {
         default = "driver";
@@ -17,8 +17,8 @@
     };
   };
   
-  config = lib.mkIf config.mainUsers.enable {
-    users.users.${config.mainUsers.userName} = {
+  config = lib.mkIf config.driverUser.enable {
+    users.users.${config.driverUser.userName} = {
       shell = pkgs.zsh;
       openssh.authorizedKeys.keyFiles = [];
       packages = with pkgs; [];

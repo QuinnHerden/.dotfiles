@@ -8,7 +8,7 @@
 {
 
   imports = [
-    ./touchIdAuths.nix
+    ./fonts.nix
   ];
 
 }
