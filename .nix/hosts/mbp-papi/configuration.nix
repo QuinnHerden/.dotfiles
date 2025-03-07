@@ -20,12 +20,10 @@
   # If you're on an Intel system, replace with "x86_64-darwin"
   nixpkgs.hostPlatform = "aarch64-darwin";
 
-  darwinFonts.enable = true;
-  darwinPackages.enable = true;
+  fonts.enable = true;
+  sharedBrews.enable = true;
 
-  touchIdAuths.enable = false;
-
-  mainUsers = {
+  driverUser = {
     enable = true;
     userName = "quinnherden";
   };

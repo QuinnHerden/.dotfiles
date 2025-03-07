@@ -8,7 +8,8 @@
 {
 
   imports = [
-    ./mainUsers.nix
+    ./packages
+    ./users
   ];
 
 }

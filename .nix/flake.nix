@@ -37,7 +37,8 @@
         system = "aarch64-darwin";
         modules = [
           ./hosts/mbp-papi/configuration.nix
-          ./modules
+          ./modules/nixos
+          ./modules/darwin
         ];
       };
       
@@ -50,7 +51,7 @@
         specialArgs = { inherit inputs; };
         modules = [
           ./hosts/nix-robin/configuration.nix
-          ./modules
+          ./modules/nixos
         ];
       };
 

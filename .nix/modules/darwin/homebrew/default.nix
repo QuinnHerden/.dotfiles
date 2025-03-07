@@ -8,7 +8,7 @@
 {
 
   imports = [
-    ./darwinFonts.nix
+    ./sharedBrews.nix
   ];
-  
+
 }
