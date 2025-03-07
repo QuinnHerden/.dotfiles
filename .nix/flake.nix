@@ -32,9 +32,9 @@
   in {
     
     darwinConfigurations = {
+      # Docs: https://daiderd.com/nix-darwin/manual/index.html
       
       "mac-agi" = darwin.lib.darwinSystem {
-        system = "aarch64-darwin";
         modules = [
           ./hosts/mac-agi/configuration.nix
           ./modules/darwin
@@ -56,7 +56,6 @@
     nixosConfigurations = {
     
       "nix-robin" = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
         specialArgs = { inherit inputs; };
         modules = [
           ./hosts/nix-robin/configuration.nix
