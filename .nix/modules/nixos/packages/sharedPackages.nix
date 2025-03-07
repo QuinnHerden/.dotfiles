@@ -36,10 +36,8 @@
       gnugrep
       gnupg
       go
-      google-chrome
       htop
       httrack
-      inkscape
       hugo
       jq
       kubectx
@@ -66,7 +64,6 @@
       python314
       python39
       ripgrep
-      spotify
       stow
       talosctl
       terraform
