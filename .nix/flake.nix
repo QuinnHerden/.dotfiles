@@ -32,9 +32,9 @@
   in {
     
     darwinConfigurations = {
+      # Docs: https://daiderd.com/nix-darwin/manual/index.html
       
       "mac-agi" = darwin.lib.darwinSystem {
-        system = "x86_64-darwin";
         modules = [
           ./hosts/mac-agi/configuration.nix
           ./modules/darwin
@@ -43,7 +43,6 @@
       };
       
       "mac-papi" = darwin.lib.darwinSystem {
-        system = "aarch64-darwin";
         modules = [
           ./hosts/mac-papi/configuration.nix
           ./modules/darwin
