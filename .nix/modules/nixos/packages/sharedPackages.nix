@@ -40,38 +40,38 @@
       lazydocker
       lazygit
       markdownlint-cli
-      neofetch
-      neovim
-      nmap
-      nodejs_23
-      ollama
-      openssl
-      pandoc
-      pipx
-      postgresql
-      potrace
-      pre-commit
-      python310
-      python311
-      python312
-      python313
-      python314
-      python39
-      ripgrep
-      stow
-      talosctl
-      terraform
-      tflint
-      thefuck
-      tmux
-      tree
-      tree-sitter
-      typescript
-      uv
-      vault
-      wget
-      yt-dlp
-      zoxide
+      #neofetch
+      #neovim
+      #nmap
+      #nodejs_23
+      #ollama
+      #openssl
+      #pandoc
+      #pipx
+      #postgresql
+      #potrace
+      #pre-commit
+      #python310
+      #python311
+      #python312
+      #python313
+      #python314
+      #python39
+      #ripgrep
+      #stow
+      #talosctl
+      #terraform
+      #tflint
+      #thefuck
+      #tmux
+      #tree
+      #tree-sitter
+      #typescript
+      #uv
+      #vault
+      #wget
+      #yt-dlp
+      #zoxide
     ];
   };
 
