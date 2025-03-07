@@ -28,7 +28,7 @@
   ids.gids.nixbld = 350;
 
   # Enable sudo auth via touchID
-  security.pam.services.sudo_local.touchIdAuth = true;
+  #security.pam.services.sudo_local.touchIdAuth = true;
 
   # Configure package installation
   nixpkgs.config = {
