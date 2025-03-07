@@ -8,8 +8,9 @@
 {
 
   imports = [
-    ./fonts
-    ./homebrew
+    ./sharedBrews.nix
   ];
+  
+  sharedBrews.enable = lib.mkDefault true;
 
 }
