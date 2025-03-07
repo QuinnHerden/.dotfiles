@@ -25,7 +25,6 @@
         noto-fonts-cjk-sans
         noto-fonts-emoji
         proggyfonts
-        figlet-fonts
       ];
     }; 
   };
