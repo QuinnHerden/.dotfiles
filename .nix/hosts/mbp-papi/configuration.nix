@@ -6,12 +6,17 @@
 {
   imports = [
     ./main-user.nix
+    ../../modules/packages/shared.nix
+    ../../modules/packages/darwin.nix
   ];
 
   main-user = {
     enable = true;
     userName = "quinnherden";
   };
+
+  shared.enable = true;
+  darwin.enable = true;
 
   # Docs: https://daiderd.com/nix-darwin/manual/index.html
 
@@ -33,66 +38,6 @@
   #security.pam.services.sudo_local.touchIdAuth = true;
 
   # Configure package installation
-  nixpkgs.config = {
-    allowUnfree = true; # allow paid licenses
-  };
-
-  environment.systemPackages = with pkgs; [
-    argocd
-    awscli
-    cmake
-    duckdb
-    ffmpeg
-    figlet
-    fzf
-    gawk
-    gh
-    gnugrep
-    gnupg
-    go
-    htop
-    httrack
-    hugo
-    jq
-    kubectx
-    kubernetes-helm
-    lazydocker
-    lazygit
-    markdownlint-cli
-    neofetch
-    neovim
-    nmap
-    nodejs_23
-    ollama
-    openssl
-    pandoc
-    pipx
-    postgresql
-    potrace
-    pre-commit
-    python310
-    python311
-    python312
-    python313
-    python314
-    python39
-    ripgrep
-    stow
-    talosctl
-    terraform
-    tflint
-    thefuck
-    tmux
-    tree
-    tree-sitter
-    typescript
-    uv
-    vault
-    wget
-    yt-dlp
-    zoxide
-  ];
-
   homebrew = {
     enable = true;
     onActivation.cleanup = "uninstall";
