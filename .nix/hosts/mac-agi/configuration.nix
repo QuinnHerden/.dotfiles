@@ -11,7 +11,7 @@
   ];
   
   system.stateVersion = 4; # $ darwin-rebuild changelog
-  nixpkgs.hostPlatform = "aarch64-darwin";
+  nixpkgs.hostPlatform = "x86_64-darwin";
 
   darwinPackages.enable = true;
 
