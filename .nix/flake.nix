@@ -37,6 +37,8 @@
         system = "aarch64-darwin";
         modules = [
           ./hosts/mbp-papi/configuration.nix
+          ./modules/nixos
+          ./modules/darwin
         ];
       };
       
@@ -46,8 +48,10 @@
     
       "nix-robin" = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
+        specialArgs = { inherit inputs; };
         modules = [
           ./hosts/nix-robin/configuration.nix
+          ./modules/nixos
         ];
       };
 
