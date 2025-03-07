@@ -132,6 +132,7 @@
       "postman"
       "raspberry-pi-imager"
       "rocket"
+      "scroll-reverser"
       "spotify"
       "vb-cable"
       "visual-studio-code"
