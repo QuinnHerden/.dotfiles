@@ -23,7 +23,6 @@
       awscli
       balena-cli
       bitwarden-cli
-      brave
       cmake
       discord
       docker
