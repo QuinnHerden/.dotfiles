@@ -8,10 +8,7 @@
 {
 
   imports = [
-    ./auths
-    ./fonts
-    ./packages
-    ./users
+    ./driverUser.nix
   ];
 
 }

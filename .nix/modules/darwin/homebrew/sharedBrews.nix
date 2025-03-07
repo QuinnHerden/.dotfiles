@@ -8,17 +8,12 @@
 {
 
   options = {
-    darwinPackages = {
-      enable = lib.mkEnableOption "enables darwinPackages";
+    sharedBrews = {
+      enable = lib.mkEnableOption "enables sharedBrews";
     };
   };
   
-  config = lib.mkIf config.darwinPackages.enable {
-    programs.zsh.enable = true;
-
-    environment.systemPackages = with pkgs; [
-    ];
-
+  config = lib.mkIf config.sharedBrews.enable {
     homebrew = {
       enable = true;
       onActivation.cleanup = "uninstall";
