@@ -22,7 +22,7 @@
       ];
 
       brews = [
-        #"autotrace"
+        "autotrace"
       ];
 
       casks = [
