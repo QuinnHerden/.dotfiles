@@ -37,6 +37,7 @@
         system = "aarch64-darwin";
         modules = [
           ./hosts/mbp-papi/configuration.nix
+          ./modules
         ];
       };
       
@@ -48,6 +49,7 @@
         system = "x86_64-linux";
         modules = [
           ./hosts/nix-robin/configuration.nix
+          ./modules
         ];
       };
 

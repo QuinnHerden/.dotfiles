@@ -7,12 +7,9 @@
 {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ../../modules/packages/shared.nix
-    ../../modules/packages/linux.nix
   ];
 
-  shared.enable = true;
-  linux.enable = true;
+  linuxPackages.enable = true;
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;

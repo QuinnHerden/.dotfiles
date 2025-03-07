@@ -8,12 +8,12 @@
 {
 
   options = {
-    linux = {
-      enable = lib.mkEnableOption "enables linux";
+    linuxPackages = {
+      enable = lib.mkEnableOption "enables linuxPackages";
     };
   };
   
-  config = lib.mkIf config.linux.enable {
+  config = lib.mkIf config.linuxPackages.enable {
     environment.systemPackages = with pkgs; [
       alacritty
       dmenu
