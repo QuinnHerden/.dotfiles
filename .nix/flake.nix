@@ -38,7 +38,7 @@
         modules = [
           ./hosts/mac-agi/configuration.nix
           #./modules/darwin
-          ./modules/nixos
+          #./modules/nixos
         ];
       };
       
