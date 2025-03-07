@@ -6,6 +6,11 @@ if ! command -v nix >/dev/null 2>&1; then
     echo "Installing Nix."
     /bin/bash -c "$(curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | \
       sh -s -- install --no-confirm)"
+
+    echo "Finished installing Nix."
+    echo "Source bashrc and run this script again to configure the system."
+fi
+    exit(0)
 fi
 
 # config system (based on operating system type)
