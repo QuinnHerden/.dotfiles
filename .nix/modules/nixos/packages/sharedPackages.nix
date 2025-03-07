@@ -19,27 +19,27 @@
     };
 
     environment.systemPackages = with pkgs; [
-      argocd
-      awscli
-      cmake
-      duckdb
-      ffmpeg
-      figlet
-      fzf
-      gawk
-      gh
-      gnugrep
-      gnupg
-      go
-      htop
-      httrack
-      hugo
-      jq
-      kubectx
-      kubernetes-helm
-      lazydocker
-      lazygit
-      markdownlint-cli
+      #argocd
+      #awscli
+      #cmake
+      #duckdb
+      #ffmpeg
+      #figlet
+      #fzf
+      #gawk
+      #gh
+      #gnugrep
+      #gnupg
+      #go
+      #htop
+      #httrack
+      #hugo
+      #jq
+      #kubectx
+      #kubernetes-helm
+      #lazydocker
+      #lazygit
+      #markdownlint-cli
       #neofetch
       #neovim
       #nmap
