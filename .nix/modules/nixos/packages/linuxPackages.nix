@@ -15,12 +15,18 @@
   
   config = lib.mkIf config.linuxPackages.enable {
     environment.systemPackages = with pkgs; [
+      activitywatch
       alacritty
+      anki
+      bitwarden-desktop
       dmenu
       feh
       i3lock
       i3status
+      obs-studio
+      obsidian
       picom
+      spotify
       rofi
     ];
   };

@@ -29,7 +29,7 @@ if [ "$system_type" = "Darwin" ]; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
     echo "Finished installing Homebrew."
-    echo "1. Restart your shell."
+    echo "1. Run the above commands to add Homebrew to your path."
     echo "2. Run this script again."
 
     exit 0

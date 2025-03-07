@@ -21,7 +21,11 @@
     environment.systemPackages = with pkgs; [
       argocd
       awscli
+      balena-cli
+      bitwarden-cli
       cmake
+      discord
+      docker
       duckdb
       ffmpeg
       figlet
@@ -49,6 +53,7 @@
       pandoc
       pipx
       postgresql
+      postman
       potrace
       pre-commit
       python310
