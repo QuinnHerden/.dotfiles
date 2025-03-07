@@ -34,7 +34,7 @@
     darwinConfigurations = {
       
       "mac-agi" = darwin.lib.darwinSystem {
-        system = "aarch64-darwin";
+        system = "x86_64-darwin";
         modules = [
           ./hosts/mac-agi/configuration.nix
           ./modules/darwin
