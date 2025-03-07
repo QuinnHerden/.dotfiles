@@ -47,6 +47,7 @@
     
       "nix-robin" = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
+        speacialArgs = { inherit inputs; };
         modules = [
           ./hosts/nix-robin/configuration.nix
           ./modules
