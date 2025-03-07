@@ -16,7 +16,16 @@
   config = lib.mkIf config.sharedFonts.enable {
    fonts = {
       packages = with pkgs; [
-        pkgs.nerd-fonts.fira-code
+        dina-font
+        fira-code
+        fira-code-symbols
+        liberation_ttf
+        mplus-outline-fonts.githubRelease
+        noto-fonts
+        noto-fonts-cjk-sans
+        noto-fonts-emoji
+        proggyfonts
+        figlet-fonts
       ];
     }; 
   };
