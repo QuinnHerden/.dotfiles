@@ -21,7 +21,12 @@
     environment.systemPackages = with pkgs; [
       argocd
       awscli
+      balena-cli
+      bitwarden-cli
+      brave
       cmake
+      discord
+      docker
       duckdb
       ffmpeg
       figlet
@@ -31,8 +36,10 @@
       gnugrep
       gnupg
       go
+      google-chrome
       htop
       httrack
+      inkscape
       hugo
       jq
       kubectx
@@ -49,6 +56,7 @@
       pandoc
       pipx
       postgresql
+      postman
       potrace
       pre-commit
       python310
@@ -58,6 +66,7 @@
       python314
       python39
       ripgrep
+      spotify
       stow
       talosctl
       terraform
