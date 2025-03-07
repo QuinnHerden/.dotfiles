@@ -27,4 +27,8 @@
     userName = "quinnherden";
   };
 
+  # Set the configured group ID to match the actual value
+  # Possible cause: trying a new Nix installation with a pre-existing installation
+  ids.gids.nixbld = 350;
+
 }
