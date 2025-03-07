@@ -22,7 +22,7 @@
       ];
 
       brews = [
-        "autotrace"
+        #"autotrace"
       ];
 
       casks = [
@@ -64,8 +64,8 @@
       ];
 
       masApps = {
-        "Keynote" = 409183694;
-        "Tailscale" = 1475387142;
+        #"Keynote" = 409183694;
+        #"Tailscale" = 1475387142;
       };
 
       whalebrews = [
