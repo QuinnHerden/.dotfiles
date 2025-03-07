@@ -33,12 +33,21 @@
     
     darwinConfigurations = {
       
-      "mbp-papi" = darwin.lib.darwinSystem {
+      "mac-agi" = darwin.lib.darwinSystem {
         system = "aarch64-darwin";
         modules = [
-          ./hosts/mbp-papi/configuration.nix
-          ./modules/nixos
+          ./hosts/mac-agi/configuration.nix
           ./modules/darwin
+          ./modules/nixos
+        ];
+      };
+      
+      "mac-papi" = darwin.lib.darwinSystem {
+        system = "aarch64-darwin";
+        modules = [
+          ./hosts/mac-papi/configuration.nix
+          ./modules/darwin
+          ./modules/nixos
         ];
       };
       
