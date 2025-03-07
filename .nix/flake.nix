@@ -32,20 +32,20 @@
   in {
     
     darwinConfigurations = {
+      # Docs: https://daiderd.com/nix-darwin/manual/index.html
       
-      "mbp-agi" = darwin.lib.darwinSystem {
-        system = "aarch64-darwin";
+      "mac-agi" = darwin.lib.darwinSystem {
         modules = [
-          ./hosts/mbp-agi/configuration.nix
+          ./hosts/mac-agi/configuration.nix
           ./modules/darwin
           ./modules/nixos
         ];
       };
       
-      "mbp-papi" = darwin.lib.darwinSystem {
+      "mac-papi" = darwin.lib.darwinSystem {
         system = "aarch64-darwin";
         modules = [
-          ./hosts/mbp-papi/configuration.nix
+          ./hosts/mac-papi/configuration.nix
           ./modules/darwin
           ./modules/nixos
         ];
@@ -56,7 +56,6 @@
     nixosConfigurations = {
     
       "nix-robin" = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
         specialArgs = { inherit inputs; };
         modules = [
           ./hosts/nix-robin/configuration.nix

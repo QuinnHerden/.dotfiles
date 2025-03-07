@@ -4,13 +4,15 @@
 if ! command -v nix >/dev/null 2>&1; then
     echo "Nix is not installed."
     echo "Installing Nix."
+
     /bin/bash -c "$(curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | \
       sh -s -- install --no-confirm)"
 
     echo "Finished installing Nix."
-    echo "Source bashrc and run this script again to configure the system."
-fi
-    exit(0)
+    echo "1. Restart your shell."
+    echo "2. Run this script again."
+
+    exit 0
 fi
 
 # config system (based on operating system type)
@@ -23,7 +25,14 @@ if [ "$system_type" = "Darwin" ]; then
   if ! command -v brew >/dev/null 2>&1; then
     echo "Homebrew is not installed."
     echo "Installing homebrew."
+
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+    echo "Finished installing Homebrew."
+    echo "1. Restart your shell."
+    echo "2. Run this script again."
+
+    exit 0
   fi
 
   # initial configuration
@@ -38,8 +47,8 @@ if [ "$system_type" = "Darwin" ]; then
 fi
 
 # clean up Nix cache
-echo "Purging Nix cache."
-sudo nix-collect-garbage --delete-older-than 15d
+# echo "Purging Nix cache."
+# sudo nix-collect-garbage --delete-older-than 15d
 
 # create Symlinks
 echo "Creating symlinks to home directory."
