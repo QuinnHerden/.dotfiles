@@ -37,7 +37,7 @@
       "mac-agi" = darwin.lib.darwinSystem {
         modules = [
           ./hosts/mac-agi/configuration.nix
-          #./modules/darwin
+          ./modules/darwin
           #./modules/nixos
         ];
       };
