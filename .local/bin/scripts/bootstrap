@@ -39,8 +39,8 @@ if [ "$system_type" = "Darwin" ]; then
 fi
 
 # clean up Nix cache
-echo "Purging Nix cache."
-sudo nix-collect-garbage --delete-older-than 15d
+# echo "Purging Nix cache."
+# sudo nix-collect-garbage --delete-older-than 15d
 
 # create Symlinks
 echo "Creating symlinks to home directory."
