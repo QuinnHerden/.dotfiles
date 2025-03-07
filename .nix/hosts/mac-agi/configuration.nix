@@ -19,7 +19,7 @@
 
   driverUser = {
     enable = true;
-    userName = "quinn";
+    userName = "quinnherden";
   };
 
 }
