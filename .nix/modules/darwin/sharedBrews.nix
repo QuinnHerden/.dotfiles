@@ -60,7 +60,7 @@
         "vb-cable"
         "visual-studio-code"
         "vlc"
-        "yubico-yubikey-manager"
+        # "yubico-yubikey-manager"
       ];
 
       masApps = {
