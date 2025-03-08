@@ -148,7 +148,7 @@
     # what does the function key do
     AppleFnUsageType = "Do Nothing";
   };
-
+  
   system.defaults.".GlobalPreferences" = {
     "com.apple.mouse.scaling" = 100.0;
   };
