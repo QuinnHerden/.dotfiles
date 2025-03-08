@@ -15,6 +15,7 @@
 
   darwinPackages.enable = true;
   
+  baseBrews.enable = true;
   extraBrews.enable = true;
   experimentalBrews.enable = true;
   
