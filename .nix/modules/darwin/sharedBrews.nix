@@ -35,7 +35,6 @@
         "anki"
         "background-music"
         "balenaetcher"
-        "betterdisplay"
         "bitwarden"
         "brave-browser"
         "calibre"
