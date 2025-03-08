@@ -14,7 +14,10 @@
   nixpkgs.hostPlatform = "aarch64-darwin";
 
   darwinPackages.enable = true;
-
+  
+  extraBrews.enable = true;
+  experimentalBrews.enable = true;
+  
   hostname = {
     enable = true;
     name = "mac-papi";

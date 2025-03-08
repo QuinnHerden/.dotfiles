@@ -8,9 +8,11 @@
 {
 
   imports = [
-    ./sharedBrews.nix
+    ./baseBrews.nix
+    ./experimentalBrews.nix
+    ./extraBrews.nix
   ];
   
-  sharedBrews.enable = lib.mkDefault true;
+  baseBrews.enable = lib.mkDefault true;
 
 }
