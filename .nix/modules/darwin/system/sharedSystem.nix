@@ -137,7 +137,7 @@
 
     system.defaults.".GlobalPreferences" = {
       # mouse speed
-      "com.apple.mouse.scaling" = 100.0;
+      "com.apple.mouse.scaling" = 3.0;
     };
   };
 
