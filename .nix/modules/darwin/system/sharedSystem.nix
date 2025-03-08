@@ -48,7 +48,7 @@
 
       # clock
       IsAnalog = false;
-      Show24Hour = true;
+      Show24Hour = true; # seems to be broken
       ShowSeconds = false;
     };
 
