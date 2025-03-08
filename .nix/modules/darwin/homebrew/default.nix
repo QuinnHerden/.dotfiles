@@ -13,6 +13,4 @@
     ./extraBrews.nix
   ];
   
-  baseBrews.enable = lib.mkDefault true;
-
 }
