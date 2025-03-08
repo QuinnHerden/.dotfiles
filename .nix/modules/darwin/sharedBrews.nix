@@ -51,6 +51,7 @@
         "raspberry-pi-imager"
         "rocket"
         "scroll-reverser"
+        "sound-control"
         "spotify"
         "vb-cable"
         "visual-studio-code"
