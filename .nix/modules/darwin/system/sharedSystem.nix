@@ -134,6 +134,11 @@
       # what does the function key do
       AppleFnUsageType = "Do Nothing";
     };
+    
+    system.defaults.NSGlobalDomain = {
+      # trackpad speed
+      "com.apple.trackpad.scaling" = 3.0;
+    };
 
     system.defaults.".GlobalPreferences" = {
       # mouse speed
