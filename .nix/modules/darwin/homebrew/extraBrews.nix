@@ -22,6 +22,9 @@
       ];
 
       brews = [
+      ];
+
+      casks = [
         "4k-storgram"
         "activitywatch"
         "affinity-designer"
@@ -35,9 +38,6 @@
         "obs"
         "raspberry-pi-imager"
         "vb-cable"
-      ];
-
-      casks = [
       ];
 
       masApps = {
