@@ -14,6 +14,8 @@
   };
   
   config = lib.mkIf config.sharedSystem.enable {
+    ids.gids.nixbld = 350;
+
     security.pki.certificateFiles = [];
 
     time.timeZone = "America/New_York";
