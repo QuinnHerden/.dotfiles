@@ -27,8 +27,8 @@
       obs-studio
       obsidian
       picom
-      spotify
       rofi
+      spotify
     ];
   };
 

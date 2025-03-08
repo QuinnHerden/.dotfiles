@@ -19,8 +19,9 @@
 
   outputs = {
     self,
-    darwin,
     nixpkgs,
+    darwin,
+    home-manager,
     ...
   }
   @inputs:
@@ -35,6 +36,7 @@
       # Docs: https://daiderd.com/nix-darwin/manual/index.html
       
       "mac-agi" = darwin.lib.darwinSystem {
+        specialArgs = { inherit inputs; };
         modules = [
           ./hosts/mac-agi/configuration.nix
           ./modules/darwin
@@ -43,11 +45,16 @@
       };
       
       "mac-papi" = darwin.lib.darwinSystem {
-        system = "aarch64-darwin";
+        specialArgs = { inherit inputs; };
         modules = [
           ./hosts/mac-papi/configuration.nix
           ./modules/darwin
           ./modules/nixos
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.users."quinnherden" = ./home/mac-papi/home.nix;
+          }
         ];
       };
       
