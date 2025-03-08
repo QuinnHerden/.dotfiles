@@ -19,6 +19,7 @@
       alacritty
       anki
       bitwarden-desktop
+      discord
       dmenu
       feh
       i3lock

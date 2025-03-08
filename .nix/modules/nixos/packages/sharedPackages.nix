@@ -24,7 +24,6 @@
       balena-cli
       bitwarden-cli
       cmake
-      discord
       duckdb
       ffmpeg
       figlet

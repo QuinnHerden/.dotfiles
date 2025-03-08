@@ -38,6 +38,7 @@
         "brave-browser"
         "calibre"
         "dbeaver-community"
+        "discord"
         "flux"
         "google-chrome"
         "google-drive"
