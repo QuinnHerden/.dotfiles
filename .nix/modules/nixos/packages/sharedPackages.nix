@@ -25,7 +25,6 @@
       bitwarden-cli
       cmake
       discord
-      docker
       duckdb
       ffmpeg
       figlet
@@ -52,6 +51,7 @@
       openssl
       pandoc
       pipx
+      podman
       postgresql
       postman
       potrace
