@@ -8,9 +8,7 @@
 {
 
   imports = [
-    ./homebrew
-    ./networking
-    ./system
+    ./hostname.nix
   ];
-  
+
 }
