@@ -8,9 +8,8 @@
 {
 
   imports = [
-    ./sharedBrews.nix
+    ./homebrew
+    ./system
   ];
   
-  sharedBrews.enable = lib.mkDefault true;
-
 }
