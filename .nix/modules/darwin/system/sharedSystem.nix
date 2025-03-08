@@ -47,6 +47,7 @@
       ShowDayOfMonth = true;
 
       # clock
+      IsAnalog = false;
       Show24Hour = true;
       ShowSeconds = false;
     };
