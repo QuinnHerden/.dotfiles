@@ -26,6 +26,7 @@
       ];
 
       casks = [
+        "4k-stogram"
         "activitywatch"
         "affinity-designer"
         "affinity-photo"
