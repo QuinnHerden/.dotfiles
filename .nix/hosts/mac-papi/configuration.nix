@@ -152,5 +152,4 @@
   system.defaults.".GlobalPreferences" = {
     "com.apple.mouse.scaling" = 100.0;
   };
-
 }
