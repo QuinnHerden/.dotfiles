@@ -22,7 +22,7 @@
       ];
 
       brews = [
-        "4k-stogram"
+        "4k-storgram"
         "activitywatch"
         "affinity-designer"
         "affinity-photo"
