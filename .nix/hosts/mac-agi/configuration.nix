@@ -15,6 +15,9 @@
 
   darwinPackages.enable = true;
   
+  extraBrews.enable = false;
+  experimentalBrews.enable = false;
+  
   hostname = {
     enable = true;
     name = "mac-agi";
