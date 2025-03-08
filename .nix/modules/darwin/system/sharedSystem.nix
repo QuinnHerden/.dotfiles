@@ -14,6 +14,10 @@
   };
   
   config = lib.mkIf config.sharedSystem.enable {
+    security.pki.certificateFiles = [];
+
+    time.timeZone = "America/New_York";
+
     system.defaults.loginwindow = {
       # allow guest user account
       GuestEnabled = false;

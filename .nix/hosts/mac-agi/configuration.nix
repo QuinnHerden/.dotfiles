@@ -14,6 +14,11 @@
   nixpkgs.hostPlatform = "aarch64-darwin";
 
   darwinPackages.enable = true;
+  
+  hostname = {
+    enable = true;
+    name = "mac-agi";
+  };
 
   ids.gids.nixbld = 350;
 

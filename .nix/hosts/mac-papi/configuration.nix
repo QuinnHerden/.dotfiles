@@ -15,15 +15,10 @@
 
   darwinPackages.enable = true;
 
-  system.defaults.smb = {
-    # hostname
-    NetBIOSName = "mac-papi";
-    ServerDescription = "mac-papi";
+  hostname = {
+    enable = true;
+    name = "mac-papi";
   };
-
-  security.pki.certificateFiles = [];
-
-  time.timeZone = "America/New_York";
 
   ids.gids.nixbld = 350;
 
