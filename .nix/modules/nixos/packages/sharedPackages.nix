@@ -27,7 +27,6 @@
       duckdb
       ffmpeg
       figlet
-      fzf
       gawk
       gh
       gnugrep
