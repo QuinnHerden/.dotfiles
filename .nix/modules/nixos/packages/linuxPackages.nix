@@ -19,6 +19,7 @@
       alacritty
       anki
       bitwarden-desktop
+      discord
       dmenu
       feh
       i3lock
@@ -26,8 +27,8 @@
       obs-studio
       obsidian
       picom
-      spotify
       rofi
+      spotify
     ];
   };
 

@@ -8,12 +8,12 @@
 {
 
   options = {
-    sharedBrews = {
-      enable = lib.mkEnableOption "enables sharedBrews";
+    baseBrews = {
+      enable = lib.mkEnableOption "enables baseBrews";
     };
   };
   
-  config = lib.mkIf config.sharedBrews.enable {
+  config = lib.mkIf config.baseBrews.enable {
     homebrew = {
       enable = true;
       onActivation.cleanup = "uninstall";
@@ -26,33 +26,22 @@
       ];
 
       casks = [
-        "activitywatch"
-        "affinity-designer"
-        "affinity-photo"
-        "affinity-publisher"
         "amethyst"
-        "anki"
-        "balenaetcher"
-        "betterdisplay"
+        "background-music"
         "bitwarden"
         "brave-browser"
-        "calibre"
-        "dbeaver-community"
+        "discord"
         "flux"
         "google-chrome"
         "google-drive"
         "hiddenbar"
         "iterm2"
         "karabiner-elements"
-        "keycastr"
         "malwarebytes"
-        "obs"
         "obsidian"
-        "raspberry-pi-imager"
         "rocket"
         "scroll-reverser"
         "spotify"
-        "vb-cable"
         "visual-studio-code"
         "vlc"
         "yubico-yubikey-manager"
