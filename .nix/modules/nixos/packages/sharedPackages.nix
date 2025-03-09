@@ -66,7 +66,6 @@
       talosctl
       terraform
       tflint
-      thefuck
       tmux
       tree
       tree-sitter
