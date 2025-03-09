@@ -24,12 +24,9 @@
       balena-cli
       bitwarden-cli
       cmake
-      discord
-      docker
       duckdb
       ffmpeg
       figlet
-      fzf
       gawk
       gh
       gnugrep
@@ -52,6 +49,7 @@
       openssl
       pandoc
       pipx
+      podman
       postgresql
       postman
       potrace
@@ -67,7 +65,6 @@
       talosctl
       terraform
       tflint
-      thefuck
       tmux
       tree
       tree-sitter
@@ -76,7 +73,6 @@
       vault
       wget
       yt-dlp
-      zoxide
     ];
   };
 

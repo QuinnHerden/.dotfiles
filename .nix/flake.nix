@@ -19,23 +19,19 @@
 
   outputs = {
     self,
-    darwin,
     nixpkgs,
+    darwin,
+    home-manager,
     ...
-  }
-  @inputs:
-  let
-    
-    # …
-    # …
-    
-  in {
+  }@inputs: {
     
     darwinConfigurations = {
       # Docs: https://daiderd.com/nix-darwin/manual/index.html
       
       "mac-agi" = darwin.lib.darwinSystem {
+        specialArgs = { inherit inputs; };
         modules = [
+          home-manager.darwinModules.home-manager
           ./hosts/mac-agi/configuration.nix
           ./modules/darwin
           ./modules/nixos
@@ -43,8 +39,9 @@
       };
       
       "mac-papi" = darwin.lib.darwinSystem {
-        system = "aarch64-darwin";
+        specialArgs = { inherit inputs; };
         modules = [
+          home-manager.darwinModules.home-manager
           ./hosts/mac-papi/configuration.nix
           ./modules/darwin
           ./modules/nixos
@@ -58,6 +55,7 @@
       "nix-robin" = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };
         modules = [
+          home-manager.nixosModules.home-manager
           ./hosts/nix-robin/configuration.nix
           ./modules/nixos
         ];
