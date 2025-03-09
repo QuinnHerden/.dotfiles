@@ -16,13 +16,13 @@ if ! command -v nix >/dev/null 2>&1; then
 fi
 
 # install Home Manager
-if ! command -v home-manager >/dev/null 2>&1; then
+home_manager_channel="https://github.com/nix-community/home-manager/archive/master.tar.gz"
+if ! nix-channel --list | grep -q "^home-manager $home_manager_channel$"; then
   echo "Home Manager is not installed."
   echo "Installing Home Manager."
 
-  nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
+  nix-channel --add $home_manager_channel home-manager
   nix-channel --update
-  nix-shell '<home-manager>' -A install
 fi
 
 # config system (based on operating system type)
