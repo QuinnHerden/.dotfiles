@@ -74,7 +74,6 @@
       vault
       wget
       yt-dlp
-      zoxide
     ];
   };
 
