@@ -23,20 +23,12 @@
     darwin,
     home-manager,
     ...
-  }
-  @inputs:
-  let
-    
-    # …
-    # …
-    
-  in {
+  }@inputs: {
     
     darwinConfigurations = {
       # Docs: https://daiderd.com/nix-darwin/manual/index.html
       
       "mac-agi" = darwin.lib.darwinSystem {
-        specialArgs = { inherit inputs; };
         modules = [
           ./hosts/mac-agi/configuration.nix
           ./modules/darwin
@@ -50,10 +42,14 @@
           ./hosts/mac-papi/configuration.nix
           ./modules/darwin
           ./modules/nixos
-          home-manager.nixosModules.home-manager
+          home-manager.darwinModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
-            home-manager.users."quinnherden" = ./home/mac-papi/home.nix;
+            home-manager.useUserPackages = true;
+            #home-manager.users.quinnherden = import ./home.nix;
+
+            # Optionally, use home-manager.extraSpecialArgs to pass
+            # arguments to home.nix
           }
         ];
       };
@@ -63,7 +59,6 @@
     nixosConfigurations = {
     
       "nix-robin" = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs; };
         modules = [
           ./hosts/nix-robin/configuration.nix
           ./modules/nixos
