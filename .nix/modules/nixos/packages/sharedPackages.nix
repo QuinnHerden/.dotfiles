@@ -27,7 +27,6 @@
       duckdb
       ffmpeg
       figlet
-      fzf
       gawk
       gh
       gnugrep
@@ -66,7 +65,6 @@
       talosctl
       terraform
       tflint
-      thefuck
       tmux
       tree
       tree-sitter
@@ -75,7 +73,6 @@
       vault
       wget
       yt-dlp
-      zoxide
     ];
   };
 
