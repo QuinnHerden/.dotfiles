@@ -61,6 +61,7 @@
 
       sessionVariables = {
         EDITOR = "nvim";
+        PATH = "$PATH:$HOME/.local/bin/scripts";
       };
 
       shellAliases = {
@@ -101,6 +102,8 @@
       initExtra = ''
         eval "$(zoxide init --cmd cd zsh)"
         eval $(thefuck --alias f)
+
+        figlet -d ~/figlet-fonts -f "sub-zero" QSH
       '';
     };
     
