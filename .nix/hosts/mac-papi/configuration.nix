@@ -42,6 +42,19 @@
 
   home-manager.users.quinnherden = {
     home.packages = [ pkgs.atool pkgs.httpie ];
+    
+    home.file = {
+      #".gitconfig".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/.gitconfig";
+      ".gitconfig".source = files/.gitconfig;
+      ".gitignore_global".source = files/.gitignore_global;
+      ".tmux.conf".source = files/.tmux.conf;
+    };
+
+    home.sessionPath = [
+      "$HOME/.local/bin/"
+      "$HOME/.local/scripts"
+    ];
+
     programs.zsh = {
       enable = true;
 
@@ -61,7 +74,6 @@
 
       sessionVariables = {
         EDITOR = "nvim";
-        PATH = "$PATH:$HOME/.local/bin/scripts";
       };
 
       shellAliases = {
