@@ -20,6 +20,7 @@
   users.users.quinnherden = {
     name = "quinnherden";
     home = "/Users/quinnherden";
+    
     shell = pkgs.zsh;
   };
 
