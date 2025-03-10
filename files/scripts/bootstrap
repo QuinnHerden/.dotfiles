@@ -54,8 +54,14 @@ if [ "$system_type" = "Darwin" ]; then
     echo "Applying Nix configuration."
     darwin-rebuild switch --flake ~/.dotfiles/nix
   fi
+
+else if [ "$system_type" = "Linux" ]; then
+  echo "Configuring Linux."
+  echo "Applying Nix configuration."
+
+  nixos-rebuild switch --flake ~/.dotfiles/nix
 fi
 
-# clean up Nix cache
-# echo "Purging Nix cache."
-# sudo nix-collect-garbage --delete-older-than 15d
+#clean up Nix cache
+echo "Purging Nix cache."
+sudo nix-collect-garbage --delete-older-than 15d
