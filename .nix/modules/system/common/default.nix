@@ -10,6 +10,7 @@
   imports = [
     ./fonts
     ./packages
+    ./shells
   ];
 
 }

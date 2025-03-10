@@ -18,7 +18,7 @@
       allowUnfree = true; # accept paid licenses
     };
 
-    programs.zsh.enable = true; # set default shell
+    programs.zsh.enable = true; # install zsh shell
 
     environment.systemPackages = with pkgs; [
       argocd
