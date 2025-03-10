@@ -6,11 +6,15 @@
 }:
 
 {
+  
   imports = [ 
     ./hardware-configuration.nix
   ];
-
-  system.stateVersion = "24.11"; # 
+  system.stateVersion = "24.11";
+  
+  networking = {
+    hostName = "nix-robin";
+  }
 
   users.users."quinnherden" = {
     isNormalUser = true;
@@ -34,7 +38,6 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "nix-robin"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
