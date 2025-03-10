@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # install Nix
 if ! command -v nix >/dev/null 2>&1; then
