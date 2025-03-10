@@ -8,12 +8,12 @@
 {
 
   options = {
-    sharedSystem = {
-      enable = lib.mkEnableOption "enables sharedSystem";
+    commonSystem = {
+      enable = lib.mkEnableOption "enables commonSystem";
     };
   };
   
-  config = lib.mkIf config.sharedSystem.enable {
+  config = lib.mkIf config.commonSystem.enable {
     ids.gids.nixbld = 350;
 
     security.pki.certificateFiles = [];

@@ -8,12 +8,12 @@
 {
 
   options = {
-    sharedPackages = {
-      enable = lib.mkEnableOption "enables sharedPackages";
+    commonPackages = {
+      enable = lib.mkEnableOption "enables commonPackages";
     };
   };
   
-  config = lib.mkIf config.sharedPackages.enable {
+  config = lib.mkIf config.commonPackages.enable {
     nixpkgs.config = {
       allowUnfree = true; # accept paid licenses
     };
