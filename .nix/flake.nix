@@ -33,6 +33,7 @@
         modules = [
           home-manager.darwinModules.default
           ./hosts/mac-agi
+          ./modules/home/common
           ./modules/system/common
           ./modules/system/darwin
         ];
@@ -58,8 +59,9 @@
         modules = [
           home-manager.nixosModules.default
           ./hosts/nix-robin
-          ./system/common
-          ./system/nixos
+          ./modules/home/common
+          ./modules/system/common
+          ./modules/system/nixos
         ];
       };
 
