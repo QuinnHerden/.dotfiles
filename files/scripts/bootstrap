@@ -1,0 +1,61 @@
+#!/bin/bash
+
+# install Nix
+if ! command -v nix >/dev/null 2>&1; then
+  echo "Nix is not installed."
+  echo "Installing Nix."
+
+  /bin/bash -c "$(curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | \
+    sh -s -- install --no-confirm)"
+
+  echo "Finished installing Nix."
+  echo "1. Restart your shell."
+  echo "2. Run this script again."
+
+  exit 0
+fi
+
+# install Home Manager
+home_manager_channel="https://github.com/nix-community/home-manager/archive/master.tar.gz"
+if ! nix-channel --list | grep -q "^home-manager $home_manager_channel$"; then
+  echo "Home Manager is not installed."
+  echo "Installing Home Manager."
+
+  nix-channel --add $home_manager_channel home-manager
+  nix-channel --update
+fi
+
+# config system (based on operating system type)
+system_type=$(uname -s)
+
+if [ "$system_type" = "Darwin" ]; then
+  echo "Configuring MacOS."
+
+  # install Homebrew
+  if ! command -v brew >/dev/null 2>&1; then
+    echo "Homebrew is not installed."
+    echo "Installing homebrew."
+
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+    echo "Finished installing Homebrew."
+    echo "1. Run the above commands to add Homebrew to your path."
+    echo "2. Run this script again."
+
+    exit 0
+  fi
+
+  # initial configuration
+  if ! command -v darwin-rebuild >/dev/null 2>&1; then
+    echo "Nix configuration is not active."
+    echo "Activating Nix configuration."
+    nix run nix-darwin --extra-experimental-features nix-command --extra-experimental-features flakes -- switch --flake ~/.dotfiles/nix
+  else
+    echo "Applying Nix configuration."
+    darwin-rebuild switch --flake ~/.dotfiles/nix
+  fi
+fi
+
+# clean up Nix cache
+# echo "Purging Nix cache."
+# sudo nix-collect-garbage --delete-older-than 15d
