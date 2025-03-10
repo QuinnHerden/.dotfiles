@@ -33,8 +33,8 @@
         modules = [
           home-manager.darwinModules.default
           ./hosts/mac-agi
-          ./modules/darwin
-          ./modules/nixos
+          ./system/darwin
+          ./system/common
         ];
       };
       
@@ -43,8 +43,8 @@
         modules = [
           home-manager.darwinModules.default
           ./hosts/mac-papi
-          ./modules/darwin
-          ./modules/nixos
+          ./system/darwin
+          ./system/common
         ];
       };
       
@@ -57,7 +57,8 @@
         modules = [
           home-manager.nixosModules.default
           ./hosts/nix-robin
-          ./modules/nixos
+          ./system/common
+          ./system/nixos
         ];
       };
 

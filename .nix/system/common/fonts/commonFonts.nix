@@ -8,12 +8,12 @@
 {
 
   options = {
-    sharedFonts = {
-      enable = lib.mkEnableOption "enables sharedFonts";
+    commonFonts = {
+      enable = lib.mkEnableOption "enables commonFonts";
     };
   };
   
-  config = lib.mkIf config.sharedFonts.enable {
+  config = lib.mkIf config.commonFonts.enable {
    fonts = {
       packages = with pkgs; [
         dina-font
