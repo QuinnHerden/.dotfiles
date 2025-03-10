@@ -70,6 +70,11 @@
     ];
   };
 
+  baseHome = {
+    enable = true;
+    name = "quinnherden";
+  };
+
   # programs.firefox.enable = true;
 
   # List packages installed in system profile. To search, run:

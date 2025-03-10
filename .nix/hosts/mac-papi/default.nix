@@ -1,11 +1,9 @@
 {
-  pkgs,
-  inputs,
-  config,
   ...
 }:
 
 {
+  
   nix.settings.experimental-features = [
     "flakes"
     "nix-command"
@@ -32,4 +30,5 @@
   baseBrews.enable = true;
   extraBrews.enable = true;
   experimentalBrews.enable = true;
+
 }
