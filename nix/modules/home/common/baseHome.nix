@@ -23,6 +23,14 @@
         ".gitconfig".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/.gitconfig";
         ".gitignore_global".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/.gitignore_global";
         ".tmux.conf".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/.tmux.conf";
+        ".config/nvim" = {
+          source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/nvim";
+          recursive = true;
+        };
+        ".local/scripts" = {
+          source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/scripts";
+          recursive = true;
+        };
       };
 
       home.sessionPath = [

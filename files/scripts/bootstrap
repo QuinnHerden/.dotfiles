@@ -49,17 +49,13 @@ if [ "$system_type" = "Darwin" ]; then
   if ! command -v darwin-rebuild >/dev/null 2>&1; then
     echo "Nix configuration is not active."
     echo "Activating Nix configuration."
-    nix run nix-darwin --extra-experimental-features nix-command --extra-experimental-features flakes -- switch --flake ~/.dotfiles/.nix
+    nix run nix-darwin --extra-experimental-features nix-command --extra-experimental-features flakes -- switch --flake ~/.dotfiles/nix
   else
     echo "Applying Nix configuration."
-    darwin-rebuild switch --flake ~/.dotfiles/.nix
+    darwin-rebuild switch --flake ~/.dotfiles/nix
   fi
 fi
 
 # clean up Nix cache
 # echo "Purging Nix cache."
 # sudo nix-collect-garbage --delete-older-than 15d
-
-# create Symlinks
-# echo "Creating symlinks to home directory."
-# stow -d ~/.dotfiles -t ~/ .
