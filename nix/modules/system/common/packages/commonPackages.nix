@@ -63,7 +63,6 @@
       python314
       python39
       ripgrep
-      stow
       talosctl
       terraform
       tflint
