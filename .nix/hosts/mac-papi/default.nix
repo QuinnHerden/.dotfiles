@@ -23,7 +23,7 @@
     home = "/Users/quinnherden";
   };
 
-  homeTest = {
+  baseHome = {
     enable = true;
     name = "quinnherden";
   };
