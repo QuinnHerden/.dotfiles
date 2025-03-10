@@ -42,9 +42,10 @@
         specialArgs = { inherit inputs; };
         modules = [
           home-manager.darwinModules.default
+          ./home
           ./hosts/mac-papi
-          ./system/darwin
           ./system/common
+          ./system/darwin
         ];
       };
       
