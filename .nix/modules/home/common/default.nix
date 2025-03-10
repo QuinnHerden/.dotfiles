@@ -8,7 +8,7 @@
 {
 
   imports = [
-    ./home.nix
+    ./baseHome.nix
   ];
 
 }

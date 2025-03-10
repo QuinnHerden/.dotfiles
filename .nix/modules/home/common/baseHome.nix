@@ -8,8 +8,8 @@
 {
 
   options = {
-    homeTest = {
-      enable = lib.mkEnableOption "enables homeTest";
+    baseHome = {
+      enable = lib.mkEnableOption "enables baseHome";
 
       name = lib.mkOption {
         default = "driver";
@@ -17,8 +17,8 @@
     };
   };
   
-  config = lib.mkIf config.homeTest.enable {
-    home-manager.users.${config.homeTest.name} = { config, pkgs, ... }: {
+  config = lib.mkIf config.baseHome.enable {
+    home-manager.users.${config.baseHome.name} = { config, pkgs, ... }: {
       home.file = {
         ".gitconfig".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/.gitconfig";
         ".gitignore_global".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/.gitignore_global";
