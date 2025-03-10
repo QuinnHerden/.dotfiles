@@ -18,6 +18,8 @@
       allowUnfree = true; # accept paid licenses
     };
 
+    programs.zsh.enable = true; # set default shell
+
     environment.systemPackages = with pkgs; [
       argocd
       awscli
