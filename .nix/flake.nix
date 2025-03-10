@@ -32,7 +32,7 @@
         specialArgs = { inherit inputs; };
         modules = [
           home-manager.darwinModules.default
-          ./hosts/mac-agi/configuration.nix
+          ./hosts/mac-agi
           ./modules/darwin
           ./modules/nixos
         ];
@@ -42,7 +42,7 @@
         specialArgs = { inherit inputs; };
         modules = [
           home-manager.darwinModules.default
-          ./hosts/mac-papi/configuration.nix
+          ./hosts/mac-papi
           ./modules/darwin
           ./modules/nixos
         ];
@@ -56,7 +56,7 @@
         specialArgs = { inherit inputs; };
         modules = [
           home-manager.nixosModules.default
-          ./hosts/nix-robin/configuration.nix
+          ./hosts/nix-robin
           ./modules/nixos
         ];
       };
