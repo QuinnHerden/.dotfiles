@@ -31,7 +31,7 @@
       "mac-agi" = darwin.lib.darwinSystem {
         specialArgs = { inherit inputs; };
         modules = [
-          home-manager.darwinModules.home-manager
+          home-manager.darwinModules.default
           ./hosts/mac-agi/configuration.nix
           ./modules/darwin
           ./modules/nixos
@@ -41,7 +41,7 @@
       "mac-papi" = darwin.lib.darwinSystem {
         specialArgs = { inherit inputs; };
         modules = [
-          home-manager.darwinModules.home-manager
+          home-manager.darwinModules.default
           ./hosts/mac-papi/configuration.nix
           ./modules/darwin
           ./modules/nixos
@@ -55,7 +55,7 @@
       "nix-robin" = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };
         modules = [
-          home-manager.nixosModules.home-manager
+          home-manager.nixosModules.default
           ./hosts/nix-robin/configuration.nix
           ./modules/nixos
         ];
