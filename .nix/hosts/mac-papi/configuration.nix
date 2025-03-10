@@ -1,6 +1,7 @@
 {
   pkgs,
   inputs,
+  config,
   ...
 }:
 
@@ -40,14 +41,13 @@
     ];
   };
 
-  home-manager.users.quinnherden = {
+  home-manager.users.quinnherden = { config, pkgs, ... }: {
     home.packages = [ pkgs.atool pkgs.httpie ];
     
     home.file = {
-      #".gitconfig".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/.gitconfig";
-      ".gitconfig".source = files/.gitconfig;
-      ".gitignore_global".source = files/.gitignore_global;
-      ".tmux.conf".source = files/.tmux.conf;
+      ".gitconfig".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/.gitconfig";
+      ".gitignore_global".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/.gitignore_global";
+      ".tmux.conf".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/.tmux.conf";
     };
 
     home.sessionPath = [
