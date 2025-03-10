@@ -14,7 +14,7 @@
   
   networking = {
     hostName = "nix-robin";
-  }
+  };
   
   users.users."quinnherden" = {
     name = "quinnherden";
