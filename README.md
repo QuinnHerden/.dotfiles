@@ -1,5 +1,10 @@
 # .dotfiles
 
+## prerequisites
+
+1. Ensure you system has `git` installed.
+2. Ensure `git` is in your path.
+
 ## install
 
 ### navigate home
