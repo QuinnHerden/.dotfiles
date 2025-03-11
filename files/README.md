@@ -2,7 +2,7 @@
 
 This directory contains configurations that are replicated on each of my hosts.
 
-## modifying
+## Modification
 
 - navigate to the home-manager module in /nix
 - use home-manager.users.{username}.home.file 
