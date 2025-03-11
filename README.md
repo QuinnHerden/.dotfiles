@@ -1,5 +1,8 @@
 # .dotfiles
 
+A curated collection of personal system configurations.
+Enabling a seamless experience across host environments.
+
 ## Prerequisites
 
 1. Ensure you system has `git` installed.
