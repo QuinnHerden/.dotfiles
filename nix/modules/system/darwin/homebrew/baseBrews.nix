@@ -27,7 +27,6 @@
 
       casks = [
         "amethyst"
-        "background-music"
         "bitwarden"
         "brave-browser"
         "discord"
