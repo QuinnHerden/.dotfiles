@@ -90,7 +90,7 @@
           tmks = "tmux kill-session -t";
 
           # vim
-          vim = "nvmim";
+          vim = "nvim";
           vi = "vim";
         };
 
