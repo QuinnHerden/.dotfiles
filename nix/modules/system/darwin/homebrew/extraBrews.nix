@@ -37,6 +37,7 @@
         "obs"
         "raspberry-pi-imager"
         "vb-cable"
+        "zotero"
       ];
 
       masApps = {
