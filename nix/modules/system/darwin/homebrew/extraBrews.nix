@@ -26,7 +26,6 @@
 
       casks = [
         "4k-stogram"
-        "activitywatch"
         "affinity-designer"
         "affinity-photo"
         "affinity-publisher"
@@ -38,6 +37,7 @@
         "obs"
         "raspberry-pi-imager"
         "vb-cable"
+        "zotero"
       ];
 
       masApps = {

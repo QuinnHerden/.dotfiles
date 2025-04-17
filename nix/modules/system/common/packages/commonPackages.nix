@@ -73,6 +73,7 @@
       uv
       vault
       wget
+      yarn
       yt-dlp
     ];
   };
