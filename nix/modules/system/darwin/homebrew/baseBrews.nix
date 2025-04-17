@@ -27,12 +27,10 @@
 
       casks = [
         "amethyst"
-        "background-music"
         "bitwarden"
         "brave-browser"
         "discord"
         "flux"
-        "google-chrome"
         "google-drive"
         "hiddenbar"
         "iterm2"
@@ -42,6 +40,7 @@
         "rocket"
         "scroll-reverser"
         "spotify"
+        "sound-control"
         "visual-studio-code"
         "vlc"
         "yubico-yubikey-manager"
