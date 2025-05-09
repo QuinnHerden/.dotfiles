@@ -25,6 +25,7 @@
       ];
 
       casks = [
+        "powershell"
       ];
 
       masApps = {
