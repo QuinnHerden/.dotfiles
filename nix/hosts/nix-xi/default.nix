@@ -132,10 +132,20 @@
   # User
   users.users.quinnherden = {
     isNormalUser = true;
-    description = "Quinn";
-    extraGroups = [ "wheel" ]; # Sudo access
+    description = "quinn";
+    extraGroups = [ "wheel" ]; # sudo access
     shell = pkgs.bash;
     home = "/home/quinnherden";
+  };
+
+  users.groups.ollama = { };
+
+  users.users.ollama = {
+    isSystemUser = true;
+    description = "Ollama service user";
+    group = "ollama";
+    home = "/var/lib/ollama";
+    createHome = true;
   };
 
   # Configure bootloader device
@@ -190,9 +200,16 @@
   ];
   services.tailscale.enable = true;
 
-  # Systemctl Ollama
   systemd.services.ollama = {
     enable = true;
-    serviceConfig.ExecStart = "ollama serve";
+    description = "Ollama Server";
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.ollama}/bin/ollama serve";
+      Restart = "always";
+      User = "ollama";
+      WorkingDirectory = "/var/lib/ollama";
+    };
   };
 }
