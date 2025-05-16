@@ -134,14 +134,13 @@
     isNormalUser = true;
     description = "Quinn";
     extraGroups = [ "wheel" ]; # Sudo access
+    shell = pkgs.bash;
+    home = "/home/quinnherden";
   };
 
   # Configure bootloader device
   boot.loader.grub.device = "/dev/nvme0n1";
 
-  # Install an editor
-  environment.systemPackages = with pkgs; [ vim ];
-  
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -182,5 +181,18 @@
 
     # Optionally, you may need to select the appropriate driver version for your specific GPU.
     package = config.boot.kernelPackages.nvidiaPackages.stable;
+  };
+
+  # Install Packages
+  environment.systemPackages = with pkgs; [
+    ollama
+    vim
+  ];
+  services.tailscale.enable = true;
+
+  # Systemctl Ollama
+  systemd.services.ollama = {
+    enable = true;
+    serviceConfig.ExecStart = "ollama serve";
   };
 }
