@@ -206,7 +206,7 @@
     after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
     environment = {
-      Environment=CUDA_VISIBLE_DEVICES=1,2"
+      CUDA_VISIBLE_DEVICES = "1,2"
     };
     serviceConfig = {
       ExecStart = "${pkgs.ollama}/bin/ollama serve";
