@@ -195,7 +195,7 @@
 
   # Install Packages
   environment.systemPackages = with pkgs; [
-    ollama
+    ollama-cuda
     vim
   ];
   services.tailscale.enable = true;

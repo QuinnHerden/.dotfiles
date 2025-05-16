@@ -65,6 +65,14 @@
         ];
       };
 
+      "nix-xi" = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs; };
+        modules = [
+          home-manager.nixosModules.default
+          ./hosts/nix-xi
+        ];
+      };
+
     };
   
   };
