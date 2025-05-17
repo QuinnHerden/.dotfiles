@@ -137,6 +137,7 @@
 
   # Install Packages
   environment.systemPackages = with pkgs; [
+    git
     vim
   ];
 
