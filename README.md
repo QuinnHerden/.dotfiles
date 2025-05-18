@@ -20,4 +20,4 @@ Enabling a seamless experience across host environments.
 
 ###  configure system
 
-`sh ~/.dotfiles/files/scripts/sync`
+`sh ~/.dotfiles/files/scripts/conf`
