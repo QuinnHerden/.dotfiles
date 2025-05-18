@@ -41,7 +41,17 @@
     acceleration = "cuda";
 
     loadModels = [
+      gemma3:12b
+      gemma3:27b
       llama2:latest
+      qwen3:30b
+      qwen3:32b
+      deepseek-r1:32b
+      mistral-small3.1:24b
+      codestral:22b
+      deepseek-coder-v2:16b
+      starcoder2:15b
+      nomic-embed-text:v1.5
     ];
   };
 
