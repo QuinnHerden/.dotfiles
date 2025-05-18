@@ -35,7 +35,7 @@
     enable = true;
 
     host = "0.0.0.0";
-    port = "11434"
+    port = "11434";
     openFirewall = true;
 
     acceleration = "cuda";
@@ -49,7 +49,7 @@
     enable = true;
 
     host = "0.0.0.0";
-    port = "8080"
+    port = "8080";
     openFirewall = true;
 
     environment = {
