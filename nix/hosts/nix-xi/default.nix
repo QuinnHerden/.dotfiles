@@ -56,19 +56,9 @@
 
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [ 80 443 ];
-  };
-
-  services.nginx = {
-    enable = true;
-    virtualHosts.localhost = {
-      locations."/" = {
-        return = "200 '<html><body>It works</body></html>'";
-        extraConfig = ''
-          default_type text/html;
-        '';
-      };
-    };
+    allowedTCPPorts = [
+      11434
+    ];
   };
   
 }
