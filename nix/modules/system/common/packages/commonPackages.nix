@@ -31,6 +31,7 @@
       figlet
       gawk
       gh
+      git
       gnugrep
       gnupg
       go
@@ -72,6 +73,7 @@
       typescript
       uv
       vault
+      vim
       wget
       yarn
       yt-dlp
