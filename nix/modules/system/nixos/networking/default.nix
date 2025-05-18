@@ -9,6 +9,7 @@
 
   imports = [
     ./hostname.nix
+    ./openssh.nix
   ];
 
 }
