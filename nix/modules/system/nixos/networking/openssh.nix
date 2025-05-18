@@ -19,7 +19,7 @@
       
       settings = {
         PermitRootLogin = "yes";
-        PasswordAuthentication = false;
+        PasswordAuthentication = true;
       };
     };
   };
