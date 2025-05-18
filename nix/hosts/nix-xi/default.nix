@@ -54,6 +54,11 @@
   builtins.elem (lib.getName pkg) [ "cuda_cccl" "cuda_cudart" "cuda_nvcc" "libcublas" "nvidia-settings" "nvidia-x11" ]; 
   #####
 
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [ 80 443 ];
+  };
+
   services.nginx = {
     enable = true;
     virtualHosts.localhost = {
