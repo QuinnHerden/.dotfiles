@@ -8,8 +8,8 @@
 {
 
   imports = [
-    ./packages
     ./networking
+    ./packages
   ];
 
 }
