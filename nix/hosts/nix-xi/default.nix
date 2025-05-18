@@ -35,7 +35,7 @@
     enable = true;
     acceleration="cuda";
     environmentVariables = {
-      OLLAMA_HOST = "0.0.0.0:11434";
+      OLLAMA_HOST = "0.0.0.0";
     };
 
     loadModels = [
