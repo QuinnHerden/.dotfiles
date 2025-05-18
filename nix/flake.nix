@@ -70,6 +70,9 @@
         modules = [
           home-manager.nixosModules.default
           ./hosts/nix-xi
+          ./modules/home/common
+          ./modules/system/common
+          ./modules/system/nixos
         ];
       };
 
