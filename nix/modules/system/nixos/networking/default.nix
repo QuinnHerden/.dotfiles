@@ -8,10 +8,8 @@
 {
 
   imports = [
-    ./networking
-    ./packages
-    ./system
-    ./users
+    ./hostname.nix
+    ./openssh.nix
   ];
 
 }

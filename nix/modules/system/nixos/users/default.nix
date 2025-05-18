@@ -8,10 +8,7 @@
 {
 
   imports = [
-    ./networking
-    ./packages
-    ./system
-    ./users
+    ./quinnherdenUser.nix
   ];
-
+  
 }
