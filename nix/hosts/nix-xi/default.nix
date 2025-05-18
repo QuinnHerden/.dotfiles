@@ -31,11 +31,15 @@
     enable = true;
   };
 
+  services.open-webui = {
+    enable = true;
+  };
+
   services.ollama = {
     enable = true;
     acceleration="cuda";
     environmentVariables = {
-      OLLAMA_HOST = "0.0.0.0";
+      OLLAMA_HOST = "0.0.0.0:11434";
     };
 
     loadModels = [
@@ -46,6 +50,7 @@
   networking.firewall = {
     enable = true;
     allowedTCPPorts = [
+      8080
       11434
     ];
   };
