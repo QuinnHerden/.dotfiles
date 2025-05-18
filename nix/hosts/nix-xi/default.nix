@@ -1,20 +1,109 @@
-# Edit this configuration file to define what should be installed on
-# your system. Help is available in the configuration.nix(5) man page, on
-# https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
-
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
+  imports = [ 
+    ./hardware-configuration.nix
+  ];
+  system.stateVersion = "24.11";
+  
+  networking = {
+    hostName = "nix-xi";
+  };
+  
+  users.users."quinnherden" = {
+    name = "quinnherden";
+    home = "/Users/quinnherden";
+    
+    isNormalUser = true;
+    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    
+    shell = pkgs.zsh;
+    
+    openssh.authorizedKeys.keys = [
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC2aUAuv3nXZ2xUyydp6QA0zovy7L7iRlSC1ilxm37/tuva7kyJnMZPGmbpOM2vyp3fHOZpW0HV5nD72Q+4ofXHL8gTXhU0vqh2hIzyhFnwn6J/bsmrYu+3EEjzDR0GQFwlXTyBuX84paXHv5PN08/MTAgkdvt63VB0xsBMnQSqbHOpXzkm0Kja+aHGGEUdEXa5DrbcVc4pM+T9OutMd5tL1TSjod+obrxRSBFi2l0xZYdq+orLckrkpxKSjdnAUDxvGvHNsKkB9Y5EmokjGQkDhRL/UzhQ+FT+ffC/BNOAVCFyr7QcmYbrEfzoi9yRdKwRtAS+kk4eIqUGZVIRr+Rfw/8Ayk4jvBWYJXeIoegzcPoEjYI/yA/yzjUW29JAO9OqJDtDUa0J93RhVh0Ar1PAinPYMQp0X64bXogwFBF27fO+mQw+nar2zis4xckgQ2084+Olb4xWdROYqpYOtcQhwQqoH3bY9fGiHe9CNrifBkkmpYqdcG9DJ7chjXg90mI7Gd2M58bumxeoXZ/y6XJele7V4Im5Ep+Sem25jFplPcnpQzjoOOyKYp8L55N03YzmBPRrLmWLEnBNUJK5VpU6dPBERJT4/ihxfCNMPxQEnVDqCDUFGqzmIxRpj3Tl8TFmRDhfcUGj/H9If9C4mPVa9kt6dlc0eeEpB0E/rUOoWw== engineering@sculpted.io"
     ];
+  };
+
+  baseHome = {
+    enable = true;
+    name = "quinnherden";
+  };
+
+  commonPackages.enable = false;
+  linuxPackages.enable = false;
+
+  # Enable the OpenSSH daemon.
+  services.openssh = {
+    enable = true;
+
+    settings = {
+      PermitRootLogin = "yes";
+      PasswordAuthentication = true;
+    };
+  };
+
+  ######
+
+  # Keyboard layout
+  services.xserver.xkb.layout = "us";
+
+  # Install Packages
+  environment.systemPackages = with pkgs; [
+    git
+    vim
+  ];
+
+  #users.groups.ollama = { };
+
+  #users.users.ollama = {
+    #isSystemUser = true;
+    #description = "Ollama service user";
+    #group = "ollama";
+    #home = "/var/lib/ollama";
+    #createHome = true;
+  #};
+
+  # Configure bootloader device
+  boot.loader.grub.device = "/dev/nvme0n1";
+
+  # Allow unfree packages
+  #nixpkgs.config.allowUnfree = true;
+
+  # Tailscale (wireguard)
+  services.tailscale.enable = true;
+
+  # Ollama (LLMs)
+  services.ollama = {
+    enable = true;
+    acceleration="cuda";
+  };
+
+  ### Set Up Graphics Card for Generative AI ###
+  # Enable OpenGL
+  hardware.graphics.enable = true;
+
+  # Load nvidia driver for Xorg and Wayland
+  services.xserver.videoDrivers = ["nvidia"];
+
+  hardware.nvidia = {
+    modesetting.enable = true;
+    open = false;
+  };
+
+  nixpkgs.config.allowUnfreePredicate = pkg: 
+  builtins.elem (lib.getName pkg) [ "cuda_cccl" "cuda_cudart" "cuda_nvcc" "libcublas" "nvidia-settings" "nvidia-x11" ]; 
+  
+  ######
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # networking.hostName = "nixos"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   # networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
@@ -81,104 +170,10 @@
   #   enableSSHSupport = true;
   # };
 
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  services.openssh = {
-    enable = true;
-    ports = [ 22 ];
-    settings = {
-      PasswordAuthentication = true;
-      PermitRootLogin = "yes";
-    };
-  };
-
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
-
-  # Copy the NixOS configuration file and link it from the resulting system
-  # (/run/current-system/configuration.nix). This is useful in case you
-  # accidentally delete configuration.nix.
-  # system.copySystemConfiguration = true;
-
-  # This option defines the first version of NixOS you have installed on this particular machine,
-  # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
-  #
-  # Most users should NEVER change this value after the initial install, for any reason,
-  # even if you've upgraded your system to a new NixOS release.
-  #
-  # This value does NOT affect the Nixpkgs version your packages and OS are pulled from,
-  # so changing it will NOT upgrade your system - see https://nixos.org/manual/nixos/stable/#sec-upgrading for how
-  # to actually do that.
-  #
-  # This value being lower than the current NixOS release does NOT mean your system is
-  # out of date, out of support, or vulnerable.
-  #
-  # Do NOT change this value unless you have manually inspected all the changes it would make to your configuration,
-  # and migrated your data accordingly.
-  #
-  # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
-  system.stateVersion = "24.11"; # Did you read the comment?
-
-  # Keyboard layout
-  services.xserver.xkb.layout = "us";
-
-  # User
-  users.users.quinnherden = {
-    isNormalUser = true;
-    description = "quinn";
-    extraGroups = [ "wheel" ]; # sudo access
-    shell = pkgs.bash;
-    home = "/home/quinnherden";
-  };
-
-  # Install Packages
-  environment.systemPackages = with pkgs; [
-    git
-    vim
-  ];
-
-  #users.groups.ollama = { };
-
-  #users.users.ollama = {
-    #isSystemUser = true;
-    #description = "Ollama service user";
-    #group = "ollama";
-    #home = "/var/lib/ollama";
-    #createHome = true;
-  #};
-
-  # Configure bootloader device
-  boot.loader.grub.device = "/dev/nvme0n1";
-
-  # Allow unfree packages
-  #nixpkgs.config.allowUnfree = true;
-
-  # Tailscale (wireguard)
-  services.tailscale.enable = true;
-
-  # Ollama (LLMs)
-  services.ollama = {
-    enable = true;
-    acceleration="cuda";
-  };
-
-  ### Set Up Graphics Card for Generative AI ###
-  # Enable OpenGL
-  hardware.graphics.enable = true;
-
-  # Load nvidia driver for Xorg and Wayland
-  services.xserver.videoDrivers = ["nvidia"];
-
-  hardware.nvidia = {
-    modesetting.enable = true;
-    open = false;
-  };
-
-  nixpkgs.config.allowUnfreePredicate = pkg: 
-  builtins.elem (lib.getName pkg) [ "cuda_cccl" "cuda_cudart" "cuda_nvcc" "libcublas" "nvidia-settings" "nvidia-x11" ]; 
 }
 
