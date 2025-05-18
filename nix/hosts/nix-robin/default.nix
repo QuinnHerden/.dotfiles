@@ -16,8 +16,9 @@
     efi.canTouchEfiVariables = true;
   };
 
-  networking = {
-    hostName = "nix-robin";
+  hostname = {
+    enable = true;
+    name = "nix-robin";
   };
   
   services.openssh = {
