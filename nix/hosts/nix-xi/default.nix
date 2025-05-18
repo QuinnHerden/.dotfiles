@@ -33,7 +33,40 @@
 
   services.ollama = {
     enable = true;
-    acceleration="cuda";
+
+    host = "0.0.0.0";
+    port = 11434;
+    openFirewall = true;
+
+    acceleration = "cuda";
+
+    loadModels = [
+      gemma3:12b
+      gemma3:27b
+      llama2:latest
+      qwen3:30b
+      qwen3:32b
+      deepseek-r1:32b
+      mistral-small3.1:24b
+      codestral:22b
+      deepseek-coder-v2:16b
+      starcoder2:15b
+      nomic-embed-text:v1.5
+    ];
+  };
+
+  services.open-webui = {
+    enable = true;
+
+    host = "0.0.0.0";
+    port = 8080;
+    openFirewall = true;
+
+    stateDir = "/var/lib/open-webui";
+
+    environment = {
+      BYPASS_MODEL_ACCESS_CONTROL = "True";
+    };
   };
 
   #####
@@ -53,5 +86,5 @@
   nixpkgs.config.allowUnfreePredicate = pkg: 
   builtins.elem (lib.getName pkg) [ "cuda_cccl" "cuda_cudart" "cuda_nvcc" "libcublas" "nvidia-settings" "nvidia-x11" ]; 
   #####
-}
 
+}
