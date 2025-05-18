@@ -18,8 +18,9 @@
   
   boot.loader.grub.device = "/dev/nvme0n1";
 
-  networking = {
-    hostName = "nix-xi";
+  hostname = {
+    enable = true;
+    name = "nix-xi";
   };
   
   services.openssh = {

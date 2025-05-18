@@ -8,8 +8,7 @@
 {
 
   imports = [
-    ./packages
-    ./networking
+    ./hostname.nix
   ];
 
 }
