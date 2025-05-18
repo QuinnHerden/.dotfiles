@@ -34,8 +34,22 @@
   services.ollama = {
     enable = true;
     acceleration="cuda";
+    environmentVariables = {
+      OLLAMA_HOST = "0.0.0.0:11434";
+    };
+
+    loadModels = [
+      llama2
+    ];
   };
 
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [
+      11434
+    ];
+  };
+  
   #####
   # GPU for Generative AI
   
@@ -54,11 +68,4 @@
   builtins.elem (lib.getName pkg) [ "cuda_cccl" "cuda_cudart" "cuda_nvcc" "libcublas" "nvidia-settings" "nvidia-x11" ]; 
   #####
 
-  networking.firewall = {
-    enable = true;
-    allowedTCPPorts = [
-      11434
-    ];
-  };
-  
 }
