@@ -31,30 +31,36 @@
     enable = true;
   };
 
-  services.open-webui = {
-    enable = true;
-  };
-
   services.ollama = {
     enable = true;
-    acceleration="cuda";
-    environmentVariables = {
-      OLLAMA_HOST = "0.0.0.0:11434";
-    };
+
+    host = "0.0.0.0";
+    port = "11434"
+    openFirewall = true;
+
+    acceleration = "cuda";
 
     loadModels = [
       llama2:latest
     ];
   };
 
-  networking.firewall = {
+  services.open-webui = {
     enable = true;
-    allowedTCPPorts = [
-      8080
-      11434
-    ];
+
+    host = "0.0.0.0";
+    port = "8080"
+    openFirewall = true;
+
+    environment = {
+      OLLAMA_API_BASE_URL = "http://127.0.0.1:11434";
+
+      ANONYMIZED_TELEMETRY = "False";
+      DO_NOT_TRACK = "True";
+      SCARF_NO_ANALYTICS = "True";
+    };
   };
-  
+
   #####
   # GPU for Generative AI
   
