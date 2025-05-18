@@ -52,12 +52,10 @@
     port = 8080;
     openFirewall = true;
 
-    environment = {
-      OLLAMA_API_BASE_URL = "http://127.0.0.1:11434";
+    stateDir = "/var/lib/open-webui";
 
-      ANONYMIZED_TELEMETRY = "False";
-      DO_NOT_TRACK = "True";
-      SCARF_NO_ANALYTICS = "True";
+    environment = {
+      BYPASS_MODEL_ACCESS_CONTROL = "True";
     };
   };
 
