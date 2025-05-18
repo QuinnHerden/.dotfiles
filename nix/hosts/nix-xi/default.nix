@@ -34,7 +34,6 @@
     name = "quinnherden";
   };
 
-  commonPackages.enable = false;
   linuxPackages.enable = false;
 
   # Enable the OpenSSH daemon.
