@@ -44,14 +44,15 @@
       codestral:22b
       deepseek-coder-v2:16b
       deepseek-r1:32b
+      llama2:latest
+      nomic-embed-text:v1.5
+      starcoder2:15b
+      
       gemma3:12b
       gemma3:27b
-      llama2:latest
       mistral-small3.1:24b
-      nomic-embed-text:v1.5
       qwen3:30b
       qwen3:32b
-      starcoder2:15b
     ];
   };
 
