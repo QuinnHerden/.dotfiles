@@ -35,6 +35,7 @@
         "dbeaver-community"
         "keycastr"
         "obs"
+        "protege"
         "raspberry-pi-imager"
         "vb-cable"
         "zotero"
