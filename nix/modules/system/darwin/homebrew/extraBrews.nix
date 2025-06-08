@@ -38,6 +38,7 @@
         "protege"
         "raspberry-pi-imager"
         "vb-cable"
+        "whatsapp"
         "zotero"
       ];
 
