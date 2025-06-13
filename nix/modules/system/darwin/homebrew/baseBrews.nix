@@ -31,6 +31,7 @@
         "brave-browser"
         "discord"
         "flux"
+        "google-chrome"
         "google-drive"
         "hiddenbar"
         "iterm2"
