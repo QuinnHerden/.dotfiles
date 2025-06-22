@@ -50,6 +50,7 @@
 
       masApps = {
         "Keynote" = 409183694;
+        "QuikFlow" = 1626354390;
         "Tailscale" = 1475387142;
       };
 
