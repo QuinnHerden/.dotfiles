@@ -4,8 +4,8 @@
 
 ### Amethyst
 
-![img/amethsy.png]
+![](img/amethyst.png)
 
 ### Scroll Reverser
 
-![img/scroll-reverser.png]
+![](img/scroll-reverser.png)
