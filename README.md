@@ -21,3 +21,7 @@ Enabling a seamless experience across host environments.
 ###  configure system
 
 `sh ~/.dotfiles/files/scripts/conf`
+
+#### manual configurations
+
+[Configurations](manual-configurations.md)

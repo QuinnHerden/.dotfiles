@@ -83,6 +83,11 @@
       expose-animation-duration = null;
     };
 
+    #system.defaults.universalaccess = {
+      # remove animations when switching desktops
+      #reduceMotion = true;
+    #};
+
     system.defaults.finder = {
       # empty month-old trash
       FXRemoveOldTrashItems = true;
