@@ -1,6 +1,10 @@
 # General
 .git
 
+# Karabiner
+
+files/karabiner/automatic_backups/
+
 # NeoVim
 lazy-lock.json
 
