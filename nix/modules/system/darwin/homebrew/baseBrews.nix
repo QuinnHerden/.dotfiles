@@ -32,7 +32,6 @@
         "cryptomator"
         "discord"
         "flux"
-        "google-chrome"
         "google-drive"
         "hiddenbar"
         "iterm2"
