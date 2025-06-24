@@ -38,3 +38,8 @@
 3. Open Terminal from the Utilities menu
 4. Run `spctl kext-consent add LDG5AR2ES5`
 5. Run `reboot`
+
+#### YubiKey
+
+- Set up PIV
+- Change user's password
