@@ -10,6 +10,14 @@ Enabling a seamless experience across host environments.
 
 ## Installation
 
+### set hostname
+
+set your hostname to match the host config you want to sync to.
+
+### install nix
+
+`curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install`
+
 ### navigate home
 
 `cd ~/`
@@ -18,7 +26,7 @@ Enabling a seamless experience across host environments.
 
 `git clone https://github.com/QuinnHerden/.dotfiles.git`
 
-###  configure system
+### configure system
 
 `sh ~/.dotfiles/files/scripts/conf`
 
