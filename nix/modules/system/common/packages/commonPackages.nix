@@ -76,7 +76,6 @@
       vim
       wget
       yarn
-      yt-dlp
     ];
   };
 
