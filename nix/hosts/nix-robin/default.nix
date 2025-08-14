@@ -45,7 +45,7 @@
   };
 
   services.displayManager = {
-    defaultSession = "xfce";
+    defaultSession = "none+i3";
   };
 }
 
