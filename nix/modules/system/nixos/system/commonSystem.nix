@@ -27,7 +27,8 @@
       };
     
       displayManager = {
-          defaultSession = "none+i3";
+        lightdm.enable = true; # pick one DM
+        defaultSession = "none+i3";
       };
 
       windowManager.i3 = {
