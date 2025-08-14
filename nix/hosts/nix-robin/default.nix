@@ -34,7 +34,7 @@
   };
 
   environment.systemPackages = with pkgs; [
-    xf86-input-libinput
+    xorg.xf86inputlibinput
   ];
 
   services.xserver = {
