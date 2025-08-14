@@ -2,6 +2,15 @@
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
+### Color Palette Variables ###
+set $color_fg             #D3C6AA
+set $color_bg_dim         #232A2E
+set $color_bg0            #2D353B
+set $color_bg1            #343F44
+set $color_green_soft     #A7C080
+set $color_red_soft       #E67E80
+set $color_yellow_soft    #DBBC7F
+
 ### Variables for settings (This makes changing them WAY easyer!) ###
 set $mod                             Mod1
 set $smod                            Shift
@@ -19,11 +28,11 @@ set $wm_setting_app_browser          brave
 set $wm_setting_app_launcher         dmenu_run
 set $wm_setting_app_compositor       picom
 
-set $wm_color_border_active_bg       #A7C080
-set $wm_color_border_active_fg       #343F44
-set $wm_color_border_inactive_bg     #2D353B
-set $wm_color_border_inactive_fg     #D3C6AA
-set $wm_color_background             #232A2E
+set $wm_color_border_active_bg       $color_green_soft
+set $wm_color_border_active_fg       $color_bg1
+set $wm_color_border_inactive_bg     $color_bg0
+set $wm_color_border_inactive_fg     $color_fg
+set $wm_color_background             $color_bg_dim
 
 set $bar_setting_position            top
 set $bar_setting_mode                dock
@@ -32,19 +41,25 @@ set $bar_setting_separator           " - "
 set $bar_setting_statusCommand       i3status
 set $bar_setting_trayoutput          full
 
-set $bar_color_background            #343F44
-set $bar_color_foreground            #D3C6AA
-set $bar_color_statusline            #D3C6AA
-set $bar_color_separator             #D3C6AA
+set $bar_color_background            $color_bg1
+set $bar_color_foreground            $color_fg
+set $bar_color_statusline            $color_fg
+set $bar_color_separator             $color_fg
 
-set $bar_color_workspace_focused_bg  #A7C080
-set $bar_color_workspace_focused_fg  #232A2E
-set $bar_color_workspace_active_bg   #DBBC7F
-set $bar_color_workspace_active_fg   #232A2E
-set $bar_color_workspace_inactive_bg #E67E80
-set $bar_color_workspace_inactive_fg #232A2E
+set $bar_color_workspace_focused_bg  $color_green_soft
+set $bar_color_workspace_focused_fg  $color_bg_dim
+set $bar_color_workspace_active_bg   $color_yellow_soft
+set $bar_color_workspace_active_fg   $color_bg_dim
+set $bar_color_workspace_inactive_bg $color_red_soft
+set $bar_color_workspace_inactive_fg $color_bg_dim
 set $bar_color_workspace_urgent_bg   #E69875
-set $bar_color_workspace_urgent_fg   #232A2E
+set $bar_color_workspace_urgent_fg   $color_bg_dim
+
+### Status colors for i3status ###
+set $status_color_good      $color_green_soft
+set $status_color_bad       $color_red_soft
+set $status_color_degraded  $color_yellow_soft
+
 
 ### Applications ###
 # Start a terminal emulator
@@ -169,6 +184,10 @@ bar {
 		background   $bar_color_background
 		statusline   $bar_color_statusline
 		separator    $bar_color_separator
+
+		color_good $status_color_good
+		color_degraded $status_color_degraded
+		color_bad $status_color_bad
 
 		focused_workspace  $bar_color_workspace_focused_bg  $bar_color_workspace_focused_bg  $bar_color_workspace_focused_fg
 		active_workspace   $bar_color_workspace_active_bg   $bar_color_workspace_active_bg   $bar_color_workspace_active_fg
