@@ -22,6 +22,7 @@
       ];
 
       brews = [
+        "autotrace"
       ];
 
       casks = [
@@ -32,17 +33,27 @@
         "anki"
         "balenaetcher"
         "calibre"
+        "cryptomator"
         "dbeaver-community"
-        "keycastr"
+        "discord"
+        "google-chrome"
+        "google-drive"
+        "macfuse"
+        "malwarebytes"
         "obs"
-        "protege"
+        "obsidian"
+        "protonvpn"
         "raspberry-pi-imager"
+        "signal"
         "vb-cable"
+        "visual-studio-code"
         "whatsapp"
+        "yubico-yubikey-manager"
         "zotero"
       ];
 
       masApps = {
+        "Keynote" = 409183694;
       };
 
       whalebrews = [
