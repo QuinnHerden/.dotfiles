@@ -182,11 +182,11 @@ bar {
 }
 
 general {
-	colors {
-		color_good     $bar_color_good
-		color_bad      $bar_color_bad
-		color_degraded $bar_color_degraded
-	}
+ colors = true
+
+	color_good     = $bar_color_good
+	color_bad      = $bar_color_bad
+	color_degraded = $bar_color_degraded
 }
 
 ### Miscellaneous settings ###
