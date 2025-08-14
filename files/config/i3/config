@@ -178,9 +178,13 @@ bar {
 		active_workspace   $bar_color_workspace_active_bg   $bar_color_workspace_active_bg   $bar_color_workspace_active_fg
 		inactive_workspace $bar_color_workspace_inactive_bg $bar_color_workspace_inactive_bg $bar_color_workspace_inactive_fg
 		urgent_workspace   $bar_color_workspace_urgent_bg   $bar_color_workspace_urgent_bg   $bar_color_workspace_urgent_fg
+	}
+}
 
-		color_good $bar_color_good
-		color_bad $bar_color_bad
+general {
+	colors {
+		color_good     $bar_color_good
+		color_bad      $bar_color_bad
 		color_degraded $bar_color_degraded
 	}
 }
