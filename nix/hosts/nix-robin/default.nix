@@ -42,7 +42,7 @@
       xterm.enable = false;
     };
 
-    windowManager.i3.enable = true;
+    windowManager.i3 = {
       enable = true;
       extraPackages = with pkgs; [
         dmenu #application launcher most people use
