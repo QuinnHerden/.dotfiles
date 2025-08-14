@@ -38,7 +38,7 @@
 
     xkb.options = "ctrl:swapcaps";
 
-    xserver.config = ''
+    config = ''
       Section "InputClass"
           Identifier "ELAN Touchpad"
           MatchIsTouchpad "on"
