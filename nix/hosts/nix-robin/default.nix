@@ -29,6 +29,20 @@
 
   networking.networkmanager.enable = true;
 
-  
+  services.xserver = {
+    enable = true;
+
+    xkb.options = "ctrl:swapcaps";
+
+    desktopManager = {
+      xterm.enable = false;
+    };
+
+    windowManager.i3.enable = true;
+  };
+
+  services.displayManager = {
+    defaultSession = "none+i3";
+  };
 }
 
