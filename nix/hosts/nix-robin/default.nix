@@ -33,6 +33,10 @@
     enable = true;
   };
 
+  environment.systemPackages = with pkgs; [
+    xf86-input-libinput
+  ];
+
   services.xserver = {
     enable = true;
 
