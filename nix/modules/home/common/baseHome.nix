@@ -43,6 +43,10 @@
           source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/scripts";
           recursive = true;
         };
+        ".config/sxhkd" = {
+          source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/sxhkd";
+          recursive = true;
+        };
       };
 
       home.sessionPath = [
