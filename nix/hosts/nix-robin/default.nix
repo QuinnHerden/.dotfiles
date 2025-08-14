@@ -33,26 +33,21 @@
     enable = true;
   };
 
-  environment.systemPackages = with pkgs; [
-    xorg.xf86inputlibinput
-  ];
+  #######################################
+  # fix touchpad error:
+  # "elan_i2c invalid report id data (1)"
+
+  boot.extraModprobeConfig = ''
+    blacklist elan_i2c
+  '';
+  
+  #######################################
 
   services.xserver = {
     enable = true;
 
-    xkb.options = "ctrl:swapcaps";
-
-    config = ''
-      Section "InputClass"
-          Identifier "ELAN Touchpad"
-          MatchIsTouchpad "on"
-          Driver "libinput"
-          Option "Tapping" "on"
-          Option "NaturalScrolling" "true"
-          Option "ScrollMethod" "twofinger"
-      EndSection
-    '';
-
+    xkb.options = "ctrl:swapcaps"; # swap ctrl and caps lock
+    
     desktopManager = {
       xterm.enable = false;
     };
