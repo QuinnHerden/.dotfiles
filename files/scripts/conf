@@ -62,7 +62,3 @@ if [ "$system_type" = "Linux" ]; then
 
   nixos-rebuild switch --flake ~/.dotfiles/nix
 fi
-
-#clean up Nix cache
-echo "Purging Nix cache."
-sudo nix-collect-garbage --delete-older-than 15d
