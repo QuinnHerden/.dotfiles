@@ -60,5 +60,5 @@ if [ "$system_type" = "Linux" ]; then
   echo "Configuring Linux."
   echo "Applying Nix configuration."
 
-  nixos-rebuild switch --flake $HOME/.dotfiles/nix
+  sudo nixos-rebuild switch --flake $HOME/.dotfiles/nix
 fi
