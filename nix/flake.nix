@@ -59,7 +59,7 @@
         modules = [
           home-manager.nixosModules.default
           ./hosts/nix-robin
-          #./modules/home/common
+          ./modules/home/common
           ./modules/system/common
           ./modules/system/nixos
         ];
