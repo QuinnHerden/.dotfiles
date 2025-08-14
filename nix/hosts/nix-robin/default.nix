@@ -29,15 +29,17 @@
 
   networking.networkmanager.enable = true;
 
+  services.libinput.enable = true;
+
+  services.displayManager = {
+    defaultSession = "none+i3";
+  };
+
   services.xserver = {
     enable = true;
 
     desktopManager = {
       xterm.enable = false;
-    };
-
-    displayManager = {
-      defaultSession = "none+i3";
     };
 
     windowManager.i3 = {

@@ -27,6 +27,10 @@
           source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/iterm2";
           recursive = true;
         };
+        ".config/i3" = {
+          source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/i3";
+          recursive = true;
+        };
         ".config/karabiner" = {
           source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/karabiner";
           recursive = true;
