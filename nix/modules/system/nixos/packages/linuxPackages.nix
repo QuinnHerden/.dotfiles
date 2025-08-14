@@ -19,6 +19,7 @@
       alacritty
       anki
       bitwarden-desktop
+      brave
       discord
       dmenu
       feh
