@@ -46,6 +46,10 @@ set $bar_color_workspace_inactive_fg #232A2E
 set $bar_color_workspace_urgent_bg   #E69875
 set $bar_color_workspace_urgent_fg   #232A2E
 
+set $bar_color_good                  #A7C080
+set $bar_color_bad                   #E67E80
+set $bar_color_degraded              #DBBC7F
+
 ### Applications ###
 # Start a terminal emulator
 bindsym $mod+Return exec $wm_setting_app_terminal
@@ -174,6 +178,10 @@ bar {
 		active_workspace   $bar_color_workspace_active_bg   $bar_color_workspace_active_bg   $bar_color_workspace_active_fg
 		inactive_workspace $bar_color_workspace_inactive_bg $bar_color_workspace_inactive_bg $bar_color_workspace_inactive_fg
 		urgent_workspace   $bar_color_workspace_urgent_bg   $bar_color_workspace_urgent_bg   $bar_color_workspace_urgent_fg
+
+		color_good $bar_color_good
+		color_bad $bar_color_bad
+		color_degraded $bar_color_degraded
 	}
 }
 
