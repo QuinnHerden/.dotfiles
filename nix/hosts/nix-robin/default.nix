@@ -37,7 +37,7 @@
     };
 
     displayManager = {
-        defaultSession = "none+i3";
+      defaultSession = "none+i3";
     };
 
     windowManager.i3 = {
@@ -49,7 +49,7 @@
      ];
     };
   };
-  
+
   programs.i3lock.enable = true; #default i3 screen locker
 }
 
