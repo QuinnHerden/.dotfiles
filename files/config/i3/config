@@ -32,7 +32,7 @@ set $bar_setting_separator           " - "
 set $bar_setting_statusCommand       i3status
 set $bar_setting_trayoutput          full
 
-set $bar_color_background            #2D353B
+set $bar_color_background            #343F44
 set $bar_color_foreground            #D3C6AA
 set $bar_color_statusline            #D3C6AA
 set $bar_color_separator             #D3C6AA
