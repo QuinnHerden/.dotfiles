@@ -32,6 +32,8 @@
   services.xserver = {
     enable = true;
 
+    xkb.options = "ctrl:swapcaps";
+
     desktopManager = {
       xterm.enable = false;
       xfce = {
@@ -45,7 +47,7 @@
   };
 
   services.displayManager = {
-    defaultSession = "none+i3";
+    defaultSession = "xfce+i3";
   };
 }
 
