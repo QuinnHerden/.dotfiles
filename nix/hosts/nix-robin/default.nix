@@ -48,10 +48,13 @@
         ids = [ "*" ];
         settings = {
           main = {
-            "capslock" = "overload(control, capslock)";
+            "leftshift" = "overload(shift, capslock)";
+            "capslock" = "layer(control)";
+
             "leftcontrol" = "layer(meta)";
             "meta" = "layer(alt)";
             "leftalt" = "layer(control)";
+
             "rightalt" = "layer(altgr)";
           };
 
