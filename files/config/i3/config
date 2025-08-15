@@ -3,7 +3,7 @@
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
 ### Variables for settings (This makes changing them WAY easyer!) ###
-set $mod                             Mod4
+set $mod                             Mod1
 set $smod                            Shift
 set $wm_setting_font                 pango:Source Sans Pro, Semibold 11
 set $wm_setting_gap_width            15

@@ -66,13 +66,6 @@
             "l" = "right";
           };
 
-          "altgr+control" = {
-            "h" = "C-left";
-            "j" = "C-down";
-            "k" = "C-up";
-            "l" = "C-right";
-          }
-
         };
       };
     };
