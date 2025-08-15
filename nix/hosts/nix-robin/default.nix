@@ -49,9 +49,9 @@
         settings = {
           main = {
             "capslock" = "overload(control, capslock)";
-            "leftalt" = "layer(control)";
-            "meta" = "layer(alt)";
             "leftcontrol" = "layer(meta)";
+            "meta" = "layer(alt)";
+            "leftalt" = "layer(control)";
           };
 
           "control" = {
@@ -65,6 +65,13 @@
             "k" = "up";
             "l" = "right";
           };
+
+          "altgr+control" = {
+            "h" = "C-left";
+            "j" = "C-down";
+            "k" = "C-up";
+            "l" = "C-right";
+          }
 
         };
       };
