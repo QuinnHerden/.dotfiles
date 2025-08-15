@@ -50,6 +50,7 @@
         };
         "iterm2" = {
           source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/iterm2";
+        };
       };
 
       home.sessionPath = [
