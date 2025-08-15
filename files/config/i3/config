@@ -15,7 +15,7 @@ set $wm_setting_key_left             Left
 set $wm_setting_key_right            Right
 
 set $wm_setting_app_terminal         alacritty
-set $wm_setting_app_browser          brave
+set $wm_setting_app_browser          qutebrowser
 set $wm_setting_app_launcher         dmenu_run
 set $wm_setting_app_compositor       picom
 
