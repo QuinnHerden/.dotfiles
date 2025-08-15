@@ -70,8 +70,8 @@
           
           "meta-vim" = {
             "h" = "left";
-            "j" = "up";
-            "k" = "down";
+            "j" = "down";
+            "k" = "up";
             "l" = "right";
           };
 
