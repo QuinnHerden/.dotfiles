@@ -15,9 +15,7 @@
   
   config = lib.mkIf config.linuxPackages.enable {
     environment.systemPackages = with pkgs; [
-      activitywatch
       alacritty
-      anki
       bitwarden-desktop
       brave
       discord
@@ -25,6 +23,7 @@
       feh
       i3lock
       i3status
+      keyd
       obs-studio
       obsidian
       picom

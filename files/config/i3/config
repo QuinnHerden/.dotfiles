@@ -9,10 +9,10 @@ set $wm_setting_font                 pango:Source Sans Pro, Semibold 11
 set $wm_setting_gap_width            15
 set $wm_setting_gap_heigth           15
 set $wm_setting_border_size          2
-set $wm_setting_key_down             j
-set $wm_setting_key_up               k
-set $wm_setting_key_left             h
-set $wm_setting_key_right            l
+set $wm_setting_key_down             Down
+set $wm_setting_key_up               Up
+set $wm_setting_key_left             Left
+set $wm_setting_key_right            Right
 
 set $wm_setting_app_terminal         alacritty
 set $wm_setting_app_browser          brave
