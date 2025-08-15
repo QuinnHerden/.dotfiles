@@ -92,8 +92,6 @@
   services.xserver = {
     enable = true;
 
-    xkb.options = "ctrl:swapcaps"; # swap ctrl and caps lock
-
     desktopManager = {
       xterm.enable = false;
     };
