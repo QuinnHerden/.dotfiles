@@ -34,11 +34,34 @@
 
   networking.networkmanager.enable = true;
 
+  services.blueman.enable = true;
   hardware.bluetooth = {
     enable = true;
     powerOnBoot = true;
   };
-  services.blueman.enable = true;
+
+  services.keyd = {
+    enable = true;
+
+    keyboards = {
+      default = {
+        ids = [ "*" ];
+        settings.main = {
+          # Right Alt + h/j/k/l → Left/Up/Down/Right
+          "rightalt+h" = left;
+          "rightalt+j" = up;
+          "rightalt+k" = down;
+          "rightalt+l" = right;
+          
+          # Caps Lock <-> Left Control
+          capslock = "overload(control, capslock)";
+
+          # Control + [ -> Escape
+          "leftctrl+[" = esc
+        };
+      };
+    };
+  };
 
   services.libinput = {
     enable = true;
