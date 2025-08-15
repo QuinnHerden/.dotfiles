@@ -23,6 +23,7 @@
       feh
       i3lock
       i3status
+      keyd
       obs-studio
       obsidian
       picom
