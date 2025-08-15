@@ -52,13 +52,15 @@
             "leftcontrol" = "layer(meta)";
             "meta" = "layer(alt)";
             "leftalt" = "layer(control)";
+            "rightalt" = "layer(altgr)";
           };
 
+          # default control layer
           "control" = {
             "[" = "esc";
           };
 
-          # right alt
+          # default right alt layer
           "altgr" = {
             "h" = "left";
             "j" = "down";
