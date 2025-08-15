@@ -48,20 +48,21 @@
         ids = [ "*" ];
         settings = {
           main = {
-            #"capslock" = "overload(layer(escape), capslock)";
-            "capslock" = "layer(escape)";
-            "leftalt" = "layer(meta-mac)";
-            "rightalt" = "layer(meta-vim)";
-            "control" = "layer(escape)";
+            "capslock" = "overload(control, capslock)";
           };
           
-          "meta-mac" = {
+          # left alt
+          "alt" = {
             # Copy
             "c" = "C-insert";
             # Paste
             "v" = "S-insert";
             # Cut
             "x" = "S-delete";
+            # Undo
+            "z" = "C-z"
+            # Close
+            "w" = "C-w"
 
             # Move cursor to beginning of line
             "left" = "home";
@@ -69,14 +70,15 @@
             "right" = "end";
           };
           
-          "meta-vim" = {
+          # right alt
+          "altgr" = {
             "h" = "left";
             "j" = "down";
             "k" = "up";
             "l" = "right";
           };
 
-          "escape:C" = {
+          "control" = {
             "[" = "esc";
           };
 
