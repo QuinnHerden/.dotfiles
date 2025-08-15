@@ -39,17 +39,14 @@
           source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/config/nvim";
           recursive = true;
         };
-        ".config/sxhkd" = {
-          source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/config/sxhkd";
-          recursive = true;
-        };
-
+        
         ".local/scripts" = {
           source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/scripts";
           recursive = true;
         };
         "iterm2" = {
           source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/iterm2";
+        };
       };
 
       home.sessionPath = [

@@ -34,11 +34,47 @@
 
   networking.networkmanager.enable = true;
 
+  services.blueman.enable = true;
   hardware.bluetooth = {
     enable = true;
     powerOnBoot = true;
   };
-  services.blueman.enable = true;
+
+  services.keyd = {
+    enable = true;
+
+    keyboards = {
+      default = {
+        ids = [ "*" ];
+        settings = {
+          main = {
+            "leftshift" = "overload(shift, capslock)";
+            "capslock" = "layer(control)";
+
+            "leftcontrol" = "layer(meta)";
+            "meta" = "layer(alt)";
+            "leftalt" = "layer(control)";
+
+            "rightalt" = "layer(altgr)";
+          };
+
+          # default control layer
+          "control" = {
+            "[" = "esc";
+          };
+
+          # default right alt layer
+          "altgr" = {
+            "h" = "left";
+            "j" = "down";
+            "k" = "up";
+            "l" = "right";
+          };
+
+        };
+      };
+    };
+  };
 
   services.libinput = {
     enable = true;
@@ -71,8 +107,6 @@
 
   services.xserver = {
     enable = true;
-
-    xkb.options = "ctrl:swapcaps"; # swap ctrl and caps lock
 
     desktopManager = {
       xterm.enable = false;
