@@ -39,15 +39,13 @@
           source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/config/nvim";
           recursive = true;
         };
-
+        
         ".local/scripts" = {
           source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/scripts";
           recursive = true;
         };
-
         "iterm2" = {
           source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/iterm2";
-          recursive = true;
         };
       };
 
@@ -134,6 +132,10 @@
         enable = true;
         enableZshIntegration = true;
       };
+
+      home.keyboard.options = [
+        "ctrl:swapcaps"
+      ];
 
       # The state version is required and should stay at the version you
       # originally installed.
