@@ -57,7 +57,7 @@
           capslock = "overload(control, capslock)";
 
           # Control + [ -> Escape
-          "leftctrl+[" = esc
+          "leftctrl+[" = esc;
         };
       };
     };
