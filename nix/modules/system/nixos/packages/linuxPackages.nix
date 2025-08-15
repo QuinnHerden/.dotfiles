@@ -16,6 +16,7 @@
   config = lib.mkIf config.linuxPackages.enable {
     environment.systemPackages = with pkgs; [
       alacritty
+      bitwarden-cli
       bitwarden-desktop
       brave
       discord
@@ -27,6 +28,7 @@
       obs-studio
       obsidian
       picom
+      qutebrowser
       rofi
       spotify
     ];
