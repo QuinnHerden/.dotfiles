@@ -49,15 +49,30 @@
         settings = {
           main = {
             "capslock" = "overload(control, capslock)";
-            "rightalt" = "layer(vim)";
+            "leftalt" = "layer(meta-mac)";
+            "rightalt" = "layer(meta-vim)";
             "control" = "layer(escape)";
           };
           
-          "vim" = {
+          "meta-vim" = {
             "h" = "left";
             "j" = "up";
             "k" = "down";
             "l" = "right";
+          };
+
+          "meta-mac" = {
+            # Copy
+            "c" = "C-insert";
+            # Paste
+            "v" = "S-insert";
+            # Cut
+            "x" = "S-delete";
+
+            # Move cursor to beginning of line
+            "left" = "home";
+            # Move cursor to end of Line
+            "right" = "end";
           };
 
           "escape" = {
