@@ -48,17 +48,19 @@
         ids = [ "*" ];
         settings = {
           main = {
-            "capslock" = "overload(control, capslock, 200)";
+            "capslock" = "overload(control, capslock)";
+            "rightalt" = "layer(vim)";
+            "leftcontrol" = "layer(escape)";
           };
           
-          "rightalt" = {
+          "vim" = {
             "h" = "left";
             "j" = "up";
             "k" = "down";
             "l" = "right";
           };
 
-          "leftctrl" = {
+          "escape" = {
             "[" = "esc";
           };
 
