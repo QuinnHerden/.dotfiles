@@ -48,20 +48,20 @@
         ids = [ "*" ];
         settings = {
           main = {
-            "capslock" = "overload(control, capslock)";
+            "capslock" = "overload(control, capslock, 200)";
           };
           
-          rightalt = {
+          "rightalt" = {
             "h" = "left";
             "j" = "up";
             "k" = "down";
             "l" = "right";
           };
 
-          leftctrl = {
+          "leftctrl" = {
             "[" = "esc";
           };
-          
+
         };
       };
     };
