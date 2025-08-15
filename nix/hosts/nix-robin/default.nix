@@ -54,13 +54,6 @@
             "control" = "layer(escape)";
           };
           
-          "meta-vim" = {
-            "h" = "left";
-            "j" = "up";
-            "k" = "down";
-            "l" = "right";
-          };
-
           "meta-mac" = {
             # Copy
             "c" = "C-insert";
@@ -73,6 +66,13 @@
             "left" = "home";
             # Move cursor to end of Line
             "right" = "end";
+          };
+          
+          "meta-vim" = {
+            "h" = "left";
+            "j" = "up";
+            "k" = "down";
+            "l" = "right";
           };
 
           "escape" = {
