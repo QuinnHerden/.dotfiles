@@ -50,7 +50,7 @@
           main = {
             "capslock" = "overload(control, capslock)";
             "rightalt" = "layer(vim)";
-            "leftcontrol" = "layer(escape)";
+            "control" = "layer(escape)";
           };
           
           "vim" = {
