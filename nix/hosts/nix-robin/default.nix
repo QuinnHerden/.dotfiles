@@ -60,9 +60,9 @@
             # Cut
             "x" = "S-delete";
             # Undo
-            "z" = "C-z"
+            "z" = "C-z";
             # Close
-            "w" = "C-w"
+            "w" = "C-w";
 
             # Move cursor to beginning of line
             "left" = "home";
