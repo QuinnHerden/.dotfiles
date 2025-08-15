@@ -34,8 +34,29 @@
 
   networking.networkmanager.enable = true;
 
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+  };
+  services.blueman.enable = true;
+
   services.libinput = {
     enable = true;
+
+    touchpad = {
+      accelSpeed = "0.5";
+
+      naturalScrolling = true;
+      scrollMethod = "twofinger";
+
+      tapping = true; # tap to click
+    };
+
+    mouse = {
+      accelSpeed = "0.5";
+
+      naturalScrolling = true;
+    };
   };
 
   #######################################
