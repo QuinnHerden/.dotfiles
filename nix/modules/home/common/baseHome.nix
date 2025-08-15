@@ -39,8 +39,8 @@
           source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/config/nvim";
           recursive = true;
         };
-        ".config/sxhkd" = {
-          source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/config/sxhkd";
+        ".config/kmonad" = {
+          source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/config/kmonad";
           recursive = true;
         };
 

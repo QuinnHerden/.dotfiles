@@ -23,12 +23,12 @@
       feh
       i3lock
       i3status
+      kmonad
       obs-studio
       obsidian
       picom
       rofi
       spotify
-      sxhkd
     ];
   };
 
