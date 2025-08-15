@@ -48,7 +48,8 @@
         ids = [ "*" ];
         settings = {
           main = {
-            "capslock" = "overload(layer(escape), capslock)";
+            #"capslock" = "overload(layer(escape), capslock)";
+            "capslock" = "layer(escape)";
             "leftalt" = "layer(meta-mac)";
             "rightalt" = "layer(meta-vim)";
             "control" = "layer(escape)";
