@@ -49,37 +49,21 @@
         settings = {
           main = {
             "capslock" = "overload(control, capslock)";
+            "leftalt" = "layer(control)";
+            "meta" = "layer(alt)";
+            "leftcontrol" = "layer(meta)";
           };
-          
-          # left alt
-          "alt" = {
-            # Copy
-            "c" = "C-insert";
-            # Paste
-            "v" = "S-insert";
-            # Cut
-            "x" = "S-delete";
-            # Undo
-            "z" = "C-z";
-            # Close
-            "w" = "C-w";
 
-            # Move cursor to beginning of line
-            "left" = "home";
-            # Move cursor to end of Line
-            "right" = "end";
+          "control" = {
+            "[" = "esc";
           };
-          
+
           # right alt
           "altgr" = {
             "h" = "left";
             "j" = "down";
             "k" = "up";
             "l" = "right";
-          };
-
-          "control" = {
-            "[" = "esc";
           };
 
         };
