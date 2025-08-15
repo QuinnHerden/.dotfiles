@@ -46,15 +46,22 @@
     keyboards = {
       default = {
         ids = [ "*" ];
-        settings.main = {
-          "rightalt+h" = "left";
-          "rightalt+j" = "up";
-          "rightalt+k" = "down";
-          "rightalt+l" = "right";
+        settings = {
+          main = {
+            "capslock" = "overload(control, capslock)";
+          };
           
-          "capslock" = "overload(control, capslock)";
+          rightalt = {
+            "h" = "left";
+            "j" = "up";
+            "k" = "down";
+            "l" = "right";
+          };
 
-          "leftctrl+[" = "esc";
+          leftctrl = {
+            "[" = "esc";
+          };
+          
         };
       };
     };
