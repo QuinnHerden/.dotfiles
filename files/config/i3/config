@@ -15,9 +15,10 @@ set $wm_setting_key_left             Left
 set $wm_setting_key_right            Right
 
 set $wm_setting_app_terminal         alacritty
-set $wm_setting_app_browser          brave
-set $wm_setting_app_launcher         dmenu_run
-set $wm_setting_app_compositor       picom
+set $wm_setting_app_browser          qutebrowser
+set $wm_setting_app_launcher         rofi -show drun
+set $wm_setting_app_switcher         rofi -show window
+set $wm_setting_app_compositor       
 
 set $wm_color_border_active_bg       #A7C080
 set $wm_color_border_active_fg       #343F44
@@ -54,10 +55,13 @@ bindsym $mod+Return exec $wm_setting_app_terminal
 bindsym $mod+$smod+Return exec $wm_setting_app_browser
 
 # Start a program launcher
-bindsym $mod+d exec $wm_setting_app_launcher
+bindsym $mod+space exec $wm_setting_app_launcher
+
+# Start a program switcher
+bindsym $mod+Tab exec $wm_setting_app_switcher
 
 # Run a window compositor (for effects like transparency or full VSync)
-exec_always --no-startup-id $wm_setting_app_compositor
+#exec_always --no-startup-id $wm_setting_app_compositor
 
 ### Workspaces ###
 # Define names for default workspaces for which we configure key bindings later on.

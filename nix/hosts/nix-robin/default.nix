@@ -91,7 +91,7 @@
     mouse = {
       accelSpeed = "0.5";
 
-      naturalScrolling = true;
+      naturalScrolling = false;
     };
   };
 
@@ -120,5 +120,24 @@
   services.displayManager = {
     defaultSession = "none+i3";
   };
+
+  location.provider = "geoclue2";
+
+  services.redshift = {
+    enable = true;
+    brightness = {
+      day = "1";
+      night = "1";
+    };
+    temperature = {
+      day = 5500;
+      night = 3700;
+    };
+  };
+
+  virtualisation.docker = {
+    enable = true;
+  };
+
 }
 
