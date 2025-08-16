@@ -42,7 +42,6 @@
       neofetch
       neovim
       nmap
-      nodejs_23
       ollama
       openssl
       pandoc
@@ -52,12 +51,7 @@
       postman
       potrace
       pre-commit
-      python310
-      python311
-      python312
-      python313
       python314
-      python39
       ripgrep
       terraform
       tflint
