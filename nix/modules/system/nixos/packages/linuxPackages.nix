@@ -21,6 +21,7 @@
       brave
       discord
       feh
+      gcc
       obs-studio
       obsidian
       qutebrowser
