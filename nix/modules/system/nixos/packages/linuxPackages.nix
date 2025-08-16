@@ -20,7 +20,6 @@
       bitwarden-desktop
       brave
       discord
-      dmenu
       feh
       i3lock
       i3status
