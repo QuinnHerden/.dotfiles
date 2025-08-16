@@ -21,7 +21,6 @@
       brave
       discord
       feh
-      keyd
       obs-studio
       obsidian
       qutebrowser
