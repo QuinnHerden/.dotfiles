@@ -21,14 +21,10 @@
     programs.zsh.enable = true; # install zsh shell
 
     environment.systemPackages = with pkgs; [
-      argocd
       awscli
-      balena-cli
-      bitwarden-cli
       cmake
       duckdb
       ffmpeg
-      figlet
       gawk
       gh
       git
@@ -37,7 +33,6 @@
       go
       htop
       httrack
-      hugo
       jq
       kubectx
       kubernetes-helm
@@ -64,7 +59,6 @@
       python314
       python39
       ripgrep
-      talosctl
       terraform
       tflint
       tmux
