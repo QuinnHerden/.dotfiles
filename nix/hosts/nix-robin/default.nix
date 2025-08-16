@@ -113,7 +113,13 @@
     };
 
     windowManager = {
-      i3.enable = true;
+      i3 = {
+        enable = true;
+
+        extraSessionCommands = ''
+          xrandr --output DP-1 --rotate right --left-of eDP-1;
+        '';
+      };
     };
   };
 
