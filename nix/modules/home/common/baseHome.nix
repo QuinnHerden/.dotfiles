@@ -49,6 +49,10 @@
           recursive = true;
         };
 
+        ".config/rofi" = {
+          source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/config/rofi";
+          recursive = true;
+        };
         ".config/qutebrowser/config.py".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/config/qutebrowser/config.py";
         
         # ./local
