@@ -20,6 +20,7 @@
   config = lib.mkIf config.baseHome.enable {
     home-manager.users.${config.baseHome.name} = { config, pkgs, ... }: {
       home.file = {
+        # ./
         ".background-image".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/home/.background-image";
 
         ".gitconfig".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/home/.gitconfig";
@@ -27,25 +28,37 @@
         
         ".tmux.conf".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/home/.tmux.conf";
 
+        "iterm2" = {
+          source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/iterm2";
+          recursive = true;
+        };
+
+        # ./config
         ".config/i3" = {
           source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/config/i3";
           recursive = true;
         };
+
         ".config/karabiner" = {
           source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/config/karabiner";
           recursive = true;
         };
+
         ".config/nvim" = {
           source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/config/nvim";
           recursive = true;
         };
+
+        ".config/rofi" = {
+          source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/config/rofi";
+          recursive = true;
+        };
+        ".config/qutebrowser/config.py".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/config/qutebrowser/config.py";
         
+        # ./local
         ".local/scripts" = {
           source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/scripts";
           recursive = true;
-        };
-        "iterm2" = {
-          source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/iterm2";
         };
       };
 
@@ -87,11 +100,6 @@
           python = "python3";
           pip = "pip3";
 
-          # tailscale
-          ts = "tailscale";
-          tssc = "ts switch sculpted.io; tailscale set --accept-routes=true;";
-          tshr = "ts switch herden.io; tailscale set --accept-routes=true;";
-
           # terraform
           tf = "terraform";
           
@@ -107,14 +115,11 @@
 
           # vim
           vim = "nvim";
-          vi = "vim";
         };
 
         initExtra = ''
           eval "$(zoxide init --cmd cd zsh)"
           eval $(thefuck --alias f)
-
-          figlet -d ~/figlet-fonts -f "sub-zero" QSH
         '';
       };
       
@@ -132,10 +137,6 @@
         enable = true;
         enableZshIntegration = true;
       };
-
-      home.keyboard.options = [
-        "ctrl:swapcaps"
-      ];
 
       # The state version is required and should stay at the version you
       # originally installed.
