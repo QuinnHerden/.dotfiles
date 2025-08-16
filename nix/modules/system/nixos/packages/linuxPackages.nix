@@ -20,7 +20,6 @@
       bitwarden-desktop
       brave
       discord
-      docker
       feh
       obs-studio
       obsidian
