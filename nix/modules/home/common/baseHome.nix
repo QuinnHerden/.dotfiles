@@ -100,11 +100,6 @@
           python = "python3";
           pip = "pip3";
 
-          # tailscale
-          ts = "tailscale";
-          tssc = "ts switch sculpted.io; tailscale set --accept-routes=true;";
-          tshr = "ts switch herden.io; tailscale set --accept-routes=true;";
-
           # terraform
           tf = "terraform";
           
@@ -120,14 +115,11 @@
 
           # vim
           vim = "nvim";
-          vi = "vim";
         };
 
         initExtra = ''
           eval "$(zoxide init --cmd cd zsh)"
           eval $(thefuck --alias f)
-
-          figlet -d ~/figlet-fonts -f "sub-zero" QSH
         '';
       };
       
@@ -145,10 +137,6 @@
         enable = true;
         enableZshIntegration = true;
       };
-
-      home.keyboard.options = [
-        "ctrl:swapcaps"
-      ];
 
       # The state version is required and should stay at the version you
       # originally installed.
