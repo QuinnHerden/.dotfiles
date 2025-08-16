@@ -29,7 +29,7 @@
         ".tmux.conf".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/home/.tmux.conf";
 
         "iterm2" = {
-          source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/iterm2";
+          source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/home/iterm2";
           recursive = true;
         };
 
@@ -114,10 +114,10 @@
           tmks = "tmux kill-session -t";
 
           # vim
-          vim = "nvim";
+          vi = "nvim";
         };
 
-        initExtra = ''
+        initContent = ''
           eval "$(zoxide init --cmd cd zsh)"
           eval $(thefuck --alias f)
         '';
