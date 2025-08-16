@@ -22,11 +22,13 @@
       discord
       feh
       gcc
+      gnumake
       obs-studio
       obsidian
       qutebrowser
       rofi
       spotify
+      unzip
     ];
   };
 
