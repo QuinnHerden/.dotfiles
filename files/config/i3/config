@@ -6,6 +6,7 @@
 set $mod                             Mod1
 set $smod                            Shift
 set $wm_setting_font                 pango:Source Sans Pro, Semibold 11
+set $wm_setting_gap_inner            0
 set $wm_setting_gap_width            15
 set $wm_setting_gap_heigth           15
 set $wm_setting_border_size          2
@@ -106,7 +107,7 @@ bindsym $mod+$smod+p move workspace to output right
 bindsym $mod+$smod+n move workspace to output left
 
 ### Window sizes and positions ###
-# Cange focus
+# Change focus
 bindsym $mod+$wm_setting_key_left        focus left
 bindsym $mod+$wm_setting_key_down        focus down
 bindsym $mod+$wm_setting_key_up          focus up
@@ -131,12 +132,6 @@ mode "resize" {
 	bindsym $wm_setting_key_up    resize shrink height 10 px or 10 ppt
 	bindsym $wm_setting_key_right resize grow width 10 px or 10 ppt
 
-#	Resize the gap width and height
-	bindsym $smod+$wm_setting_key_left  gaps horizontal minus 5
-	bindsym $smod+$wm_setting_key_down  gaps horizontal plus 5
-	bindsym $smod+$wm_setting_key_up    gaps vertical minus 5
-	bindsym $smod+$wm_setting_key_right gaps vertical plus 5
-
 #	Back to normal: Enter or Escape or $mod+r
 	bindsym Return mode "default"
 	bindsym Escape mode "default"
@@ -146,6 +141,7 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 ### Gaps ###
+gaps inner      $wm_setting_gap_inner
 gaps horizontal $wm_setting_gap_width
 gaps vertical   $wm_setting_gap_heigth
 smart_gaps on
@@ -207,4 +203,4 @@ bindsym $mod+$smod+q kill
 bindsym $mod+$smod+r restart
 
 # Exit i3 (logs you out of your X session)
-bindsym $mod+$smod+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+#bindsym $mod+$smod+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
