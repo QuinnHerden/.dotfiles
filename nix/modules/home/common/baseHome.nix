@@ -114,10 +114,10 @@
           tmks = "tmux kill-session -t";
 
           # vim
-          vim = "nvim";
+          vi = "nvim";
         };
 
-        initExtra = ''
+        initContent = ''
           eval "$(zoxide init --cmd cd zsh)"
           eval $(thefuck --alias f)
         '';

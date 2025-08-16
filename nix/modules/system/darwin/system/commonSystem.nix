@@ -14,6 +14,10 @@
   };
   
   config = lib.mkIf config.commonSystem.enable {
+    ##### temporary requirement ####
+    system.primaryUser = "quinnherden";
+    ################################
+
     ids.gids.nixbld = 350;
 
     security.pki.certificateFiles = [];
