@@ -42,7 +42,6 @@
       neofetch
       neovim
       nmap
-      nodejs_24
       ollama
       openssl
       pandoc
