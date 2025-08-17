@@ -1,0 +1,5 @@
+#!/bin/sh
+
+echo "Updating flake lock"
+
+nix flake update --flake $HOME/.dotfiles/nix
