@@ -1,0 +1,15 @@
+#!/bin/sh
+
+echo "Testing current build"
+
+system_type=$(uname -s)
+
+if [ "$system_type" = "Darwin" ]; then
+  sudo darwin-rebuild build --flake $HOME/.dotfiles/nix
+  sudo darwin-rebuild activate --flake $HOME/.dotfiles/nix
+  rm ./result
+fi
+
+if [ "$system_type" = "Linux" ]; then
+  sudo nixos-rebuild test --flake $HOME/.dotfiles/nix
+fi
