@@ -17,8 +17,8 @@
     };
   };
   
-  config = lib.mkIf config.baseHome.enable {
-    home-manager.users.${config.baseHome.name} = { config, pkgs, ... }: {
+  config = lib.mkIf config.commonBaseHome.enable {
+    home-manager.users.${config.commonBaseHome.name} = { config, pkgs, ... }: {
       home.file = {
         # ./
         ".gitconfig".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/home/.gitconfig";
