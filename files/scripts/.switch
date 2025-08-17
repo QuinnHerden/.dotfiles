@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# activate built system
+echo "Switching to current config"
+system_type=$(uname -s)
+
+if [ "$system_type" = "Darwin" ]; then
+  sudo darwin-rebuild switch --flake $HOME/.dotfiles/nix
+fi
+
+if [ "$system_type" = "Linux" ]; then
+  sudo nixos-rebuild switch --flake $HOME/.dotfiles/nix
+fi
