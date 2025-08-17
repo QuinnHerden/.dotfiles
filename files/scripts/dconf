@@ -1,5 +1,0 @@
-#!/bin/sh
-
-dinit
-dupdate
-dswitch
