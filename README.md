@@ -5,7 +5,7 @@ Enabling a seamless experience across host environments.
 
 ## Prerequisites
 
-1. Ensure you system has `git` installed.
+1. Ensure `git` is installed on your system.
 2. Ensure `git` is in your path.
 
 ## Installation
@@ -26,9 +26,13 @@ set your hostname to match the host config you want to sync to.
 
 `git clone https://github.com/QuinnHerden/.dotfiles.git`
 
-### configure system
+### init system
 
-`sh ~/.dotfiles/files/scripts/conf`
+run `sh ~/.dotfiles/files/scripts/dinit` repeatedly until you receive a successful exit status.
+
+### init system
+
+run `sh ~/.dotfiles/files/scripts/dconf` to configure your system.
 
 #### manual configurations
 
