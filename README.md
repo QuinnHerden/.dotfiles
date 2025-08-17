@@ -28,11 +28,11 @@ set your hostname to match the host config you want to sync to.
 
 ### init system
 
-run `sh ~/.dotfiles/files/scripts/dinit` repeatedly until you receive a successful exit status.
+run `sh ~/.dotfiles/files/scripts/.init` repeatedly until you receive a successful exit status.
 
-### init system
+### configure system
 
-run `sh ~/.dotfiles/files/scripts/dconf` to configure your system.
+run `sh ~/.dotfiles/files/scripts/.conf` to configure your system.
 
 #### manual configurations
 
