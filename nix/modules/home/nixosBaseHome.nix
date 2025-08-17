@@ -17,8 +17,8 @@
     };
   };
   
-  config = lib.mkIf config.baseHome.enable {
-    home-manager.users.${config.baseHome.name} = { config, pkgs, ... }: {
+  config = lib.mkIf config.nixosBaseHome.enable {
+    home-manager.users.${config.nixosBaseHome.name} = { config, pkgs, ... }: {
       home.file = {
         # ./
         ".background-image".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/home/.background-image";

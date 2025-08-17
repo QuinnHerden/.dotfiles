@@ -17,8 +17,8 @@
     };
   };
   
-  config = lib.mkIf config.baseHome.enable {
-    home-manager.users.${config.baseHome.name} = { config, pkgs, ... }: {
+  config = lib.mkIf config.darwinBaseHome.enable {
+    home-manager.users.${config.darwinBaseHome.name} = { config, pkgs, ... }: {
       home.file = {
         # ./
         "iterm2" = {
