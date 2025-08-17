@@ -25,6 +25,7 @@
       cmake
       duckdb
       ffmpeg
+      fd
       gawk
       gh
       git
