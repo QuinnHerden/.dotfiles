@@ -24,7 +24,11 @@
     shell = pkgs.zsh;
   };
 
-  baseHome = {
+  commonBaseHome = {
+    enable = true;
+    name = "quinnherden";
+  };
+  darwinBaseHome = {
     enable = true;
     name = "quinnherden";
   };
