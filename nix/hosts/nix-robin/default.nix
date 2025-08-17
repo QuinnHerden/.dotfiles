@@ -21,18 +21,24 @@
     name = "nix-robin";
   };
 
-  openssh.enable = true;
-
   quinnherdenUser.enable = true;
  
-  baseHome = {
+  commonBaseHome = {
+    enable = true;
+    name = "quinnherden";
+  };
+  nixosBaseHome = {
     enable = true;
     name = "quinnherden";
   };
 
   linuxPackages.enable = true;
 
+  ### things I need to extract into modules lie below ###
+
   networking.networkmanager.enable = true;
+
+  openssh.enable = true;
 
   services.blueman.enable = true;
   hardware.bluetooth = {
@@ -113,7 +119,13 @@
     };
 
     windowManager = {
-      i3.enable = true;
+      i3 = {
+        enable = true;
+
+        extraSessionCommands = ''
+          xrandr --output DP-1 --rotate right --left-of eDP-1;
+        '';
+      };
     };
   };
 
