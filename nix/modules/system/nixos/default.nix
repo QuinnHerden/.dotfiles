@@ -10,8 +10,10 @@
   imports = [
     ./networking
     ./packages
+    ./services
     ./system
     ./users
+    ./vpns
   ];
 
 }

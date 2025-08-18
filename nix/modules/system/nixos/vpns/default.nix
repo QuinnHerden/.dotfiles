@@ -8,9 +8,7 @@
 {
 
   imports = [
-    ./hostname.nix
-    ./openssh.nix
-    ./wifi.nix
+    ./vpn-us-ga-285.nix
   ];
 
 }
