@@ -21,8 +21,6 @@
     name = "nix-robin";
   };
 
-  quinnherdenUser.enable = true;
- 
   commonBaseHome = {
     enable = true;
     name = "quinnherden";
@@ -32,34 +30,17 @@
     name = "quinnherden";
   };
 
+  quinnherdenUser.enable = true;
+
   linuxPackages.enable = true;
 
   openssh.enable = true;
   wifi.enable = true;
   bluetooth.enable = true;
   keyd.enable = true;
+  libinput.enable = true;
+  i3.enable = true;
 
-  ### things I need to extract into modules lie below ###
-
-
-  services.libinput = {
-    enable = true;
-
-    touchpad = {
-      accelSpeed = "0.5";
-
-      naturalScrolling = true;
-      scrollMethod = "twofinger";
-
-      tapping = true; # tap to click
-    };
-
-    mouse = {
-      accelSpeed = "0.5";
-
-      naturalScrolling = false;
-    };
-  };
 
   #######################################
   # fix touchpad error:
@@ -71,27 +52,6 @@
  
   #######################################
 
-  services.xserver = {
-    enable = true;
-
-    desktopManager = {
-      xterm.enable = false;
-    };
-
-    windowManager = {
-      i3 = {
-        enable = true;
-
-        extraSessionCommands = ''
-          xrandr --output DP-1 --rotate right --left-of eDP-1;
-        '';
-      };
-    };
-  };
-
-  services.displayManager = {
-    defaultSession = "none+i3";
-  };
 
   location.provider = "geoclue2";
 
