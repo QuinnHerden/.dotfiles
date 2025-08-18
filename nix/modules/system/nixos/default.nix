@@ -13,6 +13,7 @@
     ./services
     ./system
     ./users
+    ./vpns
   ];
 
 }
