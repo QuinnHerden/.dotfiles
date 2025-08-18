@@ -32,15 +32,20 @@
 
   quinnherdenUser.enable = true;
 
-  linuxPackages.enable = true;
-
   openssh.enable = true;
+
   wifi.enable = true;
   bluetooth.enable = true;
+
   keyd.enable = true;
   libinput.enable = true;
+
   i3.enable = true;
   redshift.enable = true;
+
+  docker.enable = true;
+
+  linuxPackages.enable = true;
 
 
   #######################################
@@ -52,11 +57,6 @@
   '';
  
   #######################################
-
-
-  virtualisation.docker = {
-    enable = true;
-  };
 
   ### VPN ###
 
