@@ -9,9 +9,10 @@
 
   imports = [
     ./bluetooth.nix
+    ./i3.nix
     ./keyd.nix
     ./libinput.nix
-    ./i3.nix
+    ./redshift.nix
   ];
 
 }
