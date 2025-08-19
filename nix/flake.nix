@@ -28,17 +28,6 @@
     darwinConfigurations = {
       # Docs: https://daiderd.com/nix-darwin/manual/index.html
       
-      "mac-agi" = darwin.lib.darwinSystem {
-        specialArgs = { inherit inputs; };
-        modules = [
-          home-manager.darwinModules.default
-          ./hosts/mac-agi
-          ./modules/home
-          ./modules/system/common
-          ./modules/system/darwin
-        ];
-      };
-      
       "mac-papi" = darwin.lib.darwinSystem {
         specialArgs = { inherit inputs; };
         modules = [

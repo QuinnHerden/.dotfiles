@@ -27,7 +27,7 @@
       obsidian
       qutebrowser
       rofi
-      spotify
+      signal-desktop
       unzip
     ];
   };
