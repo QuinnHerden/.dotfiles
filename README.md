@@ -5,35 +5,54 @@ Enabling a seamless experience across host environments.
 
 ## Prerequisites
 
-1. Ensure `git` is installed on your system.
-2. Ensure `git` is in your path.
+### On MacOS
+
+#### Install Nix
+
+- `curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install`
+
+### On All
+
+#### Connect to the Internet
+
+##### NixOS
+
+- `nmcli d wifi list`
+- `nmcli d wifi connect {ssis} --ask`
+
+#### Ensure git is in your path
+
+##### NixOS
+
+- `nix-shell -p git`
 
 ## Installation
 
-### set hostname
+### Navigate Home
+
+- `cd ~/`
+
+### Clone Repo
+
+- `git clone https://github.com/QuinnHerden/.dotfiles.git`
+
+### Init System
+
+- run `sh ~/.dotfiles/files/scripts/.init` repeatedly until you receive a successful exit status.
+
+### Set hostname
 
 set your hostname to match the host config you want to sync to.
 
-### install nix
+- `sudo hostname {hostname}`
 
-`curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install`
+### Configure System
 
-### navigate home
+- run `sh ~/.dotfiles/files/scripts/.switch` to configure your system.
 
-`cd ~/`
+## Post Installation
 
-### clone repo
+### MacOS Manual Configurations
 
-`git clone https://github.com/QuinnHerden/.dotfiles.git`
+- [Configurations](manual-configurations.md)
 
-### init system
-
-run `sh ~/.dotfiles/files/scripts/.init` repeatedly until you receive a successful exit status.
-
-### configure system
-
-run `sh ~/.dotfiles/files/scripts/.conf` to configure your system.
-
-#### manual configurations
-
-[Configurations](manual-configurations.md)
