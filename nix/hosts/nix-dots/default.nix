@@ -18,7 +18,7 @@
 
   hostname = {
     enable = true;
-    name = "nix-robin";
+    name = "nix-dots";
   };
 
   commonBaseHome = {
@@ -34,7 +34,7 @@
 
   wifi.enable = true;
   openssh.enable = true;
-  vpn-us-ga-285.enable = true;
+  vpn-us-ga-285.enable = false;
 
   bluetooth.enable = true;
 
@@ -47,15 +47,6 @@
   docker.enable = true;
 
   linuxPackages.enable = true;
-
-  #######################################
-  # fix touchpad error:
-  # "elan_i2c invalid report id data (1)"
-
-  boot.extraModprobeConfig = ''
-    blacklist elan_i2c
-  '';
-  #######################################
 
 }
 
