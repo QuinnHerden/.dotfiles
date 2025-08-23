@@ -43,6 +43,17 @@
 
     nixosConfigurations = {
     
+      "nix-dots" = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs; };
+        modules = [
+          home-manager.nixosModules.default
+          ./hosts/nix-dots
+          ./modules/home
+          ./modules/system/common
+          ./modules/system/nixos
+        ];
+      };
+
       "nix-robin" = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };
         modules = [
