@@ -18,7 +18,7 @@ Enabling a seamless experience across host environments.
 ##### NixOS
 
 - `nmcli d wifi list`
-- `nmcli d wifi connect {ssis} --ask`
+- `nmcli d wifi connect {ssid} --ask`
 
 #### Ensure git is in your path
 
