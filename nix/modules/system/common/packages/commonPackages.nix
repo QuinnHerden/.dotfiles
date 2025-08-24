@@ -61,7 +61,6 @@
       tree-sitter
       typescript
       uv
-      vault
       vim
       wget
       yarn
