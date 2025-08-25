@@ -17,11 +17,6 @@
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
 
-  boot.loader = {
-    grub.enable = false;
-    generic-extlinux-compatible.enable = true;
-  };
-
   fileSystems = {
     "/" = {
       device = "/dev/disk/by-label/NIXOS_SD";

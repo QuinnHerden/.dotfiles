@@ -8,9 +8,9 @@
 {
 
   imports = [
-    ./commonSystem.nix
+    ./darwinSystem.nix
   ];
   
-  commonSystem.enable = lib.mkDefault true;
+  darwinSystem.enable = lib.mkDefault true;
 
 }

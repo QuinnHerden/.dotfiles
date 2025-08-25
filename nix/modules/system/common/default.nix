@@ -9,6 +9,7 @@
 
   imports = [
     ./fonts
+    ./nix
     ./packages
   ];
 

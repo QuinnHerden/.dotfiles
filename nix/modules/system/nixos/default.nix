@@ -8,10 +8,10 @@
 {
 
   imports = [
+    ./boot
     ./networking
     ./packages
     ./services
-    ./system
     ./users
     ./vpns
   ];
