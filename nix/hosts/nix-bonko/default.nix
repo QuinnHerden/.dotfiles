@@ -16,6 +16,8 @@
     "nix-command"
   ];
 
+  aarch64-linuxSystem.enable = true;
+
   hostname = {
     enable = true;
     name = "nix-bonko";
@@ -47,8 +49,6 @@
 
   commonPackages.enable = false;
   linuxPackages.enable = false;
-
-  commonSystem.enable = false;
 
   ################
 

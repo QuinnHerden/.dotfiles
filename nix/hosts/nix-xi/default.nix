@@ -16,6 +16,8 @@
     "nix-command"
   ];
 
+  x86_64linuxSystem.enable = true;
+
   hostname = {
     enable = true;
     name = "nix-xi";
@@ -48,8 +50,6 @@
 
   commonPackages.enable = true;
   linuxPackages.enable = true;
-
-  commonSystem.enable = true;
 
   ### extract ###
 
