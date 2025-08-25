@@ -7,11 +7,6 @@
   system.stateVersion = 4; # $ darwin-rebuild changelog
   nixpkgs.hostPlatform = "aarch64-darwin";
 
-  nix.settings.experimental-features = [
-    "flakes"
-    "nix-command"
-  ];
-  
   hostname = {
     enable = true;
     name = "mac-papi";
@@ -38,7 +33,5 @@
   baseBrews.enable = true;
   extraBrews.enable = true;
   experimentalBrews.enable = true;
-
-  commonSystem.enable = true;
 
 }

@@ -10,11 +10,7 @@
     ./hardware-configuration.nix
   ];
   system.stateVersion = "24.11";
-
-  nix.settings.experimental-features = [
-    "flakes"
-    "nix-command"
-  ];
+  aarch64-linuxSystem.enable = true;
 
   hostname = {
     enable = true;
@@ -47,8 +43,6 @@
 
   commonPackages.enable = false;
   linuxPackages.enable = false;
-
-  commonSystem.enable = false;
 
   ################
 

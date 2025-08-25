@@ -10,11 +10,7 @@
     ./hardware-configuration.nix
   ];
   system.stateVersion = "24.11";
-  
-  nix.settings.experimental-features = [
-    "flakes"
-    "nix-command"
-  ];
+  x86_64-linuxSystem.enable = true;
 
   hostname = {
     enable = true;
@@ -48,8 +44,6 @@
 
   commonPackages.enable = true;
   linuxPackages.enable = true;
-
-  commonSystem.enable = true;
 
   ### extract ###
 
