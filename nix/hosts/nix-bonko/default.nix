@@ -43,6 +43,7 @@
 
   docker.enable = true;
 
+  commonPackages.enable = false;
   linuxPackages.enable = true;
 
 }
