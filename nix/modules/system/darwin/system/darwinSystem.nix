@@ -8,12 +8,12 @@
 {
 
   options = {
-    commonSystem = {
-      enable = lib.mkEnableOption "enables commonSystem";
+    darwinSystem = {
+      enable = lib.mkEnableOption "enables darwinSystem";
     };
   };
   
-  config = lib.mkIf config.commonSystem.enable {
+  config = lib.mkIf config.darwinSystem.enable {
     ##### temporary requirement ####
     system.primaryUser = "quinnherden";
     ################################
