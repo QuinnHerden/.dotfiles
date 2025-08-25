@@ -46,7 +46,10 @@
 
   docker.enable = true;
 
+  commonPackages.enable = true;
   linuxPackages.enable = true;
+
+  commonSystem.enable = true;
 
   ### extract ###
 
