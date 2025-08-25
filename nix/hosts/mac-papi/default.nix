@@ -39,4 +39,6 @@
   extraBrews.enable = true;
   experimentalBrews.enable = true;
 
+  commonSystem.enable = true;
+
 }

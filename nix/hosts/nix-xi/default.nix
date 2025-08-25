@@ -49,6 +49,8 @@
   commonPackages.enable = true;
   linuxPackages.enable = true;
 
+  commonSystem.enable = true;
+
   ### extract ###
 
   boot.loader.grub.device = "/dev/nvme0n1";
