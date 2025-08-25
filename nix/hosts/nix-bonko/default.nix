@@ -52,11 +52,5 @@
 
   programs.zsh.enable = true;
 
-  boot.loader = {
-    grub.enable = false;
-    generic-extlinux-compatible.enable = true;
-  };
-
-
 }
 
