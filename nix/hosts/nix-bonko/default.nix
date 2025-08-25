@@ -43,10 +43,20 @@
 
   docker.enable = true;
 
+  ################
+
   commonPackages.enable = false;
-  linuxPackages.enable = true;
+  linuxPackages.enable = false;
 
   commonSystem.enable = false;
+
+  programs.zsh.enable = true;
+
+  boot.loader = {
+    grub.enable = false;
+    generic-extlinux-compatible.enable = true;
+  };
+
 
 }
 
