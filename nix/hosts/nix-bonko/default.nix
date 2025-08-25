@@ -38,17 +38,19 @@
   keyd.enable = true;
   libinput.enable = true;
 
-  i3.enable = true;
-  redshift.enable = true;
-
   docker.enable = true;
 
   ################
+
+  i3.enable = false;
+  redshift.enable = false;
 
   commonPackages.enable = false;
   linuxPackages.enable = false;
 
   commonSystem.enable = false;
+
+  ################
 
   programs.zsh.enable = true;
 
