@@ -11,6 +11,6 @@
     ./commonSystem.nix
   ];
   
-  commonSystem.enable = lib.mkDefault true;
+  commonSystem.enable = lib.mkDefault false;
 
 }

@@ -49,5 +49,7 @@
   commonPackages.enable = true;
   linuxPackages.enable = true;
 
+  commonSystem.enable = true;
+
 }
 

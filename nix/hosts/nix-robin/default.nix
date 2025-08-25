@@ -49,6 +49,8 @@
   commonPackages.enable = true;
   linuxPackages.enable = true;
 
+  commonSystem.enable = true;
+
   #######################################
   # fix touchpad error:
   # "elan_i2c invalid report id data (1)"
