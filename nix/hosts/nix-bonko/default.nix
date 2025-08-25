@@ -18,7 +18,7 @@
 
   hostname = {
     enable = true;
-    name = "nix-dots";
+    name = "nix-bonko";
   };
 
   commonBaseHome = {
@@ -34,22 +34,25 @@
 
   wifi.enable = true;
   openssh.enable = true;
-  vpn-us-ga-285.enable = false;
-
-  bluetooth.enable = true;
 
   keyd.enable = true;
   libinput.enable = true;
 
-  i3.enable = true;
-  redshift.enable = true;
-
   docker.enable = true;
 
-  commonPackages.enable = true;
-  linuxPackages.enable = true;
+  ################
 
-  commonSystem.enable = true;
+  i3.enable = false;
+  redshift.enable = false;
+
+  commonPackages.enable = false;
+  linuxPackages.enable = false;
+
+  commonSystem.enable = false;
+
+  ################
+
+  programs.zsh.enable = true;
 
 }
 
