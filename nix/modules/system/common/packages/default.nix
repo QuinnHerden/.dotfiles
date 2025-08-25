@@ -11,6 +11,6 @@
     ./commonPackages.nix
   ];
 
-  commonPackages.enable = lib.mkDefault true;
+  commonPackages.enable = lib.mkDefault false;
 
 }
