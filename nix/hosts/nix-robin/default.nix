@@ -16,7 +16,7 @@
     "nix-command"
   ];
 
-  x86_64linuxSystem.enable = true;
+  x86_64-linuxSystem.enable = true;
 
   hostname = {
     enable = true;
