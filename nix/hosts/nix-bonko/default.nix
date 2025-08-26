@@ -58,10 +58,18 @@
     image = "pihole/pihole:latest";
     environment = {
       "TZ" = "America/New_York";
+
       "FTLCONF_webserver_api_password" = "";
-      "FTLCONF_dns_upstreams" = "8.8.8.8;8.8.4.4";
       "FTLCONF_dns_listeningMode" = "SINGLE";
-      "FTLCONF_dns_hosts" = "";
+
+      "FTLCONF_dns_upstreams" = ''
+        8.8.8.8;
+        1.1.1.1;
+      '';
+
+      "FTLCONF_dns_hosts" = ''
+      '';
+
     };
     ports = [
       "3000:80/tcp"
