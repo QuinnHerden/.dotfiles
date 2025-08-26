@@ -58,7 +58,7 @@
     image = "pihole/pihole:latest";
     environment = {
       "TZ" = "America/New_York";
-      "WEBPASSWORD_FILE" = "/run/secrets/pihole_webpassword";
+      "WEBPASSWORD_FILE" = "/opt/pihole/data/secrets/webpassword";
     };
     volumes = [
       "/opt/pihole/data/etc/dnsmasq.d:/etc/dnsmasq.d:rw"
