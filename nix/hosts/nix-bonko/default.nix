@@ -63,7 +63,6 @@
 
       "FTLCONF_dns_listeningMode" = "SINGLE";
       "FTLCONF_dns_queryLogging" = "false";
-      
 
       "FTLCONF_dns_upstreams" = ''
         8.8.8.8;
