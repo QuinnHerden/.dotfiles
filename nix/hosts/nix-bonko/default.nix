@@ -63,9 +63,6 @@
 
       "FTLCONF_dns_listeningMode" = "SINGLE";
 
-      "FTLCONF_dns_queryLogging" = "false";
-      "FTLCONF_dns_privacylevel" = "3";
-
       "FTLCONF_dns_upstreams" = ''
         8.8.8.8;
         1.1.1.1;
@@ -74,6 +71,8 @@
       "FTLCONF_dns_hosts" = ''
       '';
 
+      "FTLCONF_dns_queryLogging" = "false";
+      "FTLCONF_misc_privacylevel" = "3";
     };
     ports = [
       "3000:80/tcp"
