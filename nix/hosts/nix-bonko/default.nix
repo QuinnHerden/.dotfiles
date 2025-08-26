@@ -59,11 +59,10 @@
     environment = {
       "TZ" = "America/New_York";
       "FTLCONF_webserver_api_password" = "";
+      "FTLCONF_dns_hosts" = "[]";
+
+      ]";
     };
-    volumes = [
-      "/etc/pihole/etc/dnsmasq.d:/etc/dnsmasq.d:rw"
-      "/etc/pihole/etc/pihole:/etc/pihole:rw"
-    ];
     ports = [
       "3000:80/tcp"
       "53:53/tcp"
