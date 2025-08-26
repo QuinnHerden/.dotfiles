@@ -60,7 +60,7 @@
       "TZ" = "America/New_York";
       "FTLCONF_webserver_api_password" = "";
       "FTLCONF_dns_upstreams" = "8.8.8.8;8.8.4.4";
-      "FTLCONF_debug_listeningMode = "SINGLE";
+      "FTLCONF_debug_listeningMode" = "SINGLE";
     };
     ports = [
       "3000:80/tcp"
