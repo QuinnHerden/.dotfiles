@@ -58,6 +58,7 @@
     image = "pihole/pihole:latest";
     environment = {
       "TZ" = "America/New_York";
+      "FTLCONF_webserver_api_password" = "";
     };
     volumes = [
       "/etc/pihole/etc/dnsmasq.d:/etc/dnsmasq.d:rw"
