@@ -58,11 +58,12 @@
     image = "pihole/pihole:latest";
     environment = {
       "TZ" = "America/New_York";
-      "WEBPASSWORD_FILE" = "/opt/pihole/data/secrets/webpassword";
+      "WEBPASSWORD_FILE" = "/run/secrets/webpassword";
     };
     volumes = [
       "/opt/pihole/data/etc/dnsmasq.d:/etc/dnsmasq.d:rw"
       "/opt/pihole/data/etc/pihole:/etc/pihole:rw"
+      "/opt/pihole/data/secrets:/run/secrets/webpassword:r"
     ];
     ports = [
       "3000:80/tcp"
