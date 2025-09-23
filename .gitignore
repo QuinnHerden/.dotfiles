@@ -3,7 +3,7 @@
 
 # Karabiner
 
-files/karabiner/automatic_backups/
+files/config/karabiner/automatic_backups/
 
 # NeoVim
 lazy-lock.json
