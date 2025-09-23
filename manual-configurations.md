@@ -27,10 +27,6 @@
 
 ### System
 
-#### Macfuse
-
-[Instructions to enable system extensions](https://github.com/macfuse/macfuse/wiki/Getting-Started)
-
 #### Sound Control
 
 1. Boot into Recovery Mode
