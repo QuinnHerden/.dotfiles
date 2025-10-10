@@ -21,7 +21,7 @@
     programs.zsh.enable = true; # install zsh shell
 
     environment.systemPackages = with pkgs; [
-      awscli
+      awscli2
       cmake
       duckdb
       ffmpeg
