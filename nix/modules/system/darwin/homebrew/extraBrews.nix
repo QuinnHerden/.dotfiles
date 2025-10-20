@@ -37,6 +37,7 @@
         "discord"
         "google-chrome"
         "google-drive"
+        "libreoffice"
         "malwarebytes"
         "obs"
         "obsidian"
