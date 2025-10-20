@@ -21,6 +21,7 @@
     programs.zsh.enable = true; # install zsh shell
 
     environment.systemPackages = with pkgs; [
+      ansible
       awscli2
       cmake
       duckdb
@@ -55,6 +56,7 @@
       pre-commit
       python314
       ripgrep
+      sshpass
       terraform
       tflint
       tmux
