@@ -45,6 +45,7 @@
       nmap
       ollama
       openssl
+      packer
       pandoc
       pipx
       podman
