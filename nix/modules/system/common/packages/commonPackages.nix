@@ -44,6 +44,7 @@
       neofetch
       neovim
       nmap
+      nodejs
       ollama
       openssl
       packer
