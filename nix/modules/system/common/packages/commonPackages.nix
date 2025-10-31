@@ -25,6 +25,7 @@
       awscli2
       cmake
       duckdb
+      eslint_d
       ffmpeg
       fd
       gawk
