@@ -56,6 +56,7 @@
       postman
       potrace
       pre-commit
+      prettierd
       python314
       ripgrep
       sshpass
