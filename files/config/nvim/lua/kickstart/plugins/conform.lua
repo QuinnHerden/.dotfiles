@@ -25,12 +25,12 @@ return {
         }
       end,
       formatters_by_ft = {
-        javascript = { 'prettier' },
-        javascriptreact = { 'prettier' },
+        javascript = { 'prettierd' },
+        javascriptreact = { 'prettierd' },
         lua = { 'stylua' },
         python = { 'ruff' },
         typescript = { 'prettier' },
-        typescriptreact = { 'prettier' },
+        typescriptreact = { 'prettierd' },
 
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
