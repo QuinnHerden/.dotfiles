@@ -45,6 +45,7 @@
       neofetch
       neovim
       nmap
+      nodePackages.jsonlint
       nodejs
       ollama
       openssl
