@@ -26,8 +26,8 @@
       cmake
       duckdb
       eslint_d
-      ffmpeg
       fd
+      ffmpeg
       gawk
       gh
       git
@@ -41,11 +41,9 @@
       kubernetes-helm
       lazydocker
       lazygit
-      markdownlint-cli
       neofetch
       neovim
       nmap
-      nodePackages.jsonlint
       nodejs
       ollama
       openssl
@@ -61,12 +59,12 @@
       python314
       ripgrep
       sshpass
+      stylua
       terraform
       tflint
       tmux
       tree
       tree-sitter
-      typescript
       uv
       vim
       wget
