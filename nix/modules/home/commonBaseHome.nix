@@ -87,6 +87,7 @@
           tmns = "tmux new -s";
           tmls = "tmux list-session";
           tmas = "tmux attach-session -t";
+          tmss = "tmux switch-client -t";
           tmrs = "tmux rename-session -t";
           tmks = "tmux kill-session -t";
 
