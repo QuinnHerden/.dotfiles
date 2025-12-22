@@ -55,6 +55,7 @@
 
       masApps = {
         "Keynote" = 409183694;
+        "Readest - eBook Reader" = 6738622779;
       };
 
       whalebrews = [
