@@ -69,6 +69,7 @@
           # git
           gs = "git status";
           gd = "git diff";
+          gc = "git commit -m";
 
           # kubectl
           k = "kubectl";
@@ -90,6 +91,11 @@
           tmss = "tmux switch-client -t";
           tmrs = "tmux rename-session -t";
           tmks = "tmux kill-session -t";
+
+          # uv
+          uvr = "uv run";
+          uva = "uv add";
+          uvad = "uv add --dev";
 
           # vim
           vi = "nvim";
