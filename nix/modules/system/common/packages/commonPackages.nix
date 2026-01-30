@@ -43,6 +43,7 @@
       lazygit
       neofetch
       neovim
+      ngrok
       nmap
       nodejs
       ollama
