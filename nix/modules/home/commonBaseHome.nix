@@ -42,7 +42,14 @@
       home.sessionPath = [
         "$HOME/.local/bin/"
         "$HOME/.local/scripts"
+        "$ANDROID_HOME/emulator"
+        "$ANDROID_HOME/platform-tools"
       ];
+
+      home.sessionVariables = {
+        JAVA_HOME = "/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home";
+        ANDROID_HOME = "$HOME/Library/Android/sdk";
+      };
 
       programs.zsh = {
         enable = true;

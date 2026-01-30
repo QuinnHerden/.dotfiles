@@ -23,6 +23,7 @@
 
       brews = [
         "autotrace"
+        "watchman"
       ];
 
       casks = [
@@ -51,6 +52,7 @@
         "whatsapp"
         "yubico-yubikey-manager"
         "zotero"
+        "zulu@17"
       ];
 
       masApps = {
