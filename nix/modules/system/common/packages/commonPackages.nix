@@ -43,6 +43,7 @@
       lazygit
       neofetch
       neovim
+      netclient
       ngrok
       nmap
       nodejs
