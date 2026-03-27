@@ -47,7 +47,6 @@
         "protonvpn"
         "raspberry-pi-imager"
         "signal"
-        "tailscale"
         "vb-cable"
         "visual-studio-code"
         "whatsapp"
