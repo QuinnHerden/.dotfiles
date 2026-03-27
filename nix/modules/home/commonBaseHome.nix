@@ -90,6 +90,9 @@
           python = "python3";
           pip = "pip3";
 
+          # ssh
+          rmkh = "rm ~/.ssh/known_hosts";
+
           # terraform
           tf = "terraform";
           
