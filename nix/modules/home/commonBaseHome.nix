@@ -73,6 +73,9 @@
         };
 
         shellAliases = {
+          # env
+          e = "set -a; source .env; set +a;";
+
           # git
           gs = "git status";
           gd = "git diff";
