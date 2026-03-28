@@ -30,7 +30,7 @@
 
   wifi.enable = true;
   openssh.enable = true;
-  vpn-us-ga-285.enable = false;
+  services.tailscale.enable = true;
 
   bluetooth.enable = true;
 
