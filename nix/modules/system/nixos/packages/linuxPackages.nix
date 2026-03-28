@@ -28,7 +28,9 @@
       qutebrowser
       rofi
       signal-desktop
+      tailscale
       unzip
+      xclip
     ];
   };
 
