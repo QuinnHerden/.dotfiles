@@ -28,6 +28,8 @@
 
   quinnherdenUser.enable = true;
 
+  pam.enable = true;
+
   wifi.enable = true;
   openssh.enable = true;
   services.tailscale.enable = true;
