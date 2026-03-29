@@ -21,6 +21,16 @@
         xterm.enable = false;
       };
 
+      displayManager = {
+        lightdm = {
+          enable = true;
+
+          greeters = {
+            mini.enable = false;
+          };
+        };
+      };
+
       windowManager = {
         i3 = {
           enable = true;
