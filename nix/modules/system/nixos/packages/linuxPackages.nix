@@ -19,12 +19,14 @@
       bitwarden-cli
       bitwarden-desktop
       brave
+      brightnessctl
       discord
       feh
       gcc
       gnumake
       obs-studio
       obsidian
+      pipewire
       qutebrowser
       rofi
       signal-desktop
