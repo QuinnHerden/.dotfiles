@@ -24,10 +24,6 @@
       displayManager = {
         lightdm = {
           enable = true;
-
-          greeters = {
-            mini.enable = false;
-          };
         };
       };
 
