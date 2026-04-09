@@ -34,6 +34,7 @@
         "anki"
         "balenaetcher"
         "calibre"
+        "claude-code"
         "dbeaver-community"
         "discord"
         "docker-desktop"
