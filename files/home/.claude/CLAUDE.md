@@ -29,6 +29,10 @@ Output markdown when formatting helps. Match the structure of the content — do
 - TypeScript over JavaScript; prefer strict types, avoid `any`
 - Type hints in Python; prefer `uv` over `pip`/PDM
 
+## Agents
+
+After writing or modifying code, invoke the `code-reviewer` agent.
+
 ## What to Avoid
 
 - Trailing summaries ("In summary, we did X, Y, Z") — I can read the diff
