@@ -51,6 +51,7 @@
         "raspberry-pi-imager"
         "signal"
         "vb-cable"
+        "virtualbox"
         "visual-studio-code"
         "whatsapp"
         "yubico-yubikey-manager"
