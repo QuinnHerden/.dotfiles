@@ -21,7 +21,7 @@
     enable = true;
     name = "quinnherden";
   };
-  nixosBaseHome = {
+  linuxBaseHome = {
     enable = true;
     name = "quinnherden";
   };
@@ -40,9 +40,6 @@
 
   i3.enable = false;
   redshift.enable = false;
-
-  commonPackages.enable = false;
-  linuxPackages.enable = false;
 
   ################
 

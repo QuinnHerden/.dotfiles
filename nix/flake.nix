@@ -33,12 +33,25 @@
         modules = [
           home-manager.darwinModules.default
           ./hosts/mac-papi
-          ./modules/home
+          ./modules/home/integrated
           ./modules/system/common
           ./modules/system/darwin
         ];
       };
       
+    };
+
+    homeConfigurations = {
+
+      "quinnherden@kali-bug" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.aarch64-linux;
+        extraSpecialArgs = { inherit inputs; };
+        modules = [
+          ./hosts/kali-bug
+          ./modules/home/standalone
+        ];
+      };
+
     };
 
     nixosConfigurations = {
@@ -48,7 +61,7 @@
         modules = [
           home-manager.nixosModules.default
           ./hosts/nix-bonko
-          ./modules/home
+          ./modules/home/integrated
           ./modules/system/common
           ./modules/system/nixos
         ];
@@ -59,7 +72,7 @@
         modules = [
           home-manager.nixosModules.default
           ./hosts/nix-dots
-          ./modules/home
+          ./modules/home/integrated
           ./modules/system/common
           ./modules/system/nixos
         ];
@@ -70,18 +83,7 @@
         modules = [
           home-manager.nixosModules.default
           ./hosts/nix-robin
-          ./modules/home
-          ./modules/system/common
-          ./modules/system/nixos
-        ];
-      };
-
-      "nix-xi" = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs; };
-        modules = [
-          home-manager.nixosModules.default
-          ./hosts/nix-xi
-          ./modules/home
+          ./modules/home/integrated
           ./modules/system/common
           ./modules/system/nixos
         ];
