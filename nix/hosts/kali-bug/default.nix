@@ -12,7 +12,9 @@
   home.username = "quinnherden";
   home.homeDirectory = "/home/quinnherden";
 
-  standaloneCommonPackages.enable = true;
-  standaloneLinuxPackages.enable = true;
+  devCommonPackages.enable = true;
+  devLinuxPackages.enable = true;
+  secCommonPackages.enable = true;
+  secLinuxPackages.enable = true;
 
 }

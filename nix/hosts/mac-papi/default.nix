@@ -28,10 +28,10 @@
     name = "quinnherden";
   };
 
-  commonPackages.enable = true;
-  darwinPackages.enable = true;
-  baseBrews.enable = true;
-  extraBrews.enable = true;
-  experimentalBrews.enable = true;
+  devCommonPackages.enable = true;
+  opsCommonPackages.enable = true;
+  devDarwinPackages.enable = true;
+  opsDarwinPackages.enable = true;
+  experimentalDarwinPackages.enable = true;
 
 }

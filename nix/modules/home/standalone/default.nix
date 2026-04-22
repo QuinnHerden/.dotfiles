@@ -9,10 +9,14 @@
 
   imports = [
     ../content/base.nix
-    ./commonPackages.nix
-    ./linuxPackages.nix
-    ./x86CommonPackages.nix
-    ./x86LinuxPackages.nix
+    ./devCommonPackages.nix
+    ./opsCommonPackages.nix
+    ./secCommonPackages.nix
+    ./devLinuxPackages.nix
+    ./opsLinuxPackages.nix
+    ./secLinuxPackages.nix
+    ./opsCommonX86Packages.nix
+    ./opsLinuxX86Packages.nix
   ];
 
 }

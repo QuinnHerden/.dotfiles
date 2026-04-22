@@ -1,0 +1,29 @@
+pkgs: with pkgs; [
+  cmake
+  fd
+  gawk
+  gh
+  git
+  gnugrep
+  gnupg
+  go
+  htop
+  jq
+  lazygit
+  neofetch
+  neovim
+  nodejs
+  nmap
+  openssl
+  pipx
+  pre-commit
+  python314
+  ripgrep
+  sshpass
+  tmux
+  tree
+  tree-sitter
+  uv
+  vim
+  wget
+]

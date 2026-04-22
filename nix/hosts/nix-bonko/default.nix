@@ -41,9 +41,6 @@
   i3.enable = false;
   redshift.enable = false;
 
-  commonPackages.enable = false;
-  linuxPackages.enable = false;
-
   ################
 
   programs.zsh.enable = true;
