@@ -8,9 +8,9 @@
 {
 
   imports = [
-    ./commonPackages.nix
+    ./devCommonPackages.nix
+    ./opsCommonPackages.nix
+    ./secCommonPackages.nix
   ];
-
-  commonPackages.enable = lib.mkDefault false;
 
 }

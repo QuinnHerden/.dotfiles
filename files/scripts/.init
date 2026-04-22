@@ -15,16 +15,6 @@ if ! command -v nix >/dev/null 2>&1; then
   exit 1
 fi
 
-# install Home Manager
-home_manager_channel="https://github.com/nix-community/home-manager/archive/master.tar.gz"
-if ! nix-channel --list | grep -q "^home-manager $home_manager_channel$"; then
-  echo "Home Manager is not installed."
-  echo "Installing Home Manager."
-
-  nix-channel --add $home_manager_channel home-manager
-  nix-channel --update
-fi
-
 # config system (based on operating system type)
 system_type=$(uname -s)
 
@@ -49,5 +39,24 @@ if [ "$system_type" = "Darwin" ]; then
     echo "Activating Nix configuration."
 
     nix run nix-darwin --extra-experimental-features nix-command --extra-experimental-features flakes -- switch --flake $HOME/.dotfiles/nix
+  fi
+fi
+
+if [ "$system_type" = "Linux" ]; then
+  if ! command -v nixos-rebuild >/dev/null 2>&1; then
+    # initial configuration for standalone Linux
+    if ! command -v home-manager >/dev/null 2>&1; then
+      echo "Nix configuration is not active."
+      echo "Activating Nix configuration."
+
+      echo "Using host: $(whoami)@$(hostname)"
+      nix run nixpkgs#home-manager -- switch --flake $HOME/.dotfiles/nix#$(whoami)@$(hostname)
+
+      echo "Finished activating Nix configuration."
+      echo "1. Restart your shell."
+      echo "2. Run this script again."
+
+      exit 1
+    fi
   fi
 fi

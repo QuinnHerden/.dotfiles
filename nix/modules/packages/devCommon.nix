@@ -1,0 +1,36 @@
+pkgs: with pkgs; [
+  bat
+  cmake
+  curlie
+  eza
+  fd
+  fzf
+  gawk
+  gh
+  git
+  gnugrep
+  gnupg
+  go
+  htop
+  jq
+  lazygit
+  neofetch
+  neovim
+  nodejs
+  nmap
+  openssl
+  pipx
+  posting
+  pre-commit
+  python314
+  ripgrep
+  sshpass
+  thefuck
+  tmux
+  tree
+  tree-sitter
+  uv
+  vim
+  wget
+  zoxide
+]
