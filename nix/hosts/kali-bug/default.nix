@@ -9,7 +9,7 @@
   imports = [];
 
   system.stateVersion = "24.11";
-  x86_64-linuxSystem.enable = true;
+  #x86_64-linuxSystem.enable = true;
 
   hostname = {
     enable = true;

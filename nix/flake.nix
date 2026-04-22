@@ -83,7 +83,6 @@
           ./hosts/kali-bug
           ./modules/home
           ./modules/system/common
-          ./modules/system/nixos
         ];
       };
 
