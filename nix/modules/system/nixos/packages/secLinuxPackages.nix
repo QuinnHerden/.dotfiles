@@ -14,7 +14,7 @@
   };
 
   config = lib.mkIf config.secLinuxPackages.enable {
-    environment.systemPackages = import ../../../../packages/secLinux.nix pkgs;
+    environment.systemPackages = import ../../../packages/secLinux.nix pkgs;
   };
 
 }
