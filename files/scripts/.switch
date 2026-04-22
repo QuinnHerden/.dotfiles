@@ -9,5 +9,9 @@ if [ "$system_type" = "Darwin" ]; then
 fi
 
 if [ "$system_type" = "Linux" ]; then
-  sudo nixos-rebuild switch --flake $HOME/.dotfiles/nix
+  if command -v nixos-rebuild >/dev/null 2>&1; then
+    sudo nixos-rebuild switch --flake $HOME/.dotfiles/nix
+  else
+    home-manager switch --flake $HOME/.dotfiles/nix#$(whoami)@$(hostname)
+  fi
 fi
