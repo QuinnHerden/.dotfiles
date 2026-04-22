@@ -8,7 +8,9 @@
 {
 
   imports = [
-    ./linuxPackages.nix
+    ./devLinuxPackages.nix
+    ./opsLinuxPackages.nix
+    ./secLinuxPackages.nix
   ];
 
 }

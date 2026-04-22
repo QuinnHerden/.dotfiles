@@ -1,50 +1,22 @@
 {
-  config,
   lib,
+  config,
   pkgs,
   ...
 }:
 
 {
-  imports = [];
 
-  system.stateVersion = "24.11";
-  #x86_64-linuxSystem.enable = true;
+  imports = [ ../../modules/home/content/linux.nix ];
 
-  hostname = {
-    enable = true;
-    name = "kali-bug";
-  };
+  home.username = "quinnherden";
+  home.homeDirectory = "/home/quinnherden";
 
-  commonBaseHome = {
-    enable = true;
-    name = "quinnherden";
-  };
-  nixosBaseHome = {
-    enable = true;
-    name = "quinnherden";
-  };
-
-  quinnherdenUser.enable = true;
-
-  #pam.enable = true;
-
-  #wifi.enable = true;
-  #openssh.enable = true;
-  #services.tailscale.enable = true;
-
-  #bluetooth.enable = true;
-
-  #keyd.enable = true;
-  #libinput.enable = true;
-
-  #i3.enable = true;
-  #redshift.enable = true;
-
-  #docker.enable = true;
-
-  commonPackages.enable = true;
-  linuxPackages.enable = true;
+  devCommonPackages.enable = true;
+  devLinuxPackages.enable = true;
+  opsCommonPackages.enable = true;
+  opsLinuxPackages.enable = true;
+  secCommonPackages.enable = true;
+  secLinuxPackages.enable = true;
 
 }
-

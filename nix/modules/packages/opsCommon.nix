@@ -1,0 +1,25 @@
+pkgs: with pkgs; [
+  ansible
+  awscli2
+  duckdb
+  eslint_d
+  ffmpeg
+  httrack
+  kubectx
+  kubernetes-helm
+  lazydocker
+  netclient
+  ngrok
+  ollama
+  packer
+  pandoc
+  pipx
+  podman
+  postgresql
+  potrace
+  prettierd
+  stylua
+  terraform
+  tflint
+  yarn
+]

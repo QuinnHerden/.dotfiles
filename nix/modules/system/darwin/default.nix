@@ -8,7 +8,6 @@
 {
 
   imports = [
-    ./homebrew
     ./networking
     ./packages
     ./system

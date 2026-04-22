@@ -10,7 +10,7 @@
   imports = [
     ./commonBaseHome.nix
     ./darwinBaseHome.nix
-    ./nixosBaseHome.nix
+    ./linuxBaseHome.nix
   ];
 
 }
