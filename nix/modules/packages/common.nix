@@ -32,7 +32,6 @@ pkgs: with pkgs; [
   pipx
   podman
   postgresql
-  postman
   potrace
   pre-commit
   prettierd
