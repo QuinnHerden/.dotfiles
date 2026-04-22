@@ -68,6 +68,20 @@
       # env
       e = "set -a; source .env; set +a;";
 
+      # eza
+      ls = "eza $eza_params";
+      l = "eza --git-ignore $eza_params";
+      ll = "eza --all --header --long $eza_params";
+      llm = "eza --all --header --long --sort=modified $eza_params";
+      la = "eza -lbhHigUmuSa";
+      lx = "eza -lbhHigUmuSa@";
+      lt = "eza --tree $eza_params";
+      tree = "eza --tree $eza_params";
+
+      # fzf
+      ff = "fzf --style full --preview 'fzf-preview.sh {}' --bind 'focus:transform-header:file --brief {}'";
+
+
       # git
       gs = "git status";
       gd = "git diff";
@@ -109,24 +123,11 @@
     };
 
     initContent = ''
+      eza_params=()
+      eval "$(fzf --zsh)"
       eval "$(zoxide init --cmd cd zsh)"
       eval $(thefuck --alias f)
     '';
-  };
-
-  programs.thefuck = {
-    enable = true;
-    enableZshIntegration = true;
-  };
-
-  programs.fzf = {
-    enable = true;
-    enableZshIntegration = true;
-  };
-
-  programs.zoxide = {
-    enable = true;
-    enableZshIntegration = true;
   };
 
   # The state version is required and should stay at the version you
