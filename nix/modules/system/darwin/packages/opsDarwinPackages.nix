@@ -6,7 +6,7 @@
 }:
 
 let
-  packages = import ../../../../packages/opsDarwin.nix;
+  packages = import ../../../packages/opsDarwin.nix;
 in
 
 {

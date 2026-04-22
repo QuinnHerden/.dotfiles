@@ -14,7 +14,7 @@
   };
 
   config = lib.mkIf config.secCommonPackages.enable {
-    environment.systemPackages = import ../../../../packages/secCommon.nix pkgs;
+    environment.systemPackages = import ../../../packages/secCommon.nix pkgs;
   };
 
 }

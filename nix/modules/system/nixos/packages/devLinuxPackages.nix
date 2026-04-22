@@ -14,7 +14,7 @@
   };
 
   config = lib.mkIf config.devLinuxPackages.enable {
-    environment.systemPackages = import ../../../../packages/devLinux.nix pkgs;
+    environment.systemPackages = import ../../../packages/devLinux.nix pkgs;
   };
 
 }

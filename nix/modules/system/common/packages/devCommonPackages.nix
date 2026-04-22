@@ -20,7 +20,7 @@
 
     programs.zsh.enable = true;
 
-    environment.systemPackages = import ../../../../packages/devCommon.nix pkgs;
+    environment.systemPackages = import ../../../packages/devCommon.nix pkgs;
   };
 
 }

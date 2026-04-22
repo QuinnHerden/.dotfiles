@@ -15,8 +15,8 @@
 
   config = lib.mkIf config.opsCommonPackages.enable {
     environment.systemPackages =
-      (import ../../../../packages/opsCommon.nix pkgs) ++
-      (lib.optionals pkgs.stdenv.isx86_64 (import ../../../../packages/opsCommonX86.nix pkgs));
+      (import ../../../packages/opsCommon.nix pkgs) ++
+      (lib.optionals pkgs.stdenv.isx86_64 (import ../../../packages/opsCommonX86.nix pkgs));
   };
 
 }
