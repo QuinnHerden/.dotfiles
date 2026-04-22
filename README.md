@@ -11,6 +11,16 @@ Enabling a seamless experience across host environments.
 
 - `curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install`
 
+### On Generic Linux (non-NixOS)
+
+#### Set hostname to match your host config
+
+- `sudo hostname {hostname}` (e.g. `kali-bug`)
+
+#### Ensure curl is available
+
+- `sudo apt install curl` or equivalent
+
 ### On All
 
 #### Connect to the Internet
@@ -42,9 +52,10 @@ Enabling a seamless experience across host environments.
 
 ### Set hostname
 
-set your hostname to match the host config you want to sync to.
+Set your hostname to match the host config you want to sync to.
 
-- `sudo hostname {hostname}`
+- **NixOS / MacOS:** `sudo hostname {hostname}`
+- **Generic Linux:** already done in prerequisites — `.switch` uses `$(whoami)@$(hostname)` to resolve your `homeConfigurations` entry
 
 ### Configure System
 

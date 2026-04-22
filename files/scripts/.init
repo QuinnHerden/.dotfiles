@@ -15,16 +15,6 @@ if ! command -v nix >/dev/null 2>&1; then
   exit 1
 fi
 
-# install Home Manager
-home_manager_channel="https://github.com/nix-community/home-manager/archive/master.tar.gz"
-if ! nix-channel --list | grep -q "^home-manager $home_manager_channel$"; then
-  echo "Home Manager is not installed."
-  echo "Installing Home Manager."
-
-  nix-channel --add $home_manager_channel home-manager
-  nix-channel --update
-fi
-
 # config system (based on operating system type)
 system_type=$(uname -s)
 
@@ -59,6 +49,7 @@ if [ "$system_type" = "Linux" ]; then
       echo "Nix configuration is not active."
       echo "Activating Nix configuration."
 
+      echo "Using host: $(whoami)@$(hostname)"
       nix run nixpkgs#home-manager -- switch --flake $HOME/.dotfiles/nix#$(whoami)@$(hostname)
 
       echo "Finished activating Nix configuration."
