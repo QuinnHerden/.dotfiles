@@ -14,7 +14,9 @@
   };
 
   config = lib.mkIf config.linuxPackages.enable {
-    environment.systemPackages = import ../../../../packages/linux.nix pkgs;
+    environment.systemPackages =
+      (import ../../../../packages/linux.nix pkgs) ++
+      (lib.optionals pkgs.stdenv.isx86_64 (import ../../../../packages/x86Linux.nix pkgs));
   };
 
 }

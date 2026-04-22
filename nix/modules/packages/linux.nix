@@ -4,7 +4,6 @@ pkgs: with pkgs; [
   bitwarden-desktop
   brave
   brightnessctl
-  discord
   feh
   gcc
   gnumake
