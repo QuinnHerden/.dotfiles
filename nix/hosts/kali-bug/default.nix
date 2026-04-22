@@ -7,6 +7,8 @@
 
 {
 
+  imports = [ ../../modules/home/content/linux.nix ];
+
   home.username = "quinnherden";
   home.homeDirectory = "/home/quinnherden";
 

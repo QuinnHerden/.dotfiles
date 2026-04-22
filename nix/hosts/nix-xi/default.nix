@@ -21,7 +21,7 @@
     enable = true;
     name = "quinnherden";
   };
-  nixosBaseHome = {
+  linuxBaseHome = {
     enable = true;
     name = "quinnherden";
   };

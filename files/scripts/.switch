@@ -12,6 +12,7 @@ if [ "$system_type" = "Linux" ]; then
   if command -v nixos-rebuild >/dev/null 2>&1; then
     sudo nixos-rebuild switch --flake $HOME/.dotfiles/nix
   else
+    echo "Using host: $(whoami)@$(hostname)"
     home-manager switch --flake $HOME/.dotfiles/nix#$(whoami)@$(hostname)
   fi
 fi
