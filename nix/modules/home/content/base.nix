@@ -123,6 +123,7 @@
     };
 
     initContent = ''
+      export PATH="$HOME/.nix-profile/bin:$PATH"
       eza_params=()
       eval "$(fzf --zsh)"
       eval "$(zoxide init --cmd cd zsh)"
