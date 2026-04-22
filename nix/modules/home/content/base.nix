@@ -48,10 +48,6 @@
 
     autosuggestion.enable = true;
 
-    envExtra = ''
-      export PATH="$HOME/.nix-profile/bin:$PATH"
-    '';
-
     oh-my-zsh = {
       enable = true;
       theme = "nicoulaj";
