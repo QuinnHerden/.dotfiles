@@ -14,6 +14,8 @@
 
   devCommonPackages.enable = true;
   devLinuxPackages.enable = true;
+  opsCommonPackages.enable = true;
+  opsLinuxPackages.enable = true;
   secCommonPackages.enable = true;
   secLinuxPackages.enable = true;
 

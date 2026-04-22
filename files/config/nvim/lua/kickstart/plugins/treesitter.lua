@@ -18,6 +18,8 @@ return {
     },
     config = function(_, opts)
       -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
+      local ok = pcall(require, 'nvim-treesitter')
+      if not ok then return end
 
       -- Prefer git instead of curl in order to improve connectivity in some environments
       require('nvim-treesitter.install').prefer_git = true
