@@ -76,11 +76,11 @@
         ];
       };
 
-      "nix-xi" = nixpkgs.lib.nixosSystem {
+      "kali-bug" = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };
         modules = [
           home-manager.nixosModules.default
-          ./hosts/nix-xi
+          ./hosts/kali-bug
           ./modules/home
           ./modules/system/common
           ./modules/system/nixos
