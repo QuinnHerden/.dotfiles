@@ -8,13 +8,13 @@
 {
 
   imports = [
-    ./commsDarwinPackages.nix
-    ./devDarwinPackages.nix
-    ./experimentalDarwinPackages.nix
-    ./extraDarwinPackages.nix
-    ./infraDarwinPackages.nix
-    ./opsDarwinPackages.nix
-    ./secDarwinPackages.nix
+    ./commsPackages.nix
+    ./devPackages.nix
+    ./experimentalPackages.nix
+    ./extraPackages.nix
+    ./infraPackages.nix
+    ./opsPackages.nix
+    ./secPackages.nix
   ];
 
   homebrew = {
