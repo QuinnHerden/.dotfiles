@@ -65,6 +65,12 @@
     };
 
     shellAliases = {
+      # cat
+      cat = "bat";
+
+      # curl
+      curl = "curlie";
+
       # env
       e = "set -a; source .env; set +a;";
 
