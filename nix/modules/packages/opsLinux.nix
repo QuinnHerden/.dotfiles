@@ -1,12 +1,12 @@
 pkgs: with pkgs; [
+  alacritty
   bitwarden-cli
   bitwarden-desktop
   brave
+  brightnessctl
   feh
-  obs-studio
   obsidian
   qutebrowser
   rofi
-  signal-desktop
-  tailscale
+  xclip
 ]

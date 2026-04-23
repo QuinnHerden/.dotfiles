@@ -12,10 +12,15 @@
   home.username = "quinnherden";
   home.homeDirectory = "/home/quinnherden";
 
-  devCommonPackages.enable = true;
-  devLinuxPackages.enable = true;
+  ############
+  # packages #
+  ############
   opsCommonPackages.enable = true;
   opsLinuxPackages.enable = true;
+
+  devCommonPackages.enable = true;
+  devLinuxPackages.enable = true;
+
   secCommonPackages.enable = true;
   secLinuxPackages.enable = true;
 

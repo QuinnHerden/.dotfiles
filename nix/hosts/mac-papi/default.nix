@@ -28,10 +28,28 @@
     name = "quinnherden";
   };
 
-  devCommonPackages.enable = true;
+  ############
+  # packages #
+  ############
   opsCommonPackages.enable = true;
-  devDarwinPackages.enable = true;
   opsDarwinPackages.enable = true;
+
+  devCommonPackages.enable = true;
+  devDarwinPackages.enable = true;
+
+  infraCommonPackages.enable = true;
+  infraDarwinPackages.enable = true;
+
+  secCommonPackages.enable = true;
+  secDarwinPackages.enable = true;
+
+  commsCommonPackages.enable = true;
+  commsDarwinPackages.enable = true;
+
+  extraCommonPackages.enable = true;
+  extraDarwinPackages.enable = true;
+
+  experimentalCommonPackages.enable = true;
   experimentalDarwinPackages.enable = true;
 
 }

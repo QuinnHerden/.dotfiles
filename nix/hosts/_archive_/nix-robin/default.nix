@@ -42,9 +42,12 @@
 
   docker.enable = true;
 
+  commsLinuxPackages.enable = true;
   devCommonPackages.enable = true;
-  opsCommonPackages.enable = true;
   devLinuxPackages.enable = true;
+  infraCommonPackages.enable = true;
+  infraLinuxPackages.enable = true;
+  opsCommonPackages.enable = true;
   opsLinuxPackages.enable = true;
 
   #######################################

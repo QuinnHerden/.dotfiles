@@ -88,6 +88,9 @@
       gc = "git commit -m";
       gp = "git push";
 
+      # grep
+      grep = "rg";
+
       # kubectl
       k = "kubectl";
 

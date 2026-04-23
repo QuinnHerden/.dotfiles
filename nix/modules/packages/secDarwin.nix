@@ -1,0 +1,7 @@
+{
+  brews = [];
+
+  casks = [];
+
+  masApps = {};
+}

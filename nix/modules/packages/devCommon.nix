@@ -1,37 +1,22 @@
 pkgs: with pkgs; [
-  bat
   cmake
   curlie
-  eza
-  fd
-  fzf
-  gawk
+  duckdb
+  eslint_d
   gh
-  git
-  gnugrep
-  gnupg
   go
-  htop
-  jq
+  lazydocker
   lazygit
-  neofetch
-  neovim
-  nmap
+  ngrok
   nodejs
   openssl
-  openvpn
   pipx
+  podman
+  postgresql
   posting
   pre-commit
+  prettierd
   python314
-  ripgrep
-  sshpass
-  thefuck
-  tmux
-  tree
-  tree-sitter
+  stylua
   uv
-  vim
-  wget
-  zoxide
 ]
