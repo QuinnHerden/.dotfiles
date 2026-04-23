@@ -7,16 +7,17 @@
 
 {
 
+  nixpkgs.config.allowUnfree = true;
+
   imports = [
     ../content/base.nix
-    ./devCommonPackages.nix
-    ./opsCommonPackages.nix
-    ./secCommonPackages.nix
-    ./devLinuxPackages.nix
-    ./opsLinuxPackages.nix
-    ./secLinuxPackages.nix
-    ./opsCommonX86Packages.nix
-    ./opsLinuxX86Packages.nix
+    ./commsPackages.nix
+    ./devPackages.nix
+    ./experimentalPackages.nix
+    ./extraPackages.nix
+    ./infraPackages.nix
+    ./opsPackages.nix
+    ./secPackages.nix
   ];
 
 }
