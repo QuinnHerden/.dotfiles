@@ -8,13 +8,13 @@
 {
 
   imports = [
-    ./commsLinuxPackages.nix
-    ./devLinuxPackages.nix
-    ./experimentalLinuxPackages.nix
-    ./extraLinuxPackages.nix
-    ./infraLinuxPackages.nix
-    ./opsLinuxPackages.nix
-    ./secLinuxPackages.nix
+    ./commsPackages.nix
+    ./devPackages.nix
+    ./experimentalPackages.nix
+    ./extraPackages.nix
+    ./infraPackages.nix
+    ./opsPackages.nix
+    ./secPackages.nix
   ];
 
 }

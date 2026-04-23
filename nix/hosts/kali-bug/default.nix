@@ -15,13 +15,8 @@
   ############
   # packages #
   ############
-  opsCommonPackages.enable = true;
-  opsLinuxPackages.enable = true;
-
-  devCommonPackages.enable = true;
-  devLinuxPackages.enable = true;
-
-  secCommonPackages.enable = true;
-  secLinuxPackages.enable = true;
+  opsPackages.enable = true;
+  devPackages.enable = true;
+  secPackages.enable = true;
 
 }

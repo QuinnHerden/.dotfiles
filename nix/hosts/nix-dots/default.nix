@@ -6,7 +6,7 @@
 }:
 
 {
-  imports = [ 
+  imports = [
     ./hardware-configuration.nix
   ];
   system.stateVersion = "24.11";
@@ -47,23 +47,11 @@
   ############
   # packages #
   ############
-  opsCommonPackages.enable = true;
-  opsLinuxPackages.enable = true;
-
-  devCommonPackages.enable = true;
-  devLinuxPackages.enable = true;
-
-  infraCommonPackages.enable = true;
-  infraLinuxPackages.enable = true;
-
-  secCommonPackages.enable = true;
-  secLinuxPackages.enable = true;
-
-  commsCommonPackages.enable = true;
-  commsLinuxPackages.enable = true;
-
-  extraCommonPackages.enable = true;
-  extraLinuxPackages.enable = true;
+  opsPackages.enable = true;
+  devPackages.enable = true;
+  infraPackages.enable = true;
+  secPackages.enable = true;
+  commsPackages.enable = true;
+  extraPackages.enable = true;
 
 }
-
