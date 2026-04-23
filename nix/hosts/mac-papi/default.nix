@@ -15,7 +15,7 @@
   users.users.quinnherden = {
     name = "quinnherden";
     home = "/Users/quinnherden";
-    
+
     shell = pkgs.zsh;
   };
 
@@ -28,10 +28,15 @@
     name = "quinnherden";
   };
 
-  devCommonPackages.enable = true;
-  opsCommonPackages.enable = true;
-  devDarwinPackages.enable = true;
-  opsDarwinPackages.enable = true;
-  experimentalDarwinPackages.enable = true;
+  ############
+  # packages #
+  ############
+  opsPackages.enable = true;
+  devPackages.enable = true;
+  infraPackages.enable = true;
+  secPackages.enable = true;
+  commsPackages.enable = true;
+  extraPackages.enable = true;
+  experimentalPackages.enable = true;
 
 }

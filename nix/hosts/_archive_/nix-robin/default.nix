@@ -6,7 +6,7 @@
 }:
 
 {
-  imports = [
+  imports = [ 
     ./hardware-configuration.nix
   ];
   system.stateVersion = "24.11";
@@ -14,7 +14,7 @@
 
   hostname = {
     enable = true;
-    name = "nix-dots";
+    name = "nix-robin";
   };
 
   commonBaseHome = {
@@ -28,11 +28,9 @@
 
   quinnherdenUser.enable = true;
 
-  pam.enable = true;
-
   wifi.enable = true;
   openssh.enable = true;
-  services.tailscale.enable = true;
+  vpn-us-ga-285.enable = true;
 
   bluetooth.enable = true;
 
@@ -44,14 +42,22 @@
 
   docker.enable = true;
 
-  ############
-  # packages #
-  ############
-  opsPackages.enable = true;
-  devPackages.enable = true;
-  infraPackages.enable = true;
-  secPackages.enable = true;
-  commsPackages.enable = true;
-  extraPackages.enable = true;
+  commsLinuxPackages.enable = true;
+  devCommonPackages.enable = true;
+  devLinuxPackages.enable = true;
+  infraCommonPackages.enable = true;
+  infraLinuxPackages.enable = true;
+  opsCommonPackages.enable = true;
+  opsLinuxPackages.enable = true;
+
+  #######################################
+  # fix touchpad error:
+  # "elan_i2c invalid report id data (1)"
+
+  boot.extraModprobeConfig = ''
+    blacklist elan_i2c
+  '';
+  #######################################
 
 }
+

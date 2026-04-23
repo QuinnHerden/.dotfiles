@@ -10,7 +10,7 @@
   imports = [
     ./fonts
     ./nix
-    ./packages
+    ./packages.nix
   ];
 
 }
