@@ -16,9 +16,10 @@ pkgs: with pkgs; [
   lazygit
   neofetch
   neovim
-  nodejs
   nmap
+  nodejs
   openssl
+  openvpn
   pipx
   posting
   pre-commit
