@@ -3,9 +3,6 @@
   ];
 
   casks = [
-    "affinity-designer"
-    "affinity-photo"
-    "affinity-publisher"
     "protege"
   ];
 
