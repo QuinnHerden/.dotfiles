@@ -4,7 +4,6 @@
   ];
 
   casks = [
-    "alacritty"
     "amethyst"
     "dbeaver-community"
     "docker-desktop"
