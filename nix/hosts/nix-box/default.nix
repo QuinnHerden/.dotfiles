@@ -1,0 +1,57 @@
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+
+{
+  imports = [
+    ./hardware-configuration.nix
+  ];
+  system.stateVersion = "24.11";
+  x86_64-linuxSystem.enable = true;
+
+  hostname = {
+    enable = true;
+    name = "nix-box";
+  };
+
+  commonBaseHome = {
+    enable = true;
+    name = "quinnherden";
+  };
+  linuxBaseHome = {
+    enable = true;
+    name = "quinnherden";
+  };
+
+  quinnherdenUser.enable = true;
+
+  pam.enable = true;
+
+  wifi.enable = true;
+  openssh.enable = true;
+  services.tailscale.enable = true;
+
+  bluetooth.enable = true;
+
+  keyd.enable = true;
+  libinput.enable = true;
+
+  i3.enable = true;
+  redshift.enable = true;
+
+  docker.enable = true;
+
+  ############
+  # packages #
+  ############
+  opsPackages.enable = true;
+  devPackages.enable = false;
+  infraPackages.enable = false;
+  secPackages.enable = false;
+  commsPackages.enable = false;
+  extraPackages.enable = false;
+
+}

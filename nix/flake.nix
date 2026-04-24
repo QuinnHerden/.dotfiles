@@ -56,11 +56,11 @@
 
     nixosConfigurations = {
     
-      "nix-bonko" = nixpkgs.lib.nixosSystem {
+      "nix-box" = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };
         modules = [
           home-manager.nixosModules.default
-          ./hosts/nix-bonko
+          ./hosts/nix-box
           ./modules/home/integrated
           ./modules/system/common
           ./modules/system/nixos
@@ -72,17 +72,6 @@
         modules = [
           home-manager.nixosModules.default
           ./hosts/nix-dots
-          ./modules/home/integrated
-          ./modules/system/common
-          ./modules/system/nixos
-        ];
-      };
-
-      "nix-robin" = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs; };
-        modules = [
-          home-manager.nixosModules.default
-          ./hosts/nix-robin
           ./modules/home/integrated
           ./modules/system/common
           ./modules/system/nixos
