@@ -31,7 +31,7 @@ Output markdown when formatting helps. Match the structure of the content — do
 
 ## Agents
 
-After writing or modifying code, invoke the `code-reviewer` agent.
+After writing or modifying code, before making any git commit, invoke all three agents in parallel: `code-reviewer`, `sw-architect`, and `security-analyst`. Do not commit until all three have run and any critical or high findings are resolved.
 
 ## What to Avoid
 
