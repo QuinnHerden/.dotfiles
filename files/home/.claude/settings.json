@@ -1,14 +1,4 @@
 {
-  "voiceEnabled": false,
-  "statusLine": {
-    "type": "command",
-    "command": "bash /Users/quinnherden/.claude/statusline-command.sh"
-  },
-  "enabledPlugins": {
-    "frontend-design@claude-plugins-official": true,
-    "github@claude-plugins-official": true,
-    "chrome-devtools-mcp@claude-plugins-official": true
-  },
   "permissions": {
     "allow": [
       "Bash(git status*)",
@@ -32,5 +22,16 @@
       "Read(**/id_rsa)",
       "Read(**/id_ed25519)"
     ]
-  }
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash /Users/quinnherden/.claude/statusline-command.sh"
+  },
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": true,
+    "github@claude-plugins-official": true,
+    "chrome-devtools-mcp@claude-plugins-official": true
+  },
+  "voiceEnabled": false,
+  "editorMode": "vim"
 }
