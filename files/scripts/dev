@@ -154,10 +154,11 @@ eval podman run -d \
   --security-opt label=disable \
   --device /dev/fuse \
   --userns=keep-id \
-  -v "${WORKSPACE_DIR}:/home/dev/${PROJECT_NAME}:Z" \
+  -v "${WORKSPACE_DIR}:/home/dev/${PROJECT_NAME}" \
   -v "claude-state-${CONTAINER_NAME}:/home/dev/.claude" \
   -v "npm-cache-${CONTAINER_NAME}:/home/dev/.npm" \
   -v "podman-storage-${CONTAINER_NAME}:/home/dev/.local/share/containers" \
+  -e DEV_DETACHED=1 \
   $PORT_ARGS \
   $COMPOSE_ENV \
   "$IMAGE_NAME"
