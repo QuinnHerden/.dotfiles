@@ -32,7 +32,8 @@ ARG DOTFILES_BRANCH=main
 
 RUN git clone --branch ${DOTFILES_BRANCH} ${DOTFILES_REPO} /home/dev/.dotfiles
 
-ENV PATH="/home/dev/.nix-profile/bin:${PATH}" \
+ENV PATH="/home/dev/.npm-global/bin:/home/dev/.local/bin:/home/dev/.nix-profile/bin:${PATH}" \
+    NPM_CONFIG_PREFIX=/home/dev/.npm-global \
     USER=dev \
     HOME=/home/dev
 
