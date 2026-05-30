@@ -8,6 +8,7 @@ dev — isolated dev containers via Podman
 Usage:
   dev                                    bare shell (interactive, no repo)
   dev <repo> [branch]                    project mode (detached, with ports)
+  dev --exec <repo> [branch]             shell into a running project container
   dev --restart <repo> [branch]          stop + relaunch a project container
   dev --stop <container-name>            stop and remove a container
   dev --rebuild                          rebuild the dev-container image
@@ -15,7 +16,6 @@ Usage:
   dev --help                             show this help
 
 Project mode reads dev.yml from the repo root for compose and port config.
-Attach with: podman exec -it <container-name> zsh
 HELP
   exit 0
 fi
@@ -100,6 +100,17 @@ fi
 if [ "${1:-}" = "--ls" ]; then
   podman ps --filter "name=^dev-" --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
   exit 0
+fi
+
+# --- Exec command ---
+if [ "${1:-}" = "--exec" ]; then
+  REPO="${2:?Usage: dev --exec <repo-path> [branch]}"
+  REPO_ABS="$(cd "$REPO" && pwd)"
+  E_PROJECT=$(basename "$REPO_ABS")
+  E_BRANCH="${3:-$(git -C "$REPO_ABS" branch --show-current)}"
+  E_SLUG="${E_BRANCH//\//-}"
+  E_NAME="dev-${E_PROJECT}-${E_SLUG}"
+  exec podman exec -it "$E_NAME" zsh
 fi
 
 # --- Bare mode (no args) ---
