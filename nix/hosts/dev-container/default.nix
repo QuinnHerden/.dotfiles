@@ -13,7 +13,6 @@
   devPackages.enable = true;
   opsPackages.enable = true;
   opsPackages.enableGui = false;
-  infraPackages.enable = true;
-  secPackages.enable = true;
+  opsPackages.enableHeavy = false;
 
 }
