@@ -48,10 +48,10 @@ if [ -n "$COMPOSE_DIR" ] && [ -n "$COMPOSE_FILES" ]; then
   cd "$HOME"
 fi
 
-# If a command was passed (e.g. CMD ["zsh"]), run it interactively.
-# Otherwise keep container alive for exec sessions (detached/project mode).
-if [ $# -gt 0 ]; then
-  exec "$@"
-else
+# Detached mode (project containers): stay alive for exec sessions.
+# Interactive mode (bare containers): drop into shell.
+if [ "${DEV_DETACHED:-}" = "1" ]; then
   exec sleep infinity
+else
+  exec zsh
 fi
