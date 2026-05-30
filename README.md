@@ -61,6 +61,62 @@ Set your hostname to match the host config you want to sync to.
 
 - run `sh ~/.dotfiles/files/scripts/.switch` to configure your system.
 
+## Dev Containers
+
+Isolated dev environments using Podman. Each container gets the full dotfiles toolchain (zsh, nvim, lazygit, lazydocker, Claude Code) via Nix + home-manager.
+
+### Prerequisites
+
+- Podman Desktop installed and `podman machine` running
+- Build the image once: `podman build --no-cache -t dev-container -f ~/.dotfiles/container/Containerfile ~/.dotfiles/container/`
+
+### Usage
+
+```bash
+# Bare mode — generic dev shell, no repo
+dev
+
+# Project mode — mounts a repo clone, reads dev.yml for compose/ports
+dev ~/repos/myproject
+dev ~/repos/myproject feat/my-branch
+
+# Attach to a running container
+podman exec -it dev-myproject-main zsh
+
+# Stop and remove
+podman stop dev-myproject-main && podman rm dev-myproject-main
+```
+
+The container takes ~15 seconds on first start to install Claude Code. Subsequent starts are near-instant (npm cache persists).
+
+### Project config
+
+Add a `dev.yml` to any repo to configure compose files and port mappings:
+
+```yaml
+project: myproject
+compose_dir: docker
+compose_files:
+  - docker-compose.yml
+  - docker-compose.dev.yml
+ports:
+  pg: 5432
+  api: 8080
+  web: 5173
+```
+
+Ports are auto-offset per container so parallel instances don't collide.
+
+### Parallel development
+
+Spin up multiple containers for different branches — each gets its own clone, database, and app stack:
+
+```bash
+dev ~/repos/myproject feat/branch-a
+dev ~/repos/myproject feat/branch-b
+# Two fully isolated environments
+```
+
 ## Post Installation
 
 ### MacOS Manual Configurations
