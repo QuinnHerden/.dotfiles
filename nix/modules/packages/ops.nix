@@ -4,23 +4,17 @@
     curlie
     eslint_d
     eza
-    ffmpeg
     fzf
     git
     gnugrep
     htop
-    httrack
     lazygit
     neofetch
     neovim
-    ollama
     openssl
-    openvpn
-    pandoc
     pipx
     postgresql
     posting
-    potrace
     pre-commit
     prettierd
     ripgrep
@@ -30,6 +24,16 @@
     tree-sitter
     vim
     zoxide
+  ];
+
+  # Heavy tools not needed in lightweight/container environments
+  heavy = pkgs: with pkgs; [
+    ffmpeg
+    httrack
+    ollama
+    openvpn
+    pandoc
+    potrace
   ];
 
   linux = pkgs: with pkgs; [
