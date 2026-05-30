@@ -29,12 +29,6 @@ if ! command -v claude >/dev/null 2>&1; then
   npm install -g @anthropic-ai/claude-code || true
 fi
 
-# Install podman-compose if needed
-if ! command -v podman-compose >/dev/null 2>&1; then
-  pip3 install --user podman-compose 2>/dev/null || true
-  export PATH="/home/dev/.local/bin:$PATH"
-fi
-
 # Start inner app stack if compose config is provided
 if [ -n "$COMPOSE_DIR" ] && [ -n "$COMPOSE_FILES" ]; then
   cd "$COMPOSE_DIR"
