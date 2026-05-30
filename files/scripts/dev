@@ -91,8 +91,8 @@ if podman container exists "$CONTAINER_NAME" 2>/dev/null; then
   echo "Container '$CONTAINER_NAME' already exists."
   echo ""
   echo "  Shell:      podman exec -it $CONTAINER_NAME zsh"
-  echo "  Claude:     podman exec -it $CONTAINER_NAME zsh -c 'cd ~/project && claude'"
-  echo "  Lazygit:    podman exec -it $CONTAINER_NAME zsh -c 'cd ~/project && lazygit'"
+  echo "  Claude:     podman exec -it $CONTAINER_NAME zsh -c 'cd ~/${PROJECT_NAME} && claude'"
+  echo "  Lazygit:    podman exec -it $CONTAINER_NAME zsh -c 'cd ~/${PROJECT_NAME} && lazygit'"
   echo "  Lazydocker: podman exec -it $CONTAINER_NAME zsh -c 'lazydocker'"
   echo ""
   echo "  Stop:       podman stop $CONTAINER_NAME && podman rm $CONTAINER_NAME"
@@ -123,7 +123,7 @@ done
 # Compose env vars
 COMPOSE_ENV=""
 if [ -n "$COMPOSE_DIR" ] && [ -n "$COMPOSE_FILES" ]; then
-  COMPOSE_ENV="-e COMPOSE_DIR=/home/dev/project/$(basename "$COMPOSE_DIR") -e COMPOSE_FILES=$COMPOSE_FILES"
+  COMPOSE_ENV="-e COMPOSE_DIR=/home/dev/${PROJECT_NAME}/$(basename "$COMPOSE_DIR") -e COMPOSE_FILES=$COMPOSE_FILES"
 fi
 
 # Run container
@@ -135,7 +135,7 @@ eval podman run -d \
   --security-opt label=disable \
   --device /dev/fuse \
   --userns=keep-id \
-  -v "${WORKSPACE_DIR}:/home/dev/project:Z" \
+  -v "${WORKSPACE_DIR}:/home/dev/${PROJECT_NAME}:Z" \
   -v "claude-state-${CONTAINER_NAME}:/home/dev/.claude" \
   -v "npm-cache-${CONTAINER_NAME}:/home/dev/.npm" \
   -v "podman-storage-${CONTAINER_NAME}:/home/dev/.local/share/containers" \
@@ -152,8 +152,8 @@ if [ -n "$PORT_INFO" ]; then
   echo ""
 fi
 echo "Tmux panes:"
-echo "  Claude:     podman exec -it $CONTAINER_NAME zsh -c 'cd ~/project && claude'"
-echo "  Lazygit:    podman exec -it $CONTAINER_NAME zsh -c 'cd ~/project && lazygit'"
+echo "  Claude:     podman exec -it $CONTAINER_NAME zsh -c 'cd ~/${PROJECT_NAME} && claude'"
+echo "  Lazygit:    podman exec -it $CONTAINER_NAME zsh -c 'cd ~/${PROJECT_NAME} && lazygit'"
 echo "  Lazydocker: podman exec -it $CONTAINER_NAME zsh -c 'lazydocker'"
 echo ""
 echo "Shell:        podman exec -it $CONTAINER_NAME zsh"

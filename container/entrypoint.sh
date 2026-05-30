@@ -45,7 +45,7 @@ if [ -n "$COMPOSE_DIR" ] && [ -n "$COMPOSE_FILES" ]; then
   done
   echo "Starting app stack..."
   podman-compose $COMPOSE_ARGS up -d --build || echo "Warning: compose up failed (may need manual start)"
-  cd /home/dev/project
+  cd "$HOME"
 fi
 
 # If a command was passed (e.g. CMD ["zsh"]), run it interactively.
