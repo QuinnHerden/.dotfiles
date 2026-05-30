@@ -36,13 +36,32 @@ release_offset() {
     && mv "$PORT_FILE.tmp" "$PORT_FILE"
 }
 
-# --- Build image if needed ---
+# --- Build image ---
+build_image() {
+  echo "Building dev container image..."
+  podman build --no-cache -t "$IMAGE_NAME" -f "$HOME/.dotfiles/container/Containerfile" "$HOME/.dotfiles/container/"
+}
+
 ensure_image() {
   if ! podman image exists "$IMAGE_NAME" 2>/dev/null; then
-    echo "Building dev container image..."
-    podman build -t "$IMAGE_NAME" -f "$HOME/.dotfiles/container/Containerfile" "$HOME/.dotfiles/container/"
+    build_image
   fi
 }
+
+# --- Rebuild command ---
+if [ "${1:-}" = "--rebuild" ]; then
+  build_image
+  exit 0
+fi
+
+# --- Stop command ---
+if [ "${1:-}" = "--stop" ]; then
+  NAME="${2:?Usage: dev --stop <container-name>}"
+  podman stop "$NAME" 2>/dev/null; podman rm "$NAME" 2>/dev/null
+  release_offset "$NAME"
+  echo "Stopped $NAME"
+  exit 0
+fi
 
 # --- Bare mode (no args) ---
 if [ $# -eq 0 ]; then
