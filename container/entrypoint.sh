@@ -48,5 +48,10 @@ if [ -n "$COMPOSE_DIR" ] && [ -n "$COMPOSE_FILES" ]; then
   cd /home/dev/project
 fi
 
-# Keep container alive for exec sessions
-exec sleep infinity
+# If a command was passed (e.g. CMD ["zsh"]), run it interactively.
+# Otherwise keep container alive for exec sessions (detached/project mode).
+if [ $# -gt 0 ]; then
+  exec "$@"
+else
+  exec sleep infinity
+fi

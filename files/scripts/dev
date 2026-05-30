@@ -58,7 +58,7 @@ if [ $# -eq 0 ]; then
     --userns=keep-id \
     -v "claude-state-scratch:/home/dev/.claude" \
     -v "npm-cache:/home/dev/.npm" \
-    "$IMAGE_NAME"
+    "$IMAGE_NAME" zsh
   exit 0
 fi
 
