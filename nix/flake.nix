@@ -52,6 +52,15 @@
         ];
       };
 
+      "dev@dev-container" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.aarch64-linux;
+        extraSpecialArgs = { inherit inputs; };
+        modules = [
+          ./hosts/dev-container
+          ./modules/home/standalone
+        ];
+      };
+
     };
 
     nixosConfigurations = {

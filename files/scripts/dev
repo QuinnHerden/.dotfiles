@@ -1,0 +1,161 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+IMAGE_NAME="dev-container"
+STATE_DIR="$HOME/.local/state/dev"
+WORKSPACE_ROOT="$HOME/.dev-workspaces"
+PORT_FILE="$STATE_DIR/ports.json"
+
+mkdir -p "$STATE_DIR" "$WORKSPACE_ROOT"
+[ -f "$PORT_FILE" ] || echo '{}' > "$PORT_FILE"
+
+# --- Port allocation ---
+allocate_offset() {
+  local name="$1"
+  local existing
+  existing=$(jq -r --arg n "$name" '.[$n] // empty' "$PORT_FILE")
+  if [ -n "$existing" ]; then
+    echo "$existing"
+    return
+  fi
+  # Find lowest free offset (0-99, step 1, multiply by 100 at usage)
+  local used
+  used=$(jq -r 'values[]' "$PORT_FILE" | sort -n)
+  local offset=0
+  while echo "$used" | grep -qx "$offset"; do
+    offset=$((offset + 1))
+  done
+  jq --arg n "$name" --argjson o "$offset" '. + {($n): $o}' "$PORT_FILE" > "$PORT_FILE.tmp" \
+    && mv "$PORT_FILE.tmp" "$PORT_FILE"
+  echo "$offset"
+}
+
+release_offset() {
+  local name="$1"
+  jq --arg n "$name" 'del(.[$n])' "$PORT_FILE" > "$PORT_FILE.tmp" \
+    && mv "$PORT_FILE.tmp" "$PORT_FILE"
+}
+
+# --- Build image if needed ---
+ensure_image() {
+  if ! podman image exists "$IMAGE_NAME" 2>/dev/null; then
+    echo "Building dev container image..."
+    podman build -t "$IMAGE_NAME" -f "$HOME/.dotfiles/container/Containerfile" "$HOME/.dotfiles/container/"
+  fi
+}
+
+# --- Bare mode (no args) ---
+if [ $# -eq 0 ]; then
+  ensure_image
+  CONTAINER_NAME="dev-scratch-$$"
+  echo "Starting bare dev container: $CONTAINER_NAME"
+  podman run -it --rm \
+    --name "$CONTAINER_NAME" \
+    --hostname dev-scratch \
+    --cap-add=SYS_ADMIN,MKNOD,NET_ADMIN \
+    --security-opt label=disable \
+    --device /dev/fuse \
+    --userns=keep-id \
+    -v "claude-state-scratch:/home/dev/.claude" \
+    -v "npm-cache:/home/dev/.npm" \
+    "$IMAGE_NAME"
+  exit 0
+fi
+
+# --- Project mode ---
+REPO_PATH="$(cd "$1" && pwd)"
+BRANCH="${2:-$(git -C "$REPO_PATH" branch --show-current)}"
+PROJECT_NAME=$(basename "$REPO_PATH")
+BRANCH_SLUG="${BRANCH//\//-}"
+CONTAINER_NAME="dev-${PROJECT_NAME}-${BRANCH_SLUG}"
+
+# Read project config
+DEV_CONFIG="$REPO_PATH/dev.yml"
+COMPOSE_DIR=""
+COMPOSE_FILES=""
+declare -a PORT_NAMES=()
+declare -a PORT_BASES=()
+
+if [ -f "$DEV_CONFIG" ]; then
+  # Parse dev.yml (simple yaml — no nested structures)
+  COMPOSE_DIR="$REPO_PATH/$(grep '^compose_dir:' "$DEV_CONFIG" | awk '{print $2}')"
+  COMPOSE_FILES=$(grep -A 20 '^compose_files:' "$DEV_CONFIG" | grep '^ *-' | sed 's/^ *- *//' | tr '\n' ':' | sed 's/:$//')
+
+  while IFS=': ' read -r name port; do
+    [ -n "$name" ] && [ -n "$port" ] && PORT_NAMES+=("$name") && PORT_BASES+=("$port")
+  done < <(grep -A 20 '^ports:' "$DEV_CONFIG" | grep '^ *[a-z]' | sed 's/^ *//')
+fi
+
+# Check if already running
+if podman container exists "$CONTAINER_NAME" 2>/dev/null; then
+  echo "Container '$CONTAINER_NAME' already exists."
+  echo ""
+  echo "  Shell:      podman exec -it $CONTAINER_NAME zsh"
+  echo "  Claude:     podman exec -it $CONTAINER_NAME zsh -c 'cd ~/project && claude'"
+  echo "  Lazygit:    podman exec -it $CONTAINER_NAME zsh -c 'cd ~/project && lazygit'"
+  echo "  Lazydocker: podman exec -it $CONTAINER_NAME zsh -c 'lazydocker'"
+  echo ""
+  echo "  Stop:       podman stop $CONTAINER_NAME && podman rm $CONTAINER_NAME"
+  exit 0
+fi
+
+# Create workspace (git clone --reference)
+WORKSPACE_DIR="$WORKSPACE_ROOT/${PROJECT_NAME}-${BRANCH_SLUG}"
+if [ ! -d "$WORKSPACE_DIR" ]; then
+  echo "Creating workspace for $PROJECT_NAME @ $BRANCH..."
+  REMOTE_URL=$(git -C "$REPO_PATH" remote get-url origin 2>/dev/null || echo "$REPO_PATH")
+  git clone --reference "$REPO_PATH" --branch "$BRANCH" "$REMOTE_URL" "$WORKSPACE_DIR" 2>/dev/null \
+    || git clone --reference "$REPO_PATH" -b "$BRANCH" "$REPO_PATH" "$WORKSPACE_DIR" 2>/dev/null \
+    || git clone "$REPO_PATH" "$WORKSPACE_DIR"
+fi
+
+ensure_image
+
+# Allocate ports
+OFFSET=$(allocate_offset "$CONTAINER_NAME")
+PORT_ARGS=""
+PORT_INFO=""
+for i in "${!PORT_NAMES[@]}"; do
+  HOST_PORT=$(( PORT_BASES[i] + OFFSET * 100 ))
+  PORT_ARGS="$PORT_ARGS -p ${HOST_PORT}:${PORT_BASES[i]}"
+  PORT_INFO="$PORT_INFO\n  ${PORT_NAMES[i]}: localhost:${HOST_PORT}"
+done
+
+# Compose env vars
+COMPOSE_ENV=""
+if [ -n "$COMPOSE_DIR" ] && [ -n "$COMPOSE_FILES" ]; then
+  COMPOSE_ENV="-e COMPOSE_DIR=/home/dev/project/$(basename "$COMPOSE_DIR") -e COMPOSE_FILES=$COMPOSE_FILES"
+fi
+
+# Run container
+echo "Starting container '$CONTAINER_NAME'..."
+eval podman run -d \
+  --name "$CONTAINER_NAME" \
+  --hostname "$CONTAINER_NAME" \
+  --cap-add=SYS_ADMIN,MKNOD,NET_ADMIN \
+  --security-opt label=disable \
+  --device /dev/fuse \
+  --userns=keep-id \
+  -v "${WORKSPACE_DIR}:/home/dev/project:Z" \
+  -v "claude-state-${CONTAINER_NAME}:/home/dev/.claude" \
+  -v "npm-cache-${CONTAINER_NAME}:/home/dev/.npm" \
+  -v "podman-storage-${CONTAINER_NAME}:/home/dev/.local/share/containers" \
+  $PORT_ARGS \
+  $COMPOSE_ENV \
+  "$IMAGE_NAME"
+
+echo ""
+echo "=== Container '$CONTAINER_NAME' started ==="
+echo ""
+if [ -n "$PORT_INFO" ]; then
+  echo "Ports:"
+  echo -e "$PORT_INFO"
+  echo ""
+fi
+echo "Tmux panes:"
+echo "  Claude:     podman exec -it $CONTAINER_NAME zsh -c 'cd ~/project && claude'"
+echo "  Lazygit:    podman exec -it $CONTAINER_NAME zsh -c 'cd ~/project && lazygit'"
+echo "  Lazydocker: podman exec -it $CONTAINER_NAME zsh -c 'lazydocker'"
+echo ""
+echo "Shell:        podman exec -it $CONTAINER_NAME zsh"
+echo "Stop:         podman stop $CONTAINER_NAME && podman rm $CONTAINER_NAME"

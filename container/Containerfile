@@ -1,0 +1,65 @@
+FROM debian:bookworm-slim AS base
+
+# System dependencies for Nix, podman-in-podman, and general dev
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    xz-utils \
+    ca-certificates \
+    git \
+    sudo \
+    fuse-overlayfs \
+    uidmap \
+    slirp4netns \
+    podman \
+    buildah \
+    jq \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create dev user with subuid/subgid ranges for rootless podman
+RUN useradd -m -s /bin/bash dev \
+    && echo "dev ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/dev \
+    && usermod --add-subuids 100000-165535 --add-subgids 100000-165535 dev
+
+USER dev
+WORKDIR /home/dev
+
+# --- Stage 1: Install Nix (single-user) ---
+RUN curl -L https://nixos.org/nix/install | sh -s -- --no-daemon
+
+# --- Stage 2: Clone dotfiles and cache nixpkgs download ---
+ARG DOTFILES_REPO=https://github.com/QuinnHerden/dotfiles.git
+ARG DOTFILES_BRANCH=main
+
+RUN git clone --branch ${DOTFILES_BRANCH} ${DOTFILES_REPO} /home/dev/.dotfiles
+
+ENV PATH="/home/dev/.nix-profile/bin:${PATH}" \
+    USER=dev \
+    HOME=/home/dev
+
+# Enable flakes globally
+RUN mkdir -p /home/dev/.config/nix \
+    && echo "experimental-features = nix-command flakes" > /home/dev/.config/nix/nix.conf
+
+# Pre-fetch flake inputs (big download — cached in this layer if flake.lock unchanged)
+RUN cd /home/dev/.dotfiles/nix && nix flake archive --no-write-lock-file
+
+# --- Stage 3: Run home-manager switch ---
+RUN nix run nixpkgs#home-manager -- switch --flake /home/dev/.dotfiles/nix#dev@dev-container
+
+# --- Configure rootless podman storage ---
+RUN mkdir -p /home/dev/.config/containers \
+    && printf '[storage]\ndriver = "overlay"\n\n[storage.options.overlay]\nmount_program = "/usr/bin/fuse-overlayfs"\n' \
+       > /home/dev/.config/containers/storage.conf
+
+# --- Docker alias for Makefile compatibility ---
+RUN mkdir -p /home/dev/.local/bin \
+    && printf '#!/bin/sh\nexec podman "$@"\n' > /home/dev/.local/bin/docker \
+    && chmod +x /home/dev/.local/bin/docker
+
+# --- Entrypoint ---
+COPY --chown=dev:dev entrypoint.sh /home/dev/entrypoint.sh
+RUN chmod +x /home/dev/entrypoint.sh
+
+WORKDIR /home/dev/project
+ENTRYPOINT ["/home/dev/entrypoint.sh"]
+CMD ["zsh"]
