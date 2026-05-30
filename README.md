@@ -67,27 +67,38 @@ Isolated dev environments using Podman. Each container gets the full dotfiles to
 
 ### Prerequisites
 
-- Podman Desktop installed and `podman machine` running
-- Build the image once: `podman build --no-cache -t dev-container -f ~/.dotfiles/container/Containerfile ~/.dotfiles/container/`
+1. Install [Podman Desktop](https://podman-desktop.io/)
+2. Initialize and start the podman machine:
+   ```bash
+   podman machine init
+   podman machine start
+   ```
+3. Build the dev container image:
+   ```bash
+   dev --rebuild
+   ```
 
 ### Usage
 
 ```bash
-# Bare mode — generic dev shell, no repo
+# Bare mode — drops into an interactive dev shell, no repo
 dev
 
-# Project mode — mounts a repo clone, reads dev.yml for compose/ports
+# Project mode — clones the branch, maps ports, starts as daemon
 dev ~/repos/myproject
 dev ~/repos/myproject feat/my-branch
 
-# Attach to a running container
+# Attach to a running project container
 podman exec -it dev-myproject-main zsh
 
-# Stop and remove
-podman stop dev-myproject-main && podman rm dev-myproject-main
+# Stop and remove a container
+dev --stop dev-myproject-main
+
+# Rebuild the image (after dotfiles changes)
+dev --rebuild
 ```
 
-The container takes ~15 seconds on first start to install Claude Code. Subsequent starts are near-instant (npm cache persists).
+The first start takes ~15 seconds to install Claude Code via npm. Subsequent starts are near-instant (npm cache persists in a named volume).
 
 ### Project config
 
@@ -116,6 +127,7 @@ dev ~/repos/myproject feat/branch-a
 dev ~/repos/myproject feat/branch-b
 # Two fully isolated environments
 ```
+
 
 ## Post Installation
 
