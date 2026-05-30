@@ -99,14 +99,13 @@ if podman container exists "$CONTAINER_NAME" 2>/dev/null; then
   exit 0
 fi
 
-# Create workspace (git clone --reference)
+# Create workspace (full clone — no alternates, avoids host path issues in container)
 WORKSPACE_DIR="$WORKSPACE_ROOT/${PROJECT_NAME}-${BRANCH_SLUG}"
 if [ ! -d "$WORKSPACE_DIR" ]; then
   echo "Creating workspace for $PROJECT_NAME @ $BRANCH..."
   REMOTE_URL=$(git -C "$REPO_PATH" remote get-url origin 2>/dev/null || echo "$REPO_PATH")
-  git clone --reference "$REPO_PATH" --branch "$BRANCH" "$REMOTE_URL" "$WORKSPACE_DIR" 2>/dev/null \
-    || git clone --reference "$REPO_PATH" -b "$BRANCH" "$REPO_PATH" "$WORKSPACE_DIR" 2>/dev/null \
-    || git clone "$REPO_PATH" "$WORKSPACE_DIR"
+  git clone --branch "$BRANCH" "$REMOTE_URL" "$WORKSPACE_DIR" 2>/dev/null \
+    || git clone -b "$BRANCH" "$REPO_PATH" "$WORKSPACE_DIR"
 fi
 
 ensure_image
