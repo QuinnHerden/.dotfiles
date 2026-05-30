@@ -63,6 +63,26 @@ if [ "${1:-}" = "--stop" ]; then
   exit 0
 fi
 
+# --- Restart command (stop + start) ---
+if [ "${1:-}" = "--restart" ]; then
+  REPO="${2:?Usage: dev --restart <repo-path> [branch]}"
+  REPO_ABS="$(cd "$REPO" && pwd)"
+  R_PROJECT=$(basename "$REPO_ABS")
+  R_BRANCH="${3:-$(git -C "$REPO_ABS" branch --show-current)}"
+  R_SLUG="${R_BRANCH//\//-}"
+  R_NAME="dev-${R_PROJECT}-${R_SLUG}"
+  podman stop "$R_NAME" 2>/dev/null; podman rm "$R_NAME" 2>/dev/null
+  release_offset "$R_NAME"
+  echo "Stopped $R_NAME, relaunching..."
+  exec "$0" "$REPO" ${3:+"$3"}
+fi
+
+# --- List command ---
+if [ "${1:-}" = "--ls" ]; then
+  podman ps --filter "name=^dev-" --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+  exit 0
+fi
+
 # --- Bare mode (no args) ---
 if [ $# -eq 0 ]; then
   ensure_image
