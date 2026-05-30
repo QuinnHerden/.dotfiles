@@ -1,6 +1,25 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+if [ "${1:-}" = "--help" ] || [ "${1:-}" = "-h" ]; then
+  cat <<'HELP'
+dev — isolated dev containers via Podman
+
+Usage:
+  dev                                    bare shell (interactive, no repo)
+  dev <repo> [branch]                    project mode (detached, with ports)
+  dev --restart <repo> [branch]          stop + relaunch a project container
+  dev --stop <container-name>            stop and remove a container
+  dev --rebuild                          rebuild the dev-container image
+  dev --ls                               list running dev containers
+  dev --help                             show this help
+
+Project mode reads dev.yml from the repo root for compose and port config.
+Attach with: podman exec -it <container-name> zsh
+HELP
+  exit 0
+fi
+
 IMAGE_NAME="dev-container"
 STATE_DIR="$HOME/.local/state/dev"
 WORKSPACE_ROOT="$HOME/.dev-workspaces"
