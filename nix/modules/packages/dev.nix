@@ -5,6 +5,7 @@
     duckdb
     eslint_d
     gh
+    gnumake
     go
     lazydocker
     lazygit
