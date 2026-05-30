@@ -33,6 +33,13 @@
   ];
 
   linux = pkgs: with pkgs; [
+    xclip
+  ];
+
+  linuxX86 = pkgs: with pkgs; [
+  ];
+
+  linuxGui = pkgs: with pkgs; [
     alacritty
     bitwarden-cli
     bitwarden-desktop
@@ -42,10 +49,6 @@
     obsidian
     qutebrowser
     rofi
-    xclip
-  ];
-
-  linuxX86 = pkgs: with pkgs; [
   ];
 
   darwin = {
