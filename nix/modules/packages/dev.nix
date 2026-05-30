@@ -36,6 +36,7 @@
       "dbeaver-community"
       "docker-desktop"
       "google-chrome"
+      "podman-desktop"
       "postman"
     ];
     masApps = {};
