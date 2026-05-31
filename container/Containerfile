@@ -30,7 +30,7 @@ RUN git clone --branch ${DOTFILES_BRANCH} ${DOTFILES_REPO} /home/dev/.dotfiles
 
 ENV PATH="/home/dev/.npm-global/bin:/home/dev/.local/bin:/home/dev/.nix-profile/bin:${PATH}" \
     NPM_CONFIG_PREFIX=/home/dev/.npm-global \
-    DOCKER_HOST="unix:///var/run/docker.sock" \
+    CONTAINER_HOST="unix:///var/run/docker.sock" \
     USER=dev \
     HOME=/home/dev
 
@@ -45,6 +45,7 @@ RUN cd /home/dev/.dotfiles/nix && nix flake archive --no-write-lock-file
 RUN nix run nixpkgs#home-manager -- switch --flake /home/dev/.dotfiles/nix#dev@dev-container
 
 # --- Docker/Podman CLI alias for Makefile compatibility ---
+# CONTAINER_HOST env var tells podman to use the mounted socket
 RUN mkdir -p /home/dev/.local/bin \
     && printf '#!/bin/sh\nexec podman "$@"\n' > /home/dev/.local/bin/docker \
     && chmod +x /home/dev/.local/bin/docker
