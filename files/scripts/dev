@@ -18,10 +18,12 @@ Usage:
 The mounted directory is available at the same path inside the container
 and on the VM, so docker compose volume mounts resolve correctly.
 
-Claude state (session history, memory, todos, plugins) persists per container
-at ~/.dev-containers/<dev-name>/claude on the host. Static Claude config
-(settings, skills, agents) is owned by home-manager inside the image and is
-updated with `hm-switch` in the container — no image rebuild needed.
+Claude per-container state (session history, todos, plugins) persists at
+~/.dev-containers/<dev-name>/claude on the host. Global memory and credentials
+are shared from the single host ~/.claude/{memory,.credentials.json} across all
+containers. Static Claude config (settings, skills, agents) is owned by
+home-manager inside the image and is updated with `hm-switch` in the
+container — no image rebuild needed.
 
 Env flags:
   DEV_DOCKER_SOCK=1   mount the container runtime socket (host-root-equivalent;
@@ -136,6 +138,11 @@ if [ -f "${HOME}/.claude/.credentials.json" ]; then
   CRED_MOUNT="-v ${HOME}/.claude/.credentials.json:/home/dev/.claude-cred.json"
 fi
 
+# Global Claude memory is user-level (facts about you, projects, preferences),
+# so share the single canonical host dir across all containers rather than
+# isolating it per container. Per-project memory lives under projects/ instead.
+mkdir -p "${HOME}/.claude/memory"
+
 ensure_image
 
 echo "Starting container '$NAME'..."
@@ -147,6 +154,7 @@ eval podman run -d \
   $MOUNT_ARGS \
   $MOUNT_ENV \
   -v "${CLAUDE_STATE}:/home/dev/.claude-state" \
+  -v "${HOME}/.claude/memory:/home/dev/.claude-memory" \
   $CRED_MOUNT \
   -v "npm-cache-${NAME}:/home/dev/.npm" \
   -e DEV_DETACHED=1 \
