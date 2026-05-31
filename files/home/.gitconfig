@@ -4,6 +4,11 @@
 	email = 55929299+QuinnHerden@users.noreply.github.com
 [init]
 	defaultBranch = main
+[safe]
+	# Allow git/nix-flake operations on the dotfiles clone inside dev containers
+	# (built as one uid, run under --userns=keep-id). Harmless where the path
+	# does not exist.
+	directory = /home/dev/.dotfiles
 [color]
 	ui = auto
 [pull]
