@@ -89,10 +89,17 @@ dev ~/repos/myproject
 dev ~/repos/myproject feat/my-branch
 
 # Attach to a running project container
-podman exec -it dev-myproject-main zsh
+dev --exec ~/repos/myproject
+podman exec -it dev-myproject-main zsh  # equivalent
+
+# Restart after image rebuild
+dev --restart ~/repos/myproject
 
 # Stop and remove a container
 dev --stop dev-myproject-main
+
+# List running dev containers
+dev --ls
 
 # Rebuild the image (after dotfiles changes)
 dev --rebuild
