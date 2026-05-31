@@ -17,33 +17,42 @@ if [ -n "${DEV_MOUNT:-}" ] && [ -d "$DEV_MOUNT" ]; then
   [ ! -e "$HOME/$LINK_NAME" ] && ln -sfn "$DEV_MOUNT" "$HOME/$LINK_NAME"
 fi
 
-# Wire up persistent Claude state.
-# home-manager (at build time) owns the static ~/.claude/* config as symlinks
-# into ~/.dotfiles. Here we link the runtime-generated state subpaths to the
-# mounted per-container state dir so memory, session history, todos and plugins
-# persist on the host. We never touch the static config entries.
-STATE=/home/dev/.claude-state
-if [ -d "$STATE" ]; then
-  mkdir -p "$HOME/.claude"
-  for p in projects todos plugins; do
-    mkdir -p "$STATE/$p"
-    ln -sfn "$STATE/$p" "$HOME/.claude/$p"
+# Wire up Claude config + state.
+# CLAUDE_CONFIG_DIR (set in the image) points Claude at the per-container
+# persistent mount, so everything it writes (credentials, .claude.json,
+# sessions, projects, todos, history) survives container recreation and you
+# authenticate once. This relies on CLAUDE_CONFIG_DIR relocating the whole
+# config dir (verified empirically; the scope is only partly documented
+# upstream). The static config is symlinked in from the dotfiles clone, so
+# editing ~/.dotfiles is live; new files are picked up on the next start.
+# We re-establish each link from scratch so a stale real file/dir at the target
+# (e.g. one Claude wrote, or a pre-existing dir) can't shadow the symlink.
+CCDIR="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
+mkdir -p "$CCDIR"; chmod 700 "$CCDIR" 2>/dev/null || true
+DOT=/home/dev/.dotfiles/files/home/.claude
+if [ -d "$DOT" ]; then
+  for f in "$DOT"/*; do
+    [ -e "$f" ] || continue
+    name=$(basename "$f")
+    rm -rf "$CCDIR/$name"
+    ln -sfn "$f" "$CCDIR/$name"
   done
-  [ -e "$STATE/history.jsonl" ] || : > "$STATE/history.jsonl"
-  ln -sfn "$STATE/history.jsonl" "$HOME/.claude/history.jsonl"
 fi
 
-# Share the single canonical host credentials file (mounted by the launcher).
-if [ -e /home/dev/.claude-cred.json ]; then
-  mkdir -p "$HOME/.claude"
-  ln -sfn /home/dev/.claude-cred.json "$HOME/.claude/.credentials.json"
-  chmod 600 /home/dev/.claude-cred.json 2>/dev/null || true
-fi
-
-# Share global (user-level) Claude memory across all containers.
+# Global (user-level) Claude memory is shared across all containers (mounted by
+# the launcher), not per-container like the rest of the config dir.
 if [ -d /home/dev/.claude-memory ]; then
-  mkdir -p "$HOME/.claude"
-  ln -sfn /home/dev/.claude-memory "$HOME/.claude/memory"
+  rm -rf "$CCDIR/memory"
+  ln -sfn /home/dev/.claude-memory "$CCDIR/memory"
+fi
+
+# Persist gh CLI auth in the per-container state so it survives recreation. git
+# uses `gh auth git-credential`, so this fixes git auth too.
+if [ -d /home/dev/.dev-state ]; then
+  mkdir -p /home/dev/.dev-state/config/gh "$HOME/.config"
+  chmod 700 /home/dev/.dev-state/config/gh 2>/dev/null || true
+  rm -rf "$HOME/.config/gh"
+  ln -sfn /home/dev/.dev-state/config/gh "$HOME/.config/gh"
 fi
 
 # Fix git credential helper for container context
