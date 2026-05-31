@@ -11,10 +11,6 @@
       "Bash(terraform plan*)"
     ],
     "deny": [
-      "Read(**/.env)",
-      "Read(**/.env.*)",
-      "Read(**/terraform.tfstate)",
-      "Read(**/terraform.tfstate.backup)",
       "Read(**/*.pem)",
       "Read(**/*.key)",
       "Read(**/*.p12)",
