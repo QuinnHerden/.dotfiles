@@ -166,7 +166,6 @@ if podman container exists "$CONTAINER_NAME" 2>/dev/null; then
   echo "  Shell:      podman exec -it $CONTAINER_NAME zsh"
   echo "  Claude:     podman exec -it $CONTAINER_NAME zsh -c 'cd ~/${PROJECT_NAME} && claude --dangerously-skip-permissions'"
   echo "  Lazygit:    podman exec -it $CONTAINER_NAME zsh -c 'cd ~/${PROJECT_NAME} && lazygit'"
-  echo "  Lazydocker: podman exec -it $CONTAINER_NAME zsh -c 'lazydocker'"
   echo ""
   echo "  Stop:       podman stop $CONTAINER_NAME && podman rm $CONTAINER_NAME"
   exit 0
