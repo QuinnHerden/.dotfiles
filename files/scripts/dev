@@ -25,10 +25,18 @@ STATE_DIR="$HOME/.local/state/dev"
 WORKSPACE_ROOT="$HOME/.dev-workspaces"
 PORT_FILE="$STATE_DIR/ports.json"
 
-# Detect podman socket for socket mounting
-PODMAN_SOCKET=$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}' 2>/dev/null || echo "")
-if [ -z "$PODMAN_SOCKET" ]; then
+# Detect podman/docker socket for socket mounting
+# On macOS with Podman machine, use the VM-internal socket (host temp path can't be mounted)
+if podman machine inspect >/dev/null 2>&1; then
+  PODMAN_SOCKET="/run/user/$(podman machine ssh id -u)/podman/podman.sock"
+elif [ -S "/var/run/docker.sock" ]; then
   PODMAN_SOCKET="/var/run/docker.sock"
+else
+  PODMAN_SOCKET=""
+fi
+SOCKET_MOUNT=""
+if [ -n "$PODMAN_SOCKET" ]; then
+  SOCKET_MOUNT="-v $PODMAN_SOCKET:/var/run/docker.sock --security-opt label=disable"
 fi
 
 mkdir -p "$STATE_DIR" "$WORKSPACE_ROOT"
@@ -124,11 +132,11 @@ if [ $# -eq 0 ]; then
   ensure_image
   CONTAINER_NAME="dev-scratch-$$"
   echo "Starting bare dev container: $CONTAINER_NAME"
-  podman run -it --rm \
+  eval podman run -it --rm \
     --name "$CONTAINER_NAME" \
     --hostname dev-scratch \
     --userns=keep-id \
-    -v "$PODMAN_SOCKET:/var/run/docker.sock" \
+    $SOCKET_MOUNT \
     -v "claude-state-scratch:/home/dev/.claude" \
     -v "npm-cache:/home/dev/.npm" \
     "$IMAGE_NAME" zsh
@@ -204,7 +212,7 @@ eval podman run -d \
   --name "$CONTAINER_NAME" \
   --hostname "$CONTAINER_NAME" \
   --userns=keep-id \
-  -v "$PODMAN_SOCKET:/var/run/docker.sock" \
+  $SOCKET_MOUNT \
   -v "${WORKSPACE_DIR}:/home/dev/${PROJECT_NAME}" \
   -v "claude-state-${CONTAINER_NAME}:/home/dev/.claude" \
   -v "npm-cache-${CONTAINER_NAME}:/home/dev/.npm" \
