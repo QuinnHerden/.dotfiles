@@ -38,10 +38,6 @@ ENV PATH="/home/dev/.npm-global/bin:/home/dev/.local/bin:/home/dev/.nix-profile/
 RUN mkdir -p /home/dev/.config/nix \
     && echo "experimental-features = nix-command flakes" > /home/dev/.config/nix/nix.conf
 
-# Allow git operations on the dotfiles clone at runtime under --userns=keep-id
-# (the runtime uid may differ from the build uid, which git treats as dubious).
-RUN git config --global --add safe.directory /home/dev/.dotfiles
-
 # Pre-fetch flake inputs (big download — cached in this layer if flake.lock unchanged)
 RUN cd /home/dev/.dotfiles/nix && nix flake archive --no-write-lock-file
 
