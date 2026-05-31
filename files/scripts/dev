@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Per-host preferences (marker files; intentionally NOT synced via dotfiles, so
+# the host-root-equivalent socket default never rides along to another machine).
+# If a second preference is ever added, collapse these into one key=value config.
+DEV_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/dev"
+SOCK_PREF_FILE="$DEV_CONFIG_DIR/docker-sock"
+
 if [ "${1:-}" = "--help" ] || [ "${1:-}" = "-h" ]; then
   cat <<'HELP'
 dev — isolated dev containers via Podman
@@ -12,6 +18,7 @@ Usage:
   dev --stop <name>                      stop and remove a container
   dev --restart <name> [host-dir]        stop + recreate a container
   dev --rebuild                          rebuild the dev-container image
+  dev --sock <on|off|status>             toggle the docker socket default
   dev --ls                               list running dev containers
   dev --help                             show this help
 
@@ -26,15 +33,33 @@ containers. Static Claude config (settings, skills, agents) lives in the
 dotfiles clone and is symlinked into the config dir at container start, so
 editing ~/.dotfiles is live; restart the container to pick up newly added files.
 
-Env flags:
-  DEV_DOCKER_SOCK=1   mount the container runtime socket (host-root-equivalent;
-                      off by default). Needed for docker/podman inside the container.
+Docker socket (host-root-equivalent, so opt-in):
+  dev --sock on       mount it by default for new containers (set once)
+  DEV_DOCKER_SOCK=1   mount it for a single launch (overrides the default)
+  DEV_DOCKER_SOCK=0   skip it for a single launch even if the default is on
 
 Example:
   dev work ~/repos                       mount all repos
   dev --exec work                        shell in
   cd ~/repos/motifs && make upd          compose just works
 HELP
+  exit 0
+fi
+
+# --- Docker socket default toggle ---
+if [ "${1:-}" = "--sock" ]; then
+  case "${2:-status}" in
+    on)
+      mkdir -p "$DEV_CONFIG_DIR"; : > "$SOCK_PREF_FILE"
+      echo "Docker socket: ON by default for new containers (host-root-equivalent)." ;;
+    off)
+      rm -f "$SOCK_PREF_FILE"
+      echo "Docker socket: OFF by default." ;;
+    status)
+      [ -f "$SOCK_PREF_FILE" ] && echo "Docker socket default: on" || echo "Docker socket default: off" ;;
+    *)
+      echo "Usage: dev --sock <on|off|status>" >&2; exit 2 ;;
+  esac
   exit 0
 fi
 
@@ -49,7 +74,11 @@ else
   PODMAN_SOCKET=""
 fi
 # The container runtime socket is host-root-equivalent, so it is opt-in.
-# Set DEV_DOCKER_SOCK=1 to mount it (needed for docker/podman-in-container).
+# Persistent default: `dev --sock on`. Per-launch override: DEV_DOCKER_SOCK=1/0
+# (the gate below matches exactly "1", so any other value means off).
+if [ -z "${DEV_DOCKER_SOCK:-}" ] && [ -f "$SOCK_PREF_FILE" ]; then
+  DEV_DOCKER_SOCK=1
+fi
 SOCKET_MOUNT=""
 if [ "${DEV_DOCKER_SOCK:-}" = "1" ] && [ -n "$PODMAN_SOCKET" ]; then
   SOCKET_MOUNT="-v $PODMAN_SOCKET:/var/run/docker.sock --security-opt label=disable"
