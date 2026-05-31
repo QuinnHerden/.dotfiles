@@ -1,34 +1,28 @@
 FROM debian:bookworm-slim AS base
 
-# System dependencies for Nix, podman-in-podman, and general dev
+# System dependencies for Nix and dev tooling
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     xz-utils \
     ca-certificates \
     git \
     sudo \
-    fuse-overlayfs \
-    uidmap \
-    slirp4netns \
-    podman \
-    buildah \
     jq \
     python3-pip \
     && pip3 install --break-system-packages podman-compose \
     && rm -rf /var/lib/apt/lists/*
 
-# Create dev user with subuid/subgid ranges for rootless podman
+# Create dev user
 RUN useradd -m -s /bin/bash dev \
-    && echo "dev ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/dev \
-    && usermod --add-subuids 100000-165535 --add-subgids 100000-165535 dev
+    && echo "dev ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/dev
 
 USER dev
 WORKDIR /home/dev
 
-# --- Stage 1: Install Nix (single-user) ---
+# --- Install Nix (single-user) ---
 RUN curl -L https://nixos.org/nix/install | sh -s -- --no-daemon
 
-# --- Stage 2: Clone dotfiles and cache nixpkgs download ---
+# --- Clone dotfiles and cache nixpkgs download ---
 ARG DOTFILES_REPO=https://github.com/QuinnHerden/dotfiles.git
 ARG DOTFILES_BRANCH=main
 
@@ -36,7 +30,7 @@ RUN git clone --branch ${DOTFILES_BRANCH} ${DOTFILES_REPO} /home/dev/.dotfiles
 
 ENV PATH="/home/dev/.npm-global/bin:/home/dev/.local/bin:/home/dev/.nix-profile/bin:${PATH}" \
     NPM_CONFIG_PREFIX=/home/dev/.npm-global \
-    DOCKER_HOST="unix:///run/user/1000/podman/podman.sock" \
+    DOCKER_HOST="unix:///var/run/docker.sock" \
     USER=dev \
     HOME=/home/dev
 
@@ -47,15 +41,10 @@ RUN mkdir -p /home/dev/.config/nix \
 # Pre-fetch flake inputs (big download — cached in this layer if flake.lock unchanged)
 RUN cd /home/dev/.dotfiles/nix && nix flake archive --no-write-lock-file
 
-# --- Stage 3: Run home-manager switch ---
+# --- Run home-manager switch ---
 RUN nix run nixpkgs#home-manager -- switch --flake /home/dev/.dotfiles/nix#dev@dev-container
 
-# --- Configure rootless podman storage ---
-RUN mkdir -p /home/dev/.config/containers \
-    && printf '[storage]\ndriver = "overlay"\n\n[storage.options.overlay]\nmount_program = "/usr/bin/fuse-overlayfs"\n' \
-       > /home/dev/.config/containers/storage.conf
-
-# --- Docker alias for Makefile compatibility ---
+# --- Docker/Podman CLI alias for Makefile compatibility ---
 RUN mkdir -p /home/dev/.local/bin \
     && printf '#!/bin/sh\nexec podman "$@"\n' > /home/dev/.local/bin/docker \
     && chmod +x /home/dev/.local/bin/docker
