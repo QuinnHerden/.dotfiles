@@ -126,6 +126,9 @@
       uva = "uv add";
       uvad = "uv add --dev";
 
+      # claude
+      dangerclaude = "claude --dangerously-skip-permissions";
+
       # vim
       vi = "nvim";
     };
