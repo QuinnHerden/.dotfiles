@@ -6,16 +6,22 @@ if [ "${1:-}" = "--help" ] || [ "${1:-}" = "-h" ]; then
 dev — isolated dev containers via Podman
 
 Usage:
-  dev <name>                             create and start a named container
+  dev <name> <host-dir>                  create a container with a directory mounted
+  dev <name>                             create a container (no mount)
   dev --exec <name>                      shell into a running container
   dev --stop <name>                      stop and remove a container
-  dev --restart <name>                   stop + recreate a container
+  dev --restart <name> [host-dir]        stop + recreate a container
   dev --rebuild                          rebuild the dev-container image
   dev --ls                               list running dev containers
   dev --help                             show this help
 
-Clone repos and run make upd inside the container. Sibling containers
-(postgres, backend, etc.) bind ports directly — no port config needed.
+The mounted directory is available at the same path inside the container
+and on the VM, so docker compose volume mounts resolve correctly.
+
+Example:
+  dev work ~/repos                       mount all repos
+  dev --exec work                        shell in
+  cd ~/repos/motifs && make upd          compose just works
 HELP
   exit 0
 fi
@@ -63,10 +69,11 @@ fi
 
 # --- Restart ---
 if [ "${1:-}" = "--restart" ]; then
-  NAME="dev-${2:?Usage: dev --restart <name>}"
+  RNAME="${2:?Usage: dev --restart <name> [host-dir]}"
+  NAME="dev-${RNAME}"
   podman stop "$NAME" 2>/dev/null; podman rm "$NAME" 2>/dev/null
   echo "Stopped $NAME, relaunching..."
-  exec "$0" "$2"
+  exec "$0" "$RNAME" ${3:+"$3"}
 fi
 
 # --- List ---
@@ -82,15 +89,24 @@ if [ "${1:-}" = "--exec" ]; then
 fi
 
 # --- Create container ---
-NAME="dev-${1:?Usage: dev <name>}"
+CNAME="${1:?Usage: dev <name> [host-dir]}"
+NAME="dev-${CNAME}"
+HOST_DIR="${2:-}"
 
 if podman container exists "$NAME" 2>/dev/null; then
   echo "Container '$NAME' already exists."
   echo ""
-  echo "  Shell:   dev --exec $1"
-  echo "  Stop:    dev --stop $1"
-  echo "  Restart: dev --restart $1"
+  echo "  Shell:   dev --exec $CNAME"
+  echo "  Stop:    dev --stop $CNAME"
+  echo "  Restart: dev --restart $CNAME"
   exit 0
+fi
+
+# Resolve host dir to absolute path
+MOUNT_ARGS=""
+if [ -n "$HOST_DIR" ]; then
+  HOST_DIR_ABS="$(cd "$HOST_DIR" && pwd)"
+  MOUNT_ARGS="-v ${HOST_DIR_ABS}:${HOST_DIR_ABS}"
 fi
 
 ensure_image
@@ -101,6 +117,7 @@ eval podman run -d \
   --hostname "$NAME" \
   --userns=keep-id \
   $SOCKET_MOUNT \
+  $MOUNT_ARGS \
   -v "claude-state-${NAME}:/home/dev/.claude" \
   -v "npm-cache-${NAME}:/home/dev/.npm" \
   -e DEV_DETACHED=1 \
@@ -108,7 +125,10 @@ eval podman run -d \
 
 echo ""
 echo "=== Container '$NAME' started ==="
+if [ -n "$HOST_DIR" ]; then
+  echo "  Mounted: $HOST_DIR_ABS"
+fi
 echo ""
-echo "  Shell:   dev --exec $1"
-echo "  Stop:    dev --stop $1"
-echo "  Restart: dev --restart $1"
+echo "  Shell:   dev --exec $CNAME"
+echo "  Stop:    dev --stop $CNAME"
+echo "  Restart: dev --restart $CNAME"
