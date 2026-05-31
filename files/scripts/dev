@@ -121,7 +121,7 @@ eval podman run -d \
   $SOCKET_MOUNT \
   $MOUNT_ARGS \
   $MOUNT_ENV \
-  -v "${HOME}/.claude:${HOME}/.claude" \
+  -v "${HOME}/.claude:/home/dev/.claude" \
   -v "npm-cache-${NAME}:/home/dev/.npm" \
   -e DEV_DETACHED=1 \
   "$IMAGE_NAME"
