@@ -6,27 +6,23 @@ if [ "${1:-}" = "--help" ] || [ "${1:-}" = "-h" ]; then
 dev — isolated dev containers via Podman
 
 Usage:
-  dev                                    bare shell (interactive, no repo)
-  dev <repo> [branch]                    project mode (detached, with ports)
-  dev --exec <repo> [branch]             shell into a running project container
-  dev --restart <repo> [branch]          stop + relaunch a project container
-  dev --stop <container-name>            stop and remove a container
+  dev <name>                             create and start a named container
+  dev --exec <name>                      shell into a running container
+  dev --stop <name>                      stop and remove a container
+  dev --restart <name>                   stop + recreate a container
   dev --rebuild                          rebuild the dev-container image
   dev --ls                               list running dev containers
   dev --help                             show this help
 
-Project mode reads dev.yml from the repo root for compose and port config.
+Clone repos and run make upd inside the container. Sibling containers
+(postgres, backend, etc.) bind ports directly — no port config needed.
 HELP
   exit 0
 fi
 
 IMAGE_NAME="dev-container"
-STATE_DIR="$HOME/.local/state/dev"
-WORKSPACE_ROOT="$HOME/.dev-workspaces"
-PORT_FILE="$STATE_DIR/ports.json"
 
 # Detect podman/docker socket for socket mounting
-# On macOS with Podman machine, use the VM-internal socket (host temp path can't be mounted)
 if podman machine inspect >/dev/null 2>&1; then
   PODMAN_SOCKET="/run/user/$(podman machine ssh id -u)/podman/podman.sock"
 elif [ -S "/var/run/docker.sock" ]; then
@@ -38,36 +34,6 @@ SOCKET_MOUNT=""
 if [ -n "$PODMAN_SOCKET" ]; then
   SOCKET_MOUNT="-v $PODMAN_SOCKET:/var/run/docker.sock --security-opt label=disable"
 fi
-
-mkdir -p "$STATE_DIR" "$WORKSPACE_ROOT"
-[ -f "$PORT_FILE" ] || echo '{}' > "$PORT_FILE"
-
-# --- Port allocation ---
-allocate_offset() {
-  local name="$1"
-  local existing
-  existing=$(jq -r --arg n "$name" '.[$n] // empty' "$PORT_FILE")
-  if [ -n "$existing" ]; then
-    echo "$existing"
-    return
-  fi
-  # Find lowest free offset (0-99, step 1, multiply by 100 at usage)
-  local used
-  used=$(jq -r 'values[]' "$PORT_FILE" | sort -n)
-  local offset=0
-  while echo "$used" | grep -qx "$offset"; do
-    offset=$((offset + 1))
-  done
-  jq --arg n "$name" --argjson o "$offset" '. + {($n): $o}' "$PORT_FILE" > "$PORT_FILE.tmp" \
-    && mv "$PORT_FILE.tmp" "$PORT_FILE"
-  echo "$offset"
-}
-
-release_offset() {
-  local name="$1"
-  jq --arg n "$name" 'del(.[$n])' "$PORT_FILE" > "$PORT_FILE.tmp" \
-    && mv "$PORT_FILE.tmp" "$PORT_FILE"
-}
 
 # --- Build image ---
 build_image() {
@@ -81,158 +47,68 @@ ensure_image() {
   fi
 }
 
-# --- Rebuild command ---
+# --- Rebuild ---
 if [ "${1:-}" = "--rebuild" ]; then
   build_image
   exit 0
 fi
 
-# --- Stop command ---
+# --- Stop ---
 if [ "${1:-}" = "--stop" ]; then
-  NAME="${2:?Usage: dev --stop <container-name>}"
+  NAME="dev-${2:?Usage: dev --stop <name>}"
   podman stop "$NAME" 2>/dev/null; podman rm "$NAME" 2>/dev/null
-  release_offset "$NAME"
   echo "Stopped $NAME"
   exit 0
 fi
 
-# --- Restart command (stop + start) ---
+# --- Restart ---
 if [ "${1:-}" = "--restart" ]; then
-  REPO="${2:?Usage: dev --restart <repo-path> [branch]}"
-  REPO_ABS="$(cd "$REPO" && pwd)"
-  R_PROJECT=$(basename "$REPO_ABS")
-  R_BRANCH="${3:-$(git -C "$REPO_ABS" branch --show-current)}"
-  R_SLUG="${R_BRANCH//\//-}"
-  R_NAME="dev-${R_PROJECT}-${R_SLUG}"
-  podman stop "$R_NAME" 2>/dev/null; podman rm "$R_NAME" 2>/dev/null
-  release_offset "$R_NAME"
-  echo "Stopped $R_NAME, relaunching..."
-  exec "$0" "$REPO" ${3:+"$3"}
+  NAME="dev-${2:?Usage: dev --restart <name>}"
+  podman stop "$NAME" 2>/dev/null; podman rm "$NAME" 2>/dev/null
+  echo "Stopped $NAME, relaunching..."
+  exec "$0" "$2"
 fi
 
-# --- List command ---
+# --- List ---
 if [ "${1:-}" = "--ls" ]; then
   podman ps --filter "name=^dev-" --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
   exit 0
 fi
 
-# --- Exec command ---
+# --- Exec ---
 if [ "${1:-}" = "--exec" ]; then
-  REPO="${2:?Usage: dev --exec <repo-path> [branch]}"
-  REPO_ABS="$(cd "$REPO" && pwd)"
-  E_PROJECT=$(basename "$REPO_ABS")
-  E_BRANCH="${3:-$(git -C "$REPO_ABS" branch --show-current)}"
-  E_SLUG="${E_BRANCH//\//-}"
-  E_NAME="dev-${E_PROJECT}-${E_SLUG}"
-  exec podman exec -it "$E_NAME" zsh
+  NAME="dev-${2:?Usage: dev --exec <name>}"
+  exec podman exec -it "$NAME" zsh
 fi
 
-# --- Bare mode (no args) ---
-if [ $# -eq 0 ]; then
-  ensure_image
-  CONTAINER_NAME="dev-scratch-$$"
-  echo "Starting bare dev container: $CONTAINER_NAME"
-  eval podman run -it --rm \
-    --name "$CONTAINER_NAME" \
-    --hostname dev-scratch \
-    --userns=keep-id \
-    $SOCKET_MOUNT \
-    -v "claude-state-scratch:/home/dev/.claude" \
-    -v "npm-cache:/home/dev/.npm" \
-    "$IMAGE_NAME" zsh
-  exit 0
-fi
+# --- Create container ---
+NAME="dev-${1:?Usage: dev <name>}"
 
-# --- Project mode ---
-REPO_PATH="$(cd "$1" && pwd)"
-BRANCH="${2:-$(git -C "$REPO_PATH" branch --show-current)}"
-PROJECT_NAME=$(basename "$REPO_PATH")
-BRANCH_SLUG="${BRANCH//\//-}"
-CONTAINER_NAME="dev-${PROJECT_NAME}-${BRANCH_SLUG}"
-
-# Read project config
-DEV_CONFIG="$REPO_PATH/dev.yml"
-COMPOSE_DIR=""
-COMPOSE_FILES=""
-declare -a PORT_NAMES=()
-declare -a PORT_BASES=()
-
-if [ -f "$DEV_CONFIG" ]; then
-  # Parse dev.yml (simple yaml — no nested structures)
-  COMPOSE_DIR="$REPO_PATH/$(grep '^compose_dir:' "$DEV_CONFIG" | awk '{print $2}')"
-  COMPOSE_FILES=$(grep -A 20 '^compose_files:' "$DEV_CONFIG" | grep '^ *-' | sed 's/^ *- *//' | tr '\n' ':' | sed 's/:$//')
-
-  while IFS=': ' read -r name port; do
-    [ -n "$name" ] && [ -n "$port" ] && PORT_NAMES+=("$name") && PORT_BASES+=("$port")
-  done < <(grep -A 20 '^ports:' "$DEV_CONFIG" | grep '^ *[a-z]' | sed 's/^ *//')
-fi
-
-# Check if already running
-if podman container exists "$CONTAINER_NAME" 2>/dev/null; then
-  echo "Container '$CONTAINER_NAME' already exists."
+if podman container exists "$NAME" 2>/dev/null; then
+  echo "Container '$NAME' already exists."
   echo ""
-  echo "  Shell:      podman exec -it $CONTAINER_NAME zsh"
-  echo "  Claude:     podman exec -it $CONTAINER_NAME zsh -c 'cd ~/${PROJECT_NAME} && claude --dangerously-skip-permissions'"
-  echo "  Lazygit:    podman exec -it $CONTAINER_NAME zsh -c 'cd ~/${PROJECT_NAME} && lazygit'"
-  echo ""
-  echo "  Stop:       podman stop $CONTAINER_NAME && podman rm $CONTAINER_NAME"
+  echo "  Shell:   dev --exec $1"
+  echo "  Stop:    dev --stop $1"
+  echo "  Restart: dev --restart $1"
   exit 0
-fi
-
-# Create workspace (full clone — no alternates, avoids host path issues in container)
-WORKSPACE_DIR="$WORKSPACE_ROOT/${PROJECT_NAME}-${BRANCH_SLUG}"
-if [ ! -d "$WORKSPACE_DIR" ]; then
-  echo "Creating workspace for $PROJECT_NAME @ $BRANCH..."
-  REMOTE_URL=$(git -C "$REPO_PATH" remote get-url origin 2>/dev/null || echo "$REPO_PATH")
-  git clone --branch "$BRANCH" "$REMOTE_URL" "$WORKSPACE_DIR" 2>/dev/null \
-    || git clone -b "$BRANCH" "$REPO_PATH" "$WORKSPACE_DIR"
 fi
 
 ensure_image
 
-# Allocate ports
-OFFSET=$(allocate_offset "$CONTAINER_NAME")
-PORT_ARGS=""
-PORT_INFO=""
-for i in "${!PORT_NAMES[@]}"; do
-  HOST_PORT=$(( PORT_BASES[i] + OFFSET * 100 ))
-  PORT_ARGS="$PORT_ARGS -p ${HOST_PORT}:${PORT_BASES[i]}"
-  PORT_INFO="$PORT_INFO\n  ${PORT_NAMES[i]}: localhost:${HOST_PORT}"
-done
-
-# Compose env vars
-COMPOSE_ENV=""
-if [ -n "$COMPOSE_DIR" ] && [ -n "$COMPOSE_FILES" ]; then
-  COMPOSE_ENV="-e COMPOSE_DIR=/home/dev/${PROJECT_NAME}/$(basename "$COMPOSE_DIR") -e COMPOSE_FILES=$COMPOSE_FILES"
-fi
-
-# Run container
-echo "Starting container '$CONTAINER_NAME'..."
+echo "Starting container '$NAME'..."
 eval podman run -d \
-  --name "$CONTAINER_NAME" \
-  --hostname "$CONTAINER_NAME" \
+  --name "$NAME" \
+  --hostname "$NAME" \
   --userns=keep-id \
   $SOCKET_MOUNT \
-  -v "${WORKSPACE_DIR}:/home/dev/${PROJECT_NAME}" \
-  -v "claude-state-${CONTAINER_NAME}:/home/dev/.claude" \
-  -v "npm-cache-${CONTAINER_NAME}:/home/dev/.npm" \
+  -v "claude-state-${NAME}:/home/dev/.claude" \
+  -v "npm-cache-${NAME}:/home/dev/.npm" \
   -e DEV_DETACHED=1 \
-  $PORT_ARGS \
-  $COMPOSE_ENV \
   "$IMAGE_NAME"
 
 echo ""
-echo "=== Container '$CONTAINER_NAME' started ==="
+echo "=== Container '$NAME' started ==="
 echo ""
-if [ -n "$PORT_INFO" ]; then
-  echo "Ports:"
-  echo -e "$PORT_INFO"
-  echo ""
-fi
-echo "Tmux panes:"
-echo "  Claude:     podman exec -it $CONTAINER_NAME zsh -c 'cd ~/${PROJECT_NAME} && claude --dangerously-skip-permissions'"
-echo "  Lazygit:    podman exec -it $CONTAINER_NAME zsh -c 'cd ~/${PROJECT_NAME} && lazygit'"
-echo "  Lazydocker: podman exec -it $CONTAINER_NAME zsh -c 'lazydocker'"
-echo ""
-echo "Shell:        podman exec -it $CONTAINER_NAME zsh"
-echo "Stop:         podman stop $CONTAINER_NAME && podman rm $CONTAINER_NAME"
+echo "  Shell:   dev --exec $1"
+echo "  Stop:    dev --stop $1"
+echo "  Restart: dev --restart $1"

@@ -20,21 +20,8 @@ if ! command -v claude >/dev/null 2>&1; then
   npm install -g @anthropic-ai/claude-code || true
 fi
 
-# Start inner app stack if compose config is provided
-if [ -n "$COMPOSE_DIR" ] && [ -n "$COMPOSE_FILES" ]; then
-  cd "$COMPOSE_DIR"
-  COMPOSE_ARGS=""
-  IFS=':' read -ra FILES <<< "$COMPOSE_FILES"
-  for f in "${FILES[@]}"; do
-    COMPOSE_ARGS="$COMPOSE_ARGS -f $f"
-  done
-  echo "Starting app stack..."
-  podman-compose $COMPOSE_ARGS up -d --build || echo "Warning: compose up failed (may need manual start)"
-  cd "$HOME"
-fi
-
-# Detached mode (project containers): stay alive for exec sessions.
-# Interactive mode (bare containers): drop into shell.
+# Detached mode: stay alive for exec sessions.
+# Interactive mode: drop into shell.
 if [ "${DEV_DETACHED:-}" = "1" ]; then
   exec sleep infinity
 else
