@@ -104,9 +104,11 @@ fi
 
 # Resolve host dir to absolute path
 MOUNT_ARGS=""
+MOUNT_ENV=""
 if [ -n "$HOST_DIR" ]; then
   HOST_DIR_ABS="$(cd "$HOST_DIR" && pwd)"
   MOUNT_ARGS="-v ${HOST_DIR_ABS}:${HOST_DIR_ABS}"
+  MOUNT_ENV="-e DEV_MOUNT=${HOST_DIR_ABS}"
 fi
 
 ensure_image
@@ -118,6 +120,7 @@ eval podman run -d \
   --userns=keep-id \
   $SOCKET_MOUNT \
   $MOUNT_ARGS \
+  $MOUNT_ENV \
   -v "claude-state-${NAME}:/home/dev/.claude" \
   -v "npm-cache-${NAME}:/home/dev/.npm" \
   -e DEV_DETACHED=1 \
