@@ -15,6 +15,10 @@
     ".tmux.conf".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/home/.tmux.conf";
 
     # ./claude
+    # On the laptop these manage ~/.claude directly. In dev containers Claude is
+    # pointed at CLAUDE_CONFIG_DIR instead (see container/entrypoint.sh), which
+    # symlinks these same dotfiles sources into the persistent per-container
+    # config dir; the ~/.claude entries below are inert there. Keep both in sync.
     ".claude/settings.json".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/home/.claude/settings.json";
     ".claude/statusline-command.sh".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/home/.claude/statusline-command.sh";
     ".claude/CLAUDE.md".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/home/.claude/CLAUDE.md";

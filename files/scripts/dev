@@ -18,12 +18,13 @@ Usage:
 The mounted directory is available at the same path inside the container
 and on the VM, so docker compose volume mounts resolve correctly.
 
-Claude per-container state (session history, todos, plugins) persists at
-~/.dev-containers/<dev-name>/claude on the host. Global memory and credentials
-are shared from the single host ~/.claude/{memory,.credentials.json} across all
-containers. Static Claude config (settings, skills, agents) is owned by
-home-manager inside the image and is updated with `hm-switch` in the
-container — no image rebuild needed.
+Per-container state (Claude credentials/sessions/projects/history and gh/git
+auth) persists at ~/.dev-containers/<dev-name> on the host, so you authenticate
+once. It survives --stop/--restart by design; delete that dir to fully reset a
+container. Global Claude memory is shared from ~/.claude/memory across all
+containers. Static Claude config (settings, skills, agents) lives in the
+dotfiles clone and is symlinked into the config dir at container start, so
+editing ~/.dotfiles is live; restart the container to pick up newly added files.
 
 Env flags:
   DEV_DOCKER_SOCK=1   mount the container runtime socket (host-root-equivalent;
@@ -124,19 +125,13 @@ if [ -n "$HOST_DIR" ]; then
   MOUNT_ENV="-e DEV_MOUNT=${HOST_DIR_ABS}"
 fi
 
-# Per-container Claude state, persisted on the host and isolated per container.
-# Static config (settings.json, skills, agents, ...) is owned by home-manager
-# inside the image; only runtime-generated state lives here. The entrypoint
-# symlinks the state subpaths into ~/.claude at startup.
-CLAUDE_STATE="${HOME}/.dev-containers/${NAME}/claude"
-mkdir -m 700 -p "$CLAUDE_STATE"
-
-# Share the single canonical host credentials file rather than copying it into
-# each container (avoids token sprawl / staleness). Mounted only if it exists.
-CRED_MOUNT=""
-if [ -f "${HOME}/.claude/.credentials.json" ]; then
-  CRED_MOUNT="-v ${HOME}/.claude/.credentials.json:/home/dev/.claude-cred.json"
-fi
+# Per-container persistent state, isolated per container and kept on the host.
+# Mounted at /home/dev/.dev-state and organized by tool (claude/, config/gh).
+# CLAUDE_CONFIG_DIR (set in the image) points Claude at .dev-state/claude, so
+# credentials and session state persist; the entrypoint persists gh auth here
+# too. The entrypoint symlinks the static config in from the dotfiles clone.
+DEV_STATE="${HOME}/.dev-containers/${NAME}"
+mkdir -m 700 -p "$DEV_STATE"
 
 # Global Claude memory is user-level (facts about you, projects, preferences),
 # so share the single canonical host dir across all containers rather than
@@ -153,9 +148,8 @@ eval podman run -d \
   $SOCKET_MOUNT \
   $MOUNT_ARGS \
   $MOUNT_ENV \
-  -v "${CLAUDE_STATE}:/home/dev/.claude-state" \
+  -v "${DEV_STATE}:/home/dev/.dev-state" \
   -v "${HOME}/.claude/memory:/home/dev/.claude-memory" \
-  $CRED_MOUNT \
   -v "npm-cache-${NAME}:/home/dev/.npm" \
   -e DEV_DETACHED=1 \
   "$IMAGE_NAME"
