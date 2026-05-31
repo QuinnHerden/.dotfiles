@@ -25,6 +25,12 @@ STATE_DIR="$HOME/.local/state/dev"
 WORKSPACE_ROOT="$HOME/.dev-workspaces"
 PORT_FILE="$STATE_DIR/ports.json"
 
+# Detect podman socket for socket mounting
+PODMAN_SOCKET=$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}' 2>/dev/null || echo "")
+if [ -z "$PODMAN_SOCKET" ]; then
+  PODMAN_SOCKET="/var/run/docker.sock"
+fi
+
 mkdir -p "$STATE_DIR" "$WORKSPACE_ROOT"
 [ -f "$PORT_FILE" ] || echo '{}' > "$PORT_FILE"
 
@@ -121,10 +127,8 @@ if [ $# -eq 0 ]; then
   podman run -it --rm \
     --name "$CONTAINER_NAME" \
     --hostname dev-scratch \
-    --cap-add=SYS_ADMIN,MKNOD,NET_ADMIN \
-    --security-opt label=disable \
-    --device /dev/fuse \
     --userns=keep-id \
+    -v "$PODMAN_SOCKET:/var/run/docker.sock" \
     -v "claude-state-scratch:/home/dev/.claude" \
     -v "npm-cache:/home/dev/.npm" \
     "$IMAGE_NAME" zsh
@@ -160,7 +164,7 @@ if podman container exists "$CONTAINER_NAME" 2>/dev/null; then
   echo "Container '$CONTAINER_NAME' already exists."
   echo ""
   echo "  Shell:      podman exec -it $CONTAINER_NAME zsh"
-  echo "  Claude:     podman exec -it $CONTAINER_NAME zsh -c 'cd ~/${PROJECT_NAME} && claude'"
+  echo "  Claude:     podman exec -it $CONTAINER_NAME zsh -c 'cd ~/${PROJECT_NAME} && claude --dangerously-skip-permissions'"
   echo "  Lazygit:    podman exec -it $CONTAINER_NAME zsh -c 'cd ~/${PROJECT_NAME} && lazygit'"
   echo "  Lazydocker: podman exec -it $CONTAINER_NAME zsh -c 'lazydocker'"
   echo ""
@@ -200,14 +204,11 @@ echo "Starting container '$CONTAINER_NAME'..."
 eval podman run -d \
   --name "$CONTAINER_NAME" \
   --hostname "$CONTAINER_NAME" \
-  --cap-add=SYS_ADMIN,MKNOD,NET_ADMIN \
-  --security-opt label=disable \
-  --device /dev/fuse \
   --userns=keep-id \
+  -v "$PODMAN_SOCKET:/var/run/docker.sock" \
   -v "${WORKSPACE_DIR}:/home/dev/${PROJECT_NAME}" \
   -v "claude-state-${CONTAINER_NAME}:/home/dev/.claude" \
   -v "npm-cache-${CONTAINER_NAME}:/home/dev/.npm" \
-  -v "podman-storage-${CONTAINER_NAME}:/home/dev/.local/share/containers" \
   -e DEV_DETACHED=1 \
   $PORT_ARGS \
   $COMPOSE_ENV \
@@ -222,7 +223,7 @@ if [ -n "$PORT_INFO" ]; then
   echo ""
 fi
 echo "Tmux panes:"
-echo "  Claude:     podman exec -it $CONTAINER_NAME zsh -c 'cd ~/${PROJECT_NAME} && claude'"
+echo "  Claude:     podman exec -it $CONTAINER_NAME zsh -c 'cd ~/${PROJECT_NAME} && claude --dangerously-skip-permissions'"
 echo "  Lazygit:    podman exec -it $CONTAINER_NAME zsh -c 'cd ~/${PROJECT_NAME} && lazygit'"
 echo "  Lazydocker: podman exec -it $CONTAINER_NAME zsh -c 'lazydocker'"
 echo ""

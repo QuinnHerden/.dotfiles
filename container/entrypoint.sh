@@ -11,17 +11,8 @@ export NPM_CONFIG_PREFIX=/home/dev/.npm-global
 export PATH="/home/dev/.npm-global/bin:$PATH"
 mkdir -p /home/dev/.npm-global
 
-# XDG_RUNTIME_DIR for rootless podman
-export XDG_RUNTIME_DIR="/run/user/$(id -u)"
-sudo mkdir -p "$XDG_RUNTIME_DIR"
-sudo chown dev:dev "$XDG_RUNTIME_DIR"
-
 # Fix git credential helper for container context
 git config --global credential.helper "!$(which gh) auth git-credential"
-
-# Start podman system service (for lazydocker)
-mkdir -p "$XDG_RUNTIME_DIR/podman"
-podman system service --time=0 "unix://$XDG_RUNTIME_DIR/podman/podman.sock" &
 
 # Install/update Claude Code (runtime install — cached via npm prefix volume)
 if ! command -v claude >/dev/null 2>&1; then
