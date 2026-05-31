@@ -18,6 +18,15 @@ Usage:
 The mounted directory is available at the same path inside the container
 and on the VM, so docker compose volume mounts resolve correctly.
 
+Claude state (session history, memory, todos, plugins) persists per container
+at ~/.dev-containers/<dev-name>/claude on the host. Static Claude config
+(settings, skills, agents) is owned by home-manager inside the image and is
+updated with `hm-switch` in the container — no image rebuild needed.
+
+Env flags:
+  DEV_DOCKER_SOCK=1   mount the container runtime socket (host-root-equivalent;
+                      off by default). Needed for docker/podman inside the container.
+
 Example:
   dev work ~/repos                       mount all repos
   dev --exec work                        shell in
@@ -36,8 +45,10 @@ elif [ -S "/var/run/docker.sock" ]; then
 else
   PODMAN_SOCKET=""
 fi
+# The container runtime socket is host-root-equivalent, so it is opt-in.
+# Set DEV_DOCKER_SOCK=1 to mount it (needed for docker/podman-in-container).
 SOCKET_MOUNT=""
-if [ -n "$PODMAN_SOCKET" ]; then
+if [ "${DEV_DOCKER_SOCK:-}" = "1" ] && [ -n "$PODMAN_SOCKET" ]; then
   SOCKET_MOUNT="-v $PODMAN_SOCKET:/var/run/docker.sock --security-opt label=disable"
 fi
 
@@ -111,6 +122,20 @@ if [ -n "$HOST_DIR" ]; then
   MOUNT_ENV="-e DEV_MOUNT=${HOST_DIR_ABS}"
 fi
 
+# Per-container Claude state, persisted on the host and isolated per container.
+# Static config (settings.json, skills, agents, ...) is owned by home-manager
+# inside the image; only runtime-generated state lives here. The entrypoint
+# symlinks the state subpaths into ~/.claude at startup.
+CLAUDE_STATE="${HOME}/.dev-containers/${NAME}/claude"
+mkdir -m 700 -p "$CLAUDE_STATE"
+
+# Share the single canonical host credentials file rather than copying it into
+# each container (avoids token sprawl / staleness). Mounted only if it exists.
+CRED_MOUNT=""
+if [ -f "${HOME}/.claude/.credentials.json" ]; then
+  CRED_MOUNT="-v ${HOME}/.claude/.credentials.json:/home/dev/.claude-cred.json"
+fi
+
 ensure_image
 
 echo "Starting container '$NAME'..."
@@ -121,7 +146,8 @@ eval podman run -d \
   $SOCKET_MOUNT \
   $MOUNT_ARGS \
   $MOUNT_ENV \
-  -v "${HOME}/.claude:/home/dev/.claude" \
+  -v "${CLAUDE_STATE}:/home/dev/.claude-state" \
+  $CRED_MOUNT \
   -v "npm-cache-${NAME}:/home/dev/.npm" \
   -e DEV_DETACHED=1 \
   "$IMAGE_NAME"
