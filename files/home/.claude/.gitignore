@@ -1,0 +1,14 @@
+# Never commit runtime-generated Claude state, even if it lands in this subtree.
+# (The repo-root /.claude/ rule does not cover files/home/.claude/.)
+.credentials*
+*.jsonl
+history*
+projects/
+sessions/
+memory/
+todos/
+plugins/
+shell-snapshots/
+file-history/
+paste-cache/
+statsig/
