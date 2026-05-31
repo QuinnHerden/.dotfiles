@@ -136,6 +136,11 @@
       eval "$(fzf --zsh)"
       eval "$(zoxide init --cmd cd zsh)"
       eval $(thefuck --alias f)
+
+      # Set DOCKER_HOST for podman on macOS (lazydocker, docker CLI compat)
+      if command -v podman >/dev/null 2>&1 && [ "$(uname)" = "Darwin" ]; then
+        export DOCKER_HOST="unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}' 2>/dev/null)"
+      fi
     '';
   };
 
