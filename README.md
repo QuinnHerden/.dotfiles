@@ -81,58 +81,37 @@ Isolated dev environments using Podman. Each container gets the full dotfiles to
 ### Usage
 
 ```bash
-# Bare mode — drops into an interactive dev shell, no repo
-dev
+# Create a named container
+dev myproject
 
-# Project mode — clones the branch, maps ports, starts as daemon
-dev ~/repos/myproject
-dev ~/repos/myproject feat/my-branch
+# Shell into it
+dev --exec myproject
 
-# Attach to a running project container
-dev --exec ~/repos/myproject
-podman exec -it dev-myproject-main zsh  # equivalent
+# Inside the container: clone, install, run
+git clone https://github.com/org/myproject.git
+cd myproject
+make install
+make upd
 
-# Restart after image rebuild
-dev --restart ~/repos/myproject
-
-# Stop and remove a container
-dev --stop dev-myproject-main
-
-# List running dev containers
-dev --ls
-
-# Rebuild the image (after dotfiles changes)
-dev --rebuild
+# Manage containers
+dev --ls                     # list running dev containers
+dev --stop myproject         # stop and remove
+dev --restart myproject      # stop + recreate
+dev --rebuild                # rebuild the image (after dotfiles changes)
 ```
 
 The first start takes ~15 seconds to install Claude Code via npm. Subsequent starts are near-instant (npm cache persists in a named volume).
 
-### Project config
-
-Add a `dev.yml` to any repo to configure compose files and port mappings:
-
-```yaml
-project: myproject
-compose_dir: docker
-compose_files:
-  - docker-compose.yml
-  - docker-compose.dev.yml
-ports:
-  pg: 5432
-  api: 8080
-  web: 5173
-```
-
-Ports are auto-offset per container so parallel instances don't collide.
+Sibling containers (postgres, backend, etc.) started via `make upd` bind their ports directly — no port config needed.
 
 ### Parallel development
 
-Spin up multiple containers for different branches — each gets its own clone, database, and app stack:
+Spin up multiple containers for parallel work:
 
 ```bash
-dev ~/repos/myproject feat/branch-a
-dev ~/repos/myproject feat/branch-b
-# Two fully isolated environments
+dev feature-a
+dev feature-b
+# Two fully isolated environments, each with their own repo clone and app stack
 ```
 
 
