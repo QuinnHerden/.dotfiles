@@ -11,10 +11,11 @@ export NPM_CONFIG_PREFIX=/home/dev/.npm-global
 export PATH="/home/dev/.npm-global/bin:$PATH"
 mkdir -p /home/dev/.npm-global
 
-# Symlink mounted host dirs into home for convenience (e.g. ~/repos -> /Users/.../repos)
-for dir in /Users/*/repos /home/*/repos; do
-  [ -d "$dir" ] && [ ! -e "$HOME/repos" ] && ln -sfn "$dir" "$HOME/repos" && break
-done
+# Symlink mounted dir into home for convenience (e.g. ~/dev_0 -> /Users/.../containers/dev_0)
+if [ -n "${DEV_MOUNT:-}" ] && [ -d "$DEV_MOUNT" ]; then
+  LINK_NAME=$(basename "$DEV_MOUNT")
+  [ ! -e "$HOME/$LINK_NAME" ] && ln -sfn "$DEV_MOUNT" "$HOME/$LINK_NAME"
+fi
 
 # Fix git credential helper for container context
 git config --global credential.helper "!$(which gh) auth git-credential"
