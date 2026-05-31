@@ -40,6 +40,12 @@ if [ -e /home/dev/.claude-cred.json ]; then
   chmod 600 /home/dev/.claude-cred.json 2>/dev/null || true
 fi
 
+# Share global (user-level) Claude memory across all containers.
+if [ -d /home/dev/.claude-memory ]; then
+  mkdir -p "$HOME/.claude"
+  ln -sfn /home/dev/.claude-memory "$HOME/.claude/memory"
+fi
+
 # Fix git credential helper for container context
 git config --global credential.helper "!$(which gh) auth git-credential"
 
