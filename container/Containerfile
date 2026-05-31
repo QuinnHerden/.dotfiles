@@ -31,6 +31,7 @@ RUN git clone --branch ${DOTFILES_BRANCH} ${DOTFILES_REPO} /home/dev/.dotfiles
 ENV PATH="/home/dev/.npm-global/bin:/home/dev/.local/bin:/home/dev/.nix-profile/bin:${PATH}" \
     NPM_CONFIG_PREFIX=/home/dev/.npm-global \
     CONTAINER_HOST="unix:///var/run/docker.sock" \
+    CLAUDE_CONFIG_DIR=/home/dev/.dev-state/claude \
     USER=dev \
     HOME=/home/dev
 
