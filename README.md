@@ -81,37 +81,36 @@ Isolated dev environments using Podman. Each container gets the full dotfiles to
 ### Usage
 
 ```bash
-# Create a named container
-dev myproject
+# Create a container with a host directory mounted
+dev work ~/repos
 
 # Shell into it
-dev --exec myproject
+dev --exec work
 
-# Inside the container: clone, install, run
-git clone https://github.com/org/myproject.git
-cd myproject
-make install
-make upd
+# Inside the container: repos are at ~/repos
+cd ~/repos/motifs
+make install && make upd     # compose volume paths resolve correctly
 
 # Manage containers
 dev --ls                     # list running dev containers
-dev --stop myproject         # stop and remove
-dev --restart myproject      # stop + recreate
+dev --stop work              # stop and remove
+dev --restart work ~/repos   # stop + recreate
 dev --rebuild                # rebuild the image (after dotfiles changes)
 ```
 
-The first start takes ~15 seconds to install Claude Code via npm. Subsequent starts are near-instant (npm cache persists in a named volume).
+The mounted directory is available at the same host path inside the container, so `docker compose` volume mounts resolve correctly on the VM.
 
-Sibling containers (postgres, backend, etc.) started via `make upd` bind their ports directly — no port config needed.
+The first start takes ~15 seconds to install Claude Code via npm. Subsequent starts are near-instant (npm cache persists in a named volume).
 
 ### Parallel development
 
-Spin up multiple containers for parallel work:
+Mount the same directory into multiple containers for parallel branch work:
 
 ```bash
-dev feature-a
-dev feature-b
-# Two fully isolated environments, each with their own repo clone and app stack
+dev branch-a ~/repos
+dev branch-b ~/repos
+# Each container has its own shell, Claude instance, and compose stack
+# but shares the same host repos (use separate branches/worktrees)
 ```
 
 
