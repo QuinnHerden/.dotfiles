@@ -142,13 +142,19 @@
       export PATH="$HOME/.nix-profile/bin:$PATH"
       eza_params=()
       eval "$(fzf --zsh)"
-      eval "$(zoxide init --cmd cd zsh)"
       eval $(thefuck --alias f)
 
       # Set DOCKER_HOST for podman on macOS (lazydocker, docker CLI compat)
       if command -v podman >/dev/null 2>&1 && [ "$(uname)" = "Darwin" ]; then
         export DOCKER_HOST="unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}' 2>/dev/null)"
       fi
+    '';
+
+    # zoxide must be last in .zshrc to avoid the "possible configuration issue"
+    # warning. lib.mkAfter gives this block priority 1500 — after oh-my-zsh,
+    # syntax-highlighting, and the default initContent at 1000.
+    initContent = lib.mkAfter ''
+      eval "$(zoxide init --cmd cd zsh)"
     '';
   };
 
