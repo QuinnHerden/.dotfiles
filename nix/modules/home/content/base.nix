@@ -148,12 +148,9 @@
       if command -v podman >/dev/null 2>&1 && [ "$(uname)" = "Darwin" ]; then
         export DOCKER_HOST="unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}' 2>/dev/null)"
       fi
-    '';
 
-    # zoxide must be last in .zshrc to avoid the "possible configuration issue"
-    # warning. lib.mkAfter gives this block priority 1500 — after oh-my-zsh,
-    # syntax-highlighting, and the default initContent at 1000.
-    initContent = lib.mkAfter ''
+      # zoxide must be last — initialising before other integrations causes the
+      # "possible configuration issue" warning (something after it overrides cd).
       eval "$(zoxide init --cmd cd zsh)"
     '';
   };
