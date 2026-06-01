@@ -138,7 +138,10 @@
       vi = "nvim";
     };
 
-    initContent = ''
+    # lib.mkAfter (priority 1500) ensures this entire block runs after any other
+    # module that sets initContent at the default priority (1000). Zoxide must be
+    # last or it emits a "possible configuration issue" warning.
+    initContent = lib.mkAfter ''
       export PATH="$HOME/.nix-profile/bin:$PATH"
       eza_params=()
       eval "$(fzf --zsh)"
@@ -148,12 +151,7 @@
       if command -v podman >/dev/null 2>&1 && [ "$(uname)" = "Darwin" ]; then
         export DOCKER_HOST="unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}' 2>/dev/null)"
       fi
-    '';
 
-    # zoxide must be last in .zshrc to avoid the "possible configuration issue"
-    # warning. lib.mkAfter gives this block priority 1500 — after oh-my-zsh,
-    # syntax-highlighting, and the default initContent at 1000.
-    initContent = lib.mkAfter ''
       eval "$(zoxide init --cmd cd zsh)"
     '';
   };
