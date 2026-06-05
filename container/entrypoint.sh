@@ -58,10 +58,18 @@ fi
 # Fix git credential helper for container context
 git config --global credential.helper "!$(which gh) auth git-credential"
 
-# Install/update Claude Code (runtime install — cached via npm prefix volume)
-if ! command -v claude >/dev/null 2>&1; then
-  echo "Installing Claude Code..."
-  npm install -g @anthropic-ai/claude-code || true
+# Install/repair Claude Code (runtime install — cached via npm prefix volume).
+# claude-code ships a JS stub plus a platform-native optional dependency that is
+# fetched by its postinstall; an interrupted or optional-omitting install leaves
+# `claude` on PATH but non-functional. So verify it actually *runs* (not just
+# that the symlink exists), and (re)install with optional deps if missing/broken.
+if ! claude --version >/dev/null 2>&1; then
+  echo "Installing/repairing Claude Code..."
+  npm install -g --include=optional @anthropic-ai/claude-code@latest || true
+  if ! claude --version >/dev/null 2>&1; then
+    echo "WARNING: Claude Code installed but not runnable — native binary missing." >&2
+    echo "  Retry: npm install -g --include=optional @anthropic-ai/claude-code@latest" >&2
+  fi
 fi
 
 # Detached mode: stay alive for exec sessions.
