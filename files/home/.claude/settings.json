@@ -29,6 +29,7 @@
     "chrome-devtools-mcp@claude-plugins-official": true
   },
   "commitTrailer": false,
+  "effortLevel": "medium",
   "voiceEnabled": false,
   "editorMode": "vim"
 }
