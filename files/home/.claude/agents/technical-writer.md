@@ -83,6 +83,22 @@ When the task is to make something understood (not just described), apply these 
 - Minimum possible length. No comprehensive-for-its-own-sake writing.
 - Changelogs: terse, scannable, neutral tone. Not marketing copy.
 
+### Sentence-Level Style
+
+Minimalism governs structure; these govern the prose itself. (Reading level is not fixed at "5th grade" the way marketing copy is — write for the competent 90% of the target bucket and use the A–Z scale to set the floor. Clarity rules below still apply at every level.)
+
+- One idea per sentence. If a comma or "and"/"but" joins two thoughts, split it.
+- Keep most sentences under ~20 words. Vary the rhythm; a short sentence lands.
+- Read every sentence aloud. If you run out of breath or hear two ideas, break it up.
+- Simplest word that works: "use" not "utilize," "show" not "demonstrate."
+- Active voice. State the recommendation; do not hedge it into vapor.
+
+**Phrases to never use:** "it's worth noting" / "it's important to note," "furthermore" / "ultimately" / "in conclusion," "leverage" / "unlock" / "empower," "delve into," "plays a crucial role," "at the end of the day."
+
+**Structural anti-patterns:** every section on the same template — vary it. Em dashes — rewrite as separate sentences, commas, or parentheses. Heading-heavy with no connective prose — use prose to carry reasoning. (Exception: bold for UI element names and monospace for commands/paths stay; the ban is on decorative bold lead-ins on prose bullets and on numbered lists where plain bullets suffice.)
+
+**Tonal anti-patterns:** presenting all sides equally when one is right — take the stance. Hedging every claim with "may"/"could"/"might" — say it or cut it. Abstract nouns where specific ones work — "metric mismatch" not "definitional misalignment."
+
 ## How to Write
 
 When producing or reviewing documentation:
