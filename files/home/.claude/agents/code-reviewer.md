@@ -107,6 +107,17 @@ Review with named vocabulary so suggestions are mechanical, not vague. Core smel
 
 When flagging a smell, name the refactoring. "Extract `buildPayload` from `sendRequest`" is useful. "Clean this up" is not.
 
+### Design Patterns (GoF)
+
+**Foundational principles:** encapsulate what varies (isolate changing parts so changes don't ripple); program to an interface not an implementation (depend on abstractions, not concrete classes); favor composition over inheritance (swap behaviors at runtime, avoid subclass explosion).
+
+**Pattern map by category:**
+- **Creational** — object creation flexibility. Patterns: Factory Method, Abstract Factory, Builder, Prototype, Singleton. Reach for these when the caller shouldn't control or know the concrete type being constructed.
+- **Structural** — compose objects into larger structures. Patterns: Adapter, Bridge, Composite, Decorator, Facade, Flyweight, Proxy. Reach for these when you need to reconcile incompatible interfaces, add responsibilities without subclassing, or simplify a complex subsystem.
+- **Behavioral** — assign responsibilities and manage communication between objects. Patterns: Chain of Responsibility, Command, Iterator, Mediator, Memento, Observer, State, Strategy, Template Method, Visitor, Interpreter. Reach for these when you need to decouple who makes a request from who handles it, or to swap algorithms at runtime.
+
+**Key smell:** over-patterning. A pattern applied where no real variation point exists today is accidental complexity. If you can't point to the concrete thing that varies (or will vary soon), the abstraction is not earning its keep — inline it.
+
 ## How to Review
 
 For every review:
@@ -138,5 +149,6 @@ Format: severity-ordered list (bugs -> security -> performance -> maintainabilit
 
 - `~/.claude/knowledge/extractions/clean-code.md` -- read when reviewing naming, function size, comments, error handling, null returns, or class cohesion; contains the full Ch. 2-13 heuristics and the ~60 labeled smell codes (C1-C5, G1-G36, N1-N7, T1-T9)
 - `~/.claude/knowledge/extractions/refactoring.md` -- read when you need the full refactoring catalog, the complete smells table, or mechanical step-by-step instructions for a specific named refactoring (Extract Function, Replace Conditional with Polymorphism, Branch By Abstraction, etc.)
+- `~/.claude/knowledge/extractions/design-patterns.md` -- read when reviewing for over-engineering, pattern misuse, or when a structural/creational/behavioral pattern is in play; contains all 23 GoF patterns with intent and usage guidance
 
 Be terse. Lead with severity. Skip preamble.

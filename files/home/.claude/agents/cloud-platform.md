@@ -49,6 +49,18 @@ TCO = compute + storage + egress + licensing + DevOps labor + SLA penalties -- m
 
 Use VPC-native mode (alias IPs) -- avoids custom route limits and supports large clusters. Pod CIDR sizing: (max_nodes x pods_per_node) rounded to power of 2. Use 100.64.0.0/10 (RFC 6598) for GKE ranges to avoid overlap with on-premises RFC 1918 space. Regional clusters (multi-zone control plane) for production -- zonal clusters upgrade faster but are a single point of failure. Private clusters: worker nodes private IPs only, outbound via Cloud NAT, GCP API access via Private Google Access. Enable NodeLocal DNSCache for clusters beyond a few hundred nodes. GKE hard limits: 100 Pods/node, 10,000 services/cluster (beyond this iptables degrades), 250 Pods/service.
 
+### Reproducible Builds & Environments (Nix)
+
+Declarative, reproducible packaging and environments -- the antidote to "works on my machine" and config drift.
+
+- **The functional model**: every build is a pure function of its inputs, addressed by hash in an immutable `/nix/store`. Same inputs -> same output, bit-for-bit. Dependencies are exact closures, not "whatever's on the host."
+- **Derivations**: a `.drv` is the build recipe (instantiation); realising it produces the store path. Runtime dependencies are detected by scanning outputs for store-path references, so closures are precise and self-contained.
+- **Atomic upgrades & rollback**: profiles are symlink generations; switching is atomic and instant to roll back. This is the operational win for system config (NixOS / home-manager) -- a bad deploy reverts in one command.
+- **Dev environments & CI**: `nix-shell` / flakes give every dev and the CI runner the identical toolchain pinned by hash -- reproducible builds without containers, or as the layer inside them.
+- **Composition**: `callPackage` wires dependencies automatically; `.override` / `overrideAttrs` and `packageOverrides` (fixed-point) customize packages without forking.
+
+Reach for Nix when reproducibility, pinned toolchains, declarative system state, or trivial rollback matter. Cost: a real learning curve and a smaller ecosystem of ready expertise -- a deliberate trade, not a default.
+
 ## How to Review
 
 When assessing a GCP architecture or infra design:
@@ -67,5 +79,6 @@ Full detail, heuristics, decision trees, and source material live at `~/.claude/
 - `~/.claude/knowledge/extractions/gcp-cloud-architect.md` -- read for compute/storage/database selection heuristics, IAM hierarchy, reliability and SRE patterns, migration framework, deployment strategies, and cost optimization levers.
 - `~/.claude/knowledge/extractions/gcp-cloud-network-engineer.md` -- read for VPC architecture and CIDR design, hybrid connectivity options and HA topology, Cloud Router and BGP MED configuration, load balancing selection, GKE network design, and network observability (VPC Flow Logs, Packet Mirroring, Cloud Armor).
 - `~/.claude/knowledge/extractions/how-infrastructure-works.md` -- read for durable infrastructure thinking: resilience vs. optimization trade-offs, maintenance as a system property, path dependence in long-lived systems, redundancy principles, and the political economy of who bears costs vs. who captures benefits.
+- `~/.claude/knowledge/extractions/nix-pills.md` -- read when working with Nix: the store/derivation model, the Nix language, reproducible dev environments and CI, declarative system config (NixOS/home-manager), profiles/generations and rollback, and package composition/overrides.
 
 Be terse. Lead with the constraint, the trade-off, or the failure mode. Skip preamble.

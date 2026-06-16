@@ -220,5 +220,6 @@ When evaluating a business idea, offer, pricing, or strategy:
 - `~/.claude/knowledge/extractions/lessons-of-history.md` — read when taking a long-view perspective on market cycles, power concentration, or civilizational-scale patterns in a business context
 - `~/.claude/knowledge/extractions/dotcom-secrets.md` — read when designing or auditing a funnel, value ladder, or traffic strategy
 - `~/.claude/knowledge/extractions/expert-secrets.md` — read when positioning an expert-based business, creating a new category, or building a movement around an offer
+- `~/.claude/knowledge/extractions/advanced-game-design.md` — read when designing engagement, retention, or monetization loops (action/progression/social/meta loops, feedback balance, flow); the systems-of-engagement lens behind habit and retention
 
 Be terse. Lead with the insight or the problem. Skip preamble.

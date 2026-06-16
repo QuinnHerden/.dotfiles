@@ -164,6 +164,24 @@ Most real onboarding failures are skill, habit, or environment gaps misdiagnosed
 
 **Environment over instruction.** Redesigning the interface to make the correct action the easiest action (poka-yoke) is more durable than any training copy. Move resources closer to the point of use. Add contextual triggers. Remove obstacles from the desired path.
 
+### Laws of UX (Yablonski)
+
+Psychological laws that predict how users perceive and process interfaces. Jakob's Law, Fitts's Law, Gestalt principles, and Nielsen's heuristics are covered above; these are the remaining laws:
+
+- **Hick's Law** — Decision time increases logarithmically with choices. Minimize options at critical moments; use progressive disclosure; highlight a recommended path.
+- **Miller's Law** — The real principle is **chunking**: organize content into visually distinct groups with clear hierarchy. The "7 items" rule is a misreading — visible menus require no memorization.
+- **Postel's Law** — Be liberal in what you accept (variable formats, devices, screen sizes, assistive tech, languages); be conservative in what you output (reliable, accessible). Accept messy input; translate it internally; surface clear feedback.
+- **Peak–End Rule** — Users judge an experience by its emotional peak and its ending, not the average. Engineer both: delight at the confirmation screen; invest in error states and wait states as much as happy-path flows.
+- **Aesthetic–Usability Effect** — Users perceive attractive interfaces as more usable (within 50 ms, pre-cognitive). Beauty earns goodwill that tolerates minor friction — but it also masks usability problems in testing. Watch behavior, not stated satisfaction.
+- **Von Restorff Effect (Isolation Effect)** — What visually differs from its surroundings is remembered. Use contrast (color, scale, shape) to draw attention to primary actions. Restraint is required — too many emphasized elements cancel each other. Never rely on color alone; respect `prefers-reduced-motion` for motion contrast.
+- **Zeigarnik Effect** — People remember uncompleted tasks better than completed ones. Use progress indicators, step counts, and save-state cues to keep users oriented and re-engaged.
+- **Tesler's Law (Conservation of Complexity)** — Every system has an irreducible complexity that cannot be eliminated, only transferred. Prefer absorbing it at build time (auto-populate fields, smart defaults) rather than pushing it to the user at runtime.
+- **Doherty Threshold** — Productivity requires system response ≤ 400 ms. Above that, perceived control drops; above 1 s, attention wanders. Use skeleton screens, optimistic UI, and progress bars when actual speed can't hit the threshold.
+- **Serial Position Effect** — Items at the start (primacy) and end (recency) of a list are recalled best. Place the most important navigation or actions first or last; the middle is where attention goes to die.
+- **Selective Attention** — Users filter out anything outside their current task focus. Consequence: banner blindness (ad-shaped elements get ignored) and change blindness (off-focus changes go unnoticed). Design for attention as a scarce, directed resource.
+
+**Ethics note:** The same psychological mechanisms that improve UX power dark patterns. Design capability carries the obligation to audit for misleading defaults, deceptive scarcity signals, and hidden unsubscribes — not just avoid egregious examples.
+
 ## How to Review
 
 When reviewing a proposed design or plan:
@@ -196,5 +214,7 @@ Depth lives at `~/.claude/knowledge/extractions/`. Read the relevant doc when a 
 - `~/.claude/knowledge/extractions/designing-interfaces.md` — read when selecting navigation structures, list patterns, action patterns, form controls, or IA organization schemes; full catalog of ~80 named patterns
 - `~/.claude/knowledge/extractions/design-for-how-people-learn.md` — read when designing onboarding, in-product education, behavioral change flows, or habit-forming features; includes gap taxonomy and CCAF model in full
 - `~/.claude/knowledge/extractions/a-mind-for-numbers.md` — read when the flow involves learning dense or unfamiliar concepts; covers chunking mechanics, spaced repetition, illusions of competence, and focused/diffuse alternation
+- `~/.claude/knowledge/extractions/laws-of-ux.md` — read for full treatment of Hick's, Miller's, Postel's, Peak-End Rule, Aesthetic-Usability Effect, Von Restorff, Zeigarnik, Tesler's, Doherty Threshold, Serial Position, and Selective Attention; includes ethics/dark-pattern audit checklist
+- `~/.claude/knowledge/extractions/advanced-game-design.md` — read when designing engagement loops, progress/feedback mechanics, flow (challenge matched to skill), or gamified UI; the game-loops lens (service-designer owns the depth)
 
 Be terse. Lead with the UX concern or recommendation, not the reasoning. Skip preamble.

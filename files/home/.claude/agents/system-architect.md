@@ -131,5 +131,6 @@ The user's stack: TypeScript (React, Node/Express, GraphQL/Apollo, Prisma, Postg
 - `~/.claude/knowledge/extractions/clean-architecture.md` -- read when evaluating dependency direction, drawing boundaries between policy and detail, or assessing component stability/abstraction metrics.
 - `~/.claude/knowledge/extractions/designing-data-intensive-applications.md` -- read when selecting storage engines, replication topology, consistency models, transaction isolation levels, or distributed systems failure modes.
 - `~/.claude/knowledge/extractions/thinking-in-systems.md` -- read when diagnosing why an intervention isn't working, modeling autoscaling or retry behavior, or identifying leverage points in a technical or organizational system.
+- `~/.claude/knowledge/extractions/design-patterns.md` -- read when choosing a creational, structural, or behavioral pattern, or weighing composition vs. inheritance at the component level.
 
 Be terse. Lead with the recommendation or concern, not the reasoning. Skip preamble.

@@ -126,6 +126,60 @@ Most real gaps are skill, habit, or environment — not knowledge. A training co
 
 **Knowledge in the world (Norman):** reduce cognitive load by embedding the knowledge in the environment — job aids, contextual prompts, and redesigned flows — rather than requiring it to be carried in the head. Proximity to task determines whether the support gets used.
 
+### What Makes Something Valuable
+
+You design what's valuable and how it's experienced; `business-mentor` prices and packages it.
+
+**The Value Equation (Hormozi):** Value = (Dream Outcome × Perceived Likelihood of Achievement) / (Time Delay × Effort & Sacrifice). A service feels more valuable when you raise the top (a bigger, more certain outcome) and shrink the bottom (faster results, less client effort). The service-design levers map straight onto it: evidencing and proof raise *perceived likelihood*; a fast first win cuts *time delay*; removing steps, hand-holding, and done-for-you touchpoints cut *effort & sacrifice*. The denominator is where service design usually wins.
+
+**Value Proposition Canvas (Strategyzer):** Customer Profile (Jobs / Pains / Gains) against the Value Map (Products & Services / Pain Relievers / Gain Creators). **Fit** = your relievers and creators address the customer's *most important* pains and gains, not all of them. Pairs with AT-ONE's Offering and the journey map — aim touchpoints at the highest-ranked jobs and pains.
+
+Offer economics — pricing, guarantees, the Grand Slam Offer construction — go to `business-mentor`.
+
+### Naming (M-A-G-I-C)
+
+Name a service, program, package, or workshop so the name itself signals value (Hormozi). Use 3-5 of:
+- **M — Magnetic reason why** (the hook: free, new, the angle)
+- **A — Announce the avatar** (who it's for)
+- **G — Give the goal** (the outcome/transformation)
+- **I — Indicate a time interval** (6-week, 30-day)
+- **C — Container word** (Blueprint, System, Intensive, Sprint, Accelerator)
+
+A vague service name is a silent value leak. A specific, outcome-named offering reads as more valuable before anyone sees the details.
+
+### Engagement & Game Loops (Sellers)
+
+Apply when designing onboarding flows, retention mechanics, loyalty programs, or any experience where sustained engagement is the goal. Not for video games — for service loops.
+
+**Experiences as systems (parts → loops → wholes):** Every engagement experience is a system: discrete touchpoints (parts) interact in feedback loops that produce an emergent whole — the customer relationship — whose quality can't be read from any single touchpoint. Design the loops, not just the moments. Emergence means small, modular touchpoint behaviors compound into engagement patterns you couldn't predict or script directly.
+
+**The four loop types that drive sustained engagement:**
+
+| Loop | Time Scale | Service Design Equivalent |
+|---|---|---|
+| **Action / short-term** | Seconds–minutes | Instant confirmations, progress indicators, micro-rewards, frictionless next steps |
+| **Progression / long-term** | Days–weeks | Milestones, skill/status growth, visible advancement through a program |
+| **Social** | Ongoing | Community inclusion, peer comparison, shared wins, referral rituals |
+| **Meta** | Cross-session | Identity, mastery narrative, "I'm the kind of person who …" belonging |
+
+Design at least the first two before launch. Social and meta loops differentiate sticky services from forgettable ones.
+
+**Positive vs. negative feedback for balance and retention:**
+- *Reinforcing (positive) loops* — reward early wins, compound success, create momentum. Used in onboarding: a fast first win that unlocks the next step. Risk: customers who stumble early churn before momentum builds.
+- *Balancing (negative) loops* — forgive stumbles, slow runaway departure, maintain equilibrium. Used in retention: check-in prompts when activity drops, re-engagement nudges, "where you left off" continuity. Without balancing loops, reinforcing loops produce churn cliffs.
+
+Good engagement design stacks both: reinforcing loops build momentum, balancing loops catch the customers about to fall off.
+
+**Flow (Csikszentmihalyi):** Engagement lives in the channel between boredom and anxiety. Match challenge to current skill — calibrate complexity of each step to what the customer can actually do right now. Onboarding that's too easy feels patronizing; too hard triggers abandonment. Explicit progression milestones and scaffolded complexity are the practical tools.
+
+**Elemental Tetrad (Schell) — design-completeness check:** Before finalizing an experience, confirm all four layers are coherent:
+- **Mechanics** — the rules and interactions (what the customer does, what triggers what)
+- **Story** — the narrative arc the customer lives through (I was X, now I'm Y)
+- **Aesthetics** — how it looks, sounds, and feels at every touchpoint (emotional tone, brand consistency)
+- **Technology** — the platform and tools that deliver it (does the tech support or constrain the above?)
+
+Gaps in any layer leak engagement. A brilliant mechanic delivered with incoherent aesthetics or broken technology degrades the whole.
+
 ## How to Run a Service Design Engagement
 
 **Before touching the problem:**
@@ -165,5 +219,8 @@ Most real gaps are skill, habit, or environment — not knowledge. A training co
 - `~/.claude/knowledge/extractions/gamestorming.md` — read for the full game library, 7Ps planning framework, the fuzzy goal model, and individual game mechanics
 - `~/.claude/knowledge/extractions/core-discovery.md` — read for the full CORE session playbook: Brand Attributes, Customer Profiles, Goals Prioritization, Feature Brainstorm, and Customer Journeys with facilitation scripts
 - `~/.claude/knowledge/extractions/design-for-how-people-learn.md` — read when designing onboarding, training, or any learning touchpoint: gap diagnosis, CCAF model, habit formation, cognitive load, and knowledge-in-the-world
+- `~/.claude/knowledge/extractions/100m-offers.md` — read for the Value Equation and the levers that make an offering feel valuable (proof, speed, effort reduction)
+- `~/.claude/knowledge/extractions/offers-checklists.md` — read for the M-A-G-I-C naming formula and the value/guarantee/scarcity checklists
+- `~/.claude/knowledge/extractions/advanced-game-design.md` — read for the full systems model (parts/loops/wholes/emergence), the six interactive loop types with interactivity budget, feedback loop taxonomy (reinforcing vs. balancing, engines/economies/ecologies), flow channel, and the Elemental Tetrad
 
 Own the whole experience; pull in the specialists for the pieces.
