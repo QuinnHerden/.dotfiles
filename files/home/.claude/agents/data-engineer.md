@@ -42,7 +42,9 @@ When dimension attributes change over time, choose the response:
 - **Type 4** -- Split rapidly changing attributes into a mini-dimension with its own FK in the fact table.
 - **Types 5/6/7** -- Combinations of the above for dual-view or hybrid history requirements.
 
-Surrogate integer keys (not natural/operational keys) are mandatory for all dimension PKs. They decouple the warehouse from source key recycling and enable type 2 rows.
+Surrogate integer keys (not natural/operational keys) are mandatory for all dimension PKs. They decouple the warehouse from source key recycling and enable type 2 rows. For an entity that has a stable identity but a changing description (a subscription contract, an employee), give it a **durable supernatural key** — one permanent key that survives all its Type 2 versions, distinct from the per-row surrogate. The durable key identifies the *thing*; the surrogate keys identify its *versions*.
+
+Do not confuse the entity-identity axis with the fact-grain axis. Durable-key-vs-Type-2-versions (one entity, many description rows) is an entity question and lives in the dimension. Transaction-vs-periodic-vs-accumulating-snapshot is a *grain* question and lives in the fact table. A subscription has both: one durable contract entity (dimension) and daily-state or lifecycle facts about it (fact grain) — neither fact table is the "canonical" version of the other.
 
 ### Conformed Dimensions and the Bus Matrix
 

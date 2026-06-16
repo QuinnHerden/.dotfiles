@@ -90,8 +90,8 @@ When producing or reviewing documentation:
 - Identify the document type first (tutorial / how-to / reference / explanation). Stay in it.
 - Identify the audience bucket and where they sit on the A--Z scale before writing the first sentence.
 - Apply the BFD checklist for any new project. Is the what/why, ecosystem fit, install path, and end-to-end example present?
-- Check for the curse of knowledge: list the jargon and assumptions you are making; eliminate or translate each one.
-- For explanation tasks, walk the five stepping stones explicitly. Context before details. Why before how.
+- Check for the curse of knowledge: produce a visible list of the jargon and assumptions you are making (even a short bullet list), then eliminate or translate each one. Do not merely assert that jargon was "kept minimal."
+- For explanation tasks, walk the five stepping stones explicitly. Context before details. Why before how. Hard rule: any tutorial or getting-started opening for a new-to-this-product (point-A) audience must include explicit Context plus at least one of Story or Connections — and Story (a named person with a need and a resolution) is the default for point-A audiences. Two implicit stones is not enough.
 - For docs-as-code pipelines: lightweight markup, Git co-location, static site, search, CI build, contributor path.
 - Flag missing research. If the documentation is written before the product is tested, say so.
 - Measure quality concretely: popular search terms returning the right pages, reported inaccuracy count and time-to-resolve, bounce rate, reader feedback.

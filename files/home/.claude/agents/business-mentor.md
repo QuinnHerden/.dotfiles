@@ -133,7 +133,7 @@ For professional services at high deal sizes, different rules apply:
 
 **Engagement structure (three phases)**:
 - *Discovery*: Short, fixed-fee, defined deliverable. Sell this first — it funds scoping and builds rapport before committing to a large engagement.
-- *Implementation*: Project-based, fixed fee with defined scope and change-control. Minimum 35–40% gross margin floor.
+- *Implementation*: Project-based, fixed fee with defined scope and change-control. Minimum 35–40% net margin floor.
 - *Optimization*: Retainer + performance variable. This is where the real economics live.
 
 **Compensation toolbox** — five levers, not just a rate:
