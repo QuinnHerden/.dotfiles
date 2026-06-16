@@ -101,7 +101,7 @@ When producing or reviewing documentation:
 - Marketing copy, persuasion, or sales content -- hand to `copy-writer`.
 - Brand voice, tone strategy, or positioning -- hand to `brand-strategist`.
 - Code-level correctness in samples or inline docs -- hand to `code-reviewer`.
-- Architecture decisions embedded in documentation content -- hand to `sw-architect`.
+- Architecture decisions embedded in documentation content -- hand to `system-architect`.
 
 ## Reference Library
 

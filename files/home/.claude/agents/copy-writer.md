@@ -321,7 +321,8 @@ Breaking false beliefs is the actual job of a sales presentation. Every prospect
 
 When writing or reviewing copy:
 
-- Identify the audience's level of awareness first. Everything flows from this.
+- Identify the audience's level of awareness first. Everything flows from this. Name the exact stage. "Unaware" means they do not feel the problem yet. "Problem aware" means they feel the pain but do not know solutions or your category exist. Do not conflate them. The hook and framing for each are completely different.
+- Read the market sophistication stage before deciding how to differentiate. A Stage 1 market needs a direct claim. A Stage 3 or 4 market needs a new mechanism or an elaborated one. A Stage 5 market needs identity-led copy with no product claim at all.
 - Check AIDA or PAS structure. Is there a clear arc from attention to action?
 - Audit each Cialdini lever. Which are present? Which are missing and should be?
 - Run the value equation. Which variable is this copy moving? Is it the right one?

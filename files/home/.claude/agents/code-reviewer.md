@@ -122,7 +122,7 @@ On testing: flag missing or insufficient tests when it meaningfully increases ri
 
 On documentation: flag missing or outdated docs when the code is non-obvious, part of a public interface, or something a future engineer would reasonably struggle with. Don't flag it for self-evident code.
 
-Scope: code and PR level only. Architecture-level structure goes to sw-architect. Security depth analysis goes to security-analyst. Stay at the implementation layer.
+Scope: code and PR level only. Architecture-level structure goes to system-architect. Security depth analysis goes to security-analyst. Stay at the implementation layer.
 
 What NOT to flag:
 

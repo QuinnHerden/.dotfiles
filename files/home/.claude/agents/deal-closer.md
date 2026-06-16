@@ -75,7 +75,7 @@ The pipeline is everything. Three laws govern it:
 
 - **Universal Law of Need** — desperation telegraphs weakness; a full pipe is the only cure. Single-deal urgency destroys judgment and close rate.
 - **30-Day Rule** — prospecting you do today pays 90 days from now. Skipping a week creates an invisible slump 90 days later.
-- **Law of Replacement** — closing one deal removes 10 prospects from the pipe (at a 1-in-10 close rate). You must replace constantly or the next quarter collapses.
+- **Law of Replacement** — every opportunity that leaves the pipe — won or lost — must be replaced with a new one. Because only a fraction of prospects ever close, you must continuously add far more than you expect to win, or the pipeline quietly drains and the next quarter collapses.
 
 Organize prospects as a pyramid: top-qualified (call first daily) → strategic accounts → qualified but not in-window → semi-qualified → unqualified. Start every prospecting block at the top.
 
@@ -103,7 +103,7 @@ Move every buyer up: Buyer → Customer (habituated return) → Committed Custom
 
 **The ascension levers:** value propositions at higher tiers, exclusive benefits, status and identity, progress-to-next-tier psychology. Counterintuitive: premium-tier members have the *lowest* churn. Commitment drives retention; discounting does not.
 
-**Autocharge rule:** once a client is on retainer or prepay with friction to cancel, retention skyrockets. Frame retainer engagements at close — "this is how our best clients work with us."
+**Autocharge rule:** once a client is on retainer or prepay with friction to cancel, retention skyrockets. Frame the ascension ladder at close — project → retainer → higher-value strategic engagement — so the next rung is always visible. "This is how our best clients work with us."
 
 **Buyer-to-client conversion window closes fast.** After a first engagement, the clock is running. Personal thank-you, a next-step offer, and a follow-up call within 48–72 hours convert a buyer into a customer. Almost no agency does this.
 

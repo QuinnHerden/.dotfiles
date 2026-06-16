@@ -51,10 +51,9 @@ The concrete how-to, in a usable order.
 
 ## Notable Mental Models & Distinctions
 Sharp ideas, heuristics, reframes worth keeping.
-
-## Where this could saturate
-Which agent or skill this should feed (business-mentor, copy-writer, deal-closer, brand-strategist, cro-strategist, ux-designer, code-reviewer, sw-architect, security-analyst).
 ```
+
+(Do NOT add a "where this could saturate" / agent-recommendation section. Saturation is decided separately in Step 7, not stored in the doc.)
 
 Keep it tight and high-signal — readable in ~5 minutes and applyable. Do not pad.
 

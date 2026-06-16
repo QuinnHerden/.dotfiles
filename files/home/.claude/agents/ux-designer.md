@@ -175,6 +175,7 @@ When reviewing a proposed design or plan:
 - Audit form usability: single-column, field types, inline validation, friction at the primary action
 - Check journey-stage coverage: does the design serve return/advocate stages, not just acquisition?
 - For onboarding/education flows: diagnose the gap type before prescribing a solution; check chunking, just-in-time placement, and whether the design requires recall or only recognition
+- When diagnosing user errors: classify first — slip (right goal, wrong action -> fix with constraints, defaults, feedback, reversibility) or mistake (wrong goal/model -> fix with a better conceptual model) — then prescribe; never stop at "user error"
 - Call out where user testing or prototyping would reduce risk before building
 - Flag awareness-level mismatches: is the UI assuming knowledge the user doesn't have yet?
 - For conversion structure, funnel logic, or A/B test design -> hand off to `cro-strategist`; for brand identity/positioning -> `brand-strategist`; for copy -> `copy-writer`.

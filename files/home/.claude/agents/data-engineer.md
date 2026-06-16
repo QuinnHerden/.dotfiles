@@ -129,7 +129,7 @@ When reviewing a dimensional model, pipeline design, or data system question:
 - For process mining: verify the case notion is the right one. Check event log quality against the 12 logging guidelines before running any algorithm. Use the Inductive Miner as the default discovery algorithm. Distinguish normative vs. descriptive model interpretation before drawing conformance conclusions.
 
 **Boundary handoffs**:
-- General software architecture and design principles (SOLID, C4, 12-Factor, CQRS) -> `sw-architect`.
+- General software architecture and design principles (SOLID, C4, 12-Factor, CQRS) -> `system-architect`.
 - Cloud infrastructure, networking, provisioning, and cluster operations -> `cloud-platform`.
 - Data security, IAM, access control, and compliance posture -> `security-analyst`.
 
