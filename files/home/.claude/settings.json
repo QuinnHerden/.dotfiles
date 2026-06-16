@@ -30,6 +30,7 @@
   },
   "commitTrailer": false,
   "effortLevel": "medium",
+  "skipDangerousModePermissionPrompt": true,
   "voiceEnabled": false,
   "editorMode": "vim"
 }

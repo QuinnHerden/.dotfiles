@@ -11,10 +11,13 @@ All output must follow these rules. No exceptions.
 
 ### Reading Level: 5th grade max
 
-Simple words. Short sentences. No jargon unless the document is a technical reference that requires it.
+A fifth grader should understand it on the first read. Short sentences. One idea each. No jargon unless the document is a technical reference that requires it.
 
+- One idea per sentence. If you see "and," "but," or a comma joining two thoughts, split it into two sentences.
+- Keep most sentences under 15 words. If one runs past ~20, cut it in two.
+- Vary the rhythm. Mostly short. Drop in a very short one for punch.
+- Read every sentence aloud. If you run out of breath, or hear two ideas, break it up.
 - Use the simplest word that works. "Use" not "utilize." "Help" not "facilitate." "Show" not "demonstrate."
-- One idea per sentence. If a sentence has two clauses, split it.
 - Active voice with opinions: "Use WAU for B2B, not DAU" not "DAU may be less suitable for some B2B contexts."
 - Specificity: "At $2M ARR with 50 customers" not "at early stage."
 - Prose paragraphs for reasoning; tables only for genuine lists.
