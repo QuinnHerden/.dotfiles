@@ -108,6 +108,17 @@ Structure drives behavior. Recurring problems are produced by feedback loop arch
 
 **Design implication**: when an architectural intervention isn't working, ask what stock it is trying to change, which feedback loop is supposed to drive it, and what delays are causing oscillation or overshoot. Autoscaling thrash, retry storms, and cascading cache invalidation are all feedback loop problems, not configuration problems.
 
+### OS Fundamentals (the substrate)
+
+The primitives every distributed and data system re-implements one layer up. Know what the OS already solved, borrow its proven policy and its known failure modes.
+
+- **Concurrency**: a race condition is unsynchronized access to shared mutable state in a critical section. Locks, condition variables (always re-check the predicate in a `while` loop, never an `if`), and semaphores are the primitives; the same hazards reappear in app code and in distributed coordination. **Deadlock requires all four Coffman conditions** — mutual exclusion, hold-and-wait, no preemption, circular wait — so break any one to prevent it. Concurrency bugs are atomicity violations (missing critical section) or order violations (assumed an ordering that isn't guaranteed).
+- **Scheduling & queueing**: the scheduler's trade-offs are your service's — turnaround vs. response time, the FIFO convoy effect, MLFQ (favor short/interactive work, periodically boost to avoid starvation), proportional share (lottery/CFS). Maps straight onto request scheduling, work queues, and fairness.
+- **Memory, caching & locality**: virtual memory is indirection (page tables) plus a cache of the indirection (TLB); performance is dominated by hit rate and locality. Page replacement (LRU approximated by clock; Belady's optimal is the unreachable baseline) is the same decision as every cache eviction you will design. Indirection costs a lookup; caching the lookup is the fix.
+- **Persistence & crash consistency**: durability is not free — devices reorder writes and a crash mid-write corrupts. **Journaling (write-ahead log)** is the canonical fix: record intent to a log, then apply; on recovery, replay or roll back. Modes trade safety for speed (data vs. ordered vs. writeback); copy-on-write is the alternative. This is the same WAL behind databases and the DDIA "everything is a log" principle. **RAID** trades capacity/performance/reliability: 0 (stripe, no redundancy), 1 (mirror), 5 (distributed parity, survives one disk, write penalty) — pick by the failure and throughput requirement.
+
+When you reach for a cache, a queue, a lock, or a durability guarantee, you are re-deriving an OS mechanism. Use its policy and failure modes instead of reinventing them.
+
 ## How to Review
 
 When reviewing a proposed design or answering an architecture question:
@@ -132,5 +143,6 @@ Default stack assumptions: TypeScript (React, Node/Express, GraphQL/Apollo, Pris
 - `~/.claude/knowledge/extractions/designing-data-intensive-applications.md` -- read when selecting storage engines, replication topology, consistency models, transaction isolation levels, or distributed systems failure modes.
 - `~/.claude/knowledge/extractions/thinking-in-systems.md` -- read when diagnosing why an intervention isn't working, modeling autoscaling or retry behavior, or identifying leverage points in a technical or organizational system.
 - `~/.claude/knowledge/extractions/design-patterns.md` -- read when choosing a creational, structural, or behavioral pattern, or weighing composition vs. inheritance at the component level.
+- `~/.claude/knowledge/extractions/operating-systems-three-easy-pieces.md` -- read for the substrate primitives: CPU scheduling, virtual memory/paging/TLB and page replacement, concurrency (locks, condition variables, semaphores, the four deadlock conditions), and persistence (the I/O stack, RAID, file systems, journaling/crash consistency).
 
 Be terse. Lead with the recommendation or concern, not the reasoning. Skip preamble.
