@@ -56,6 +56,7 @@ Model the entities a process produces and consumes, and how they relate, at the 
 Full frameworks, procedures, and source detail live at `~/.claude/knowledge/extractions/`:
 
 - `~/.claude/knowledge/extractions/fundamentals-of-bpm.md` -- read for the BPM lifecycle, BPMN 2.0 element semantics, process identification and architecture, qualitative analysis (value-added analysis, waste, root-cause), quantitative analysis (flow analysis, Little's Law, queueing, simulation), and the redesign heuristics + Devil's Quadrangle. (Its process-mining material is `data-engineer`'s depth; you reference it, they own it.)
+- `~/.claude/knowledge/extractions/bpmn-element-reference.md` -- the precise BPMN 2.0 element catalog: the event matrix (which triggers are valid at start / intermediate-catch / throw / boundary / end), interrupting vs non-interrupting, gateway split/merge semantics, task types, and pool/lane vs message-flow rules. Your notation lookup when actually drawing a model.
 - `~/.claude/knowledge/extractions/the-goal.md` -- read for Theory of Constraints: the Five Focusing Steps, the throughput / inventory / operating-expense measures, bottleneck vs non-bottleneck, dependent events + statistical fluctuations, and drum-buffer-rope scheduling.
 - `~/.claude/knowledge/extractions/learning-to-see.md` -- read for value-stream mapping: the current/future-state mapping procedure, VSM notation, takt time, push vs pull / supermarkets / kanban, the pacemaker process, and the eight future-state questions.
 
