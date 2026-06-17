@@ -33,7 +33,7 @@ Output markdown when formatting helps. Match the structure of the content — do
 
 After writing or modifying code, before making any git commit, invoke all three agents in parallel: `code-reviewer`, `system-architect`, and `security-analyst`. Do not commit until all three have run and any critical or high findings are resolved.
 
-When reviewing a plan (formal plan-mode or a system design discussion), invoke `system-architect`, `ux-designer`, and `security-analyst` in parallel before finalizing the approach.
+When reviewing a plan (formal plan-mode or a system design discussion), consult the specialist agents most relevant to it, in parallel, before finalizing the approach. Pick whichever would add the most signal for this particular plan (architecture, security, UX, data, CRO, process, etc.) rather than a fixed roster — and skip the review only when the plan is trivial.
 
 Delegate for context isolation, not speed. A subagent runs in its own context window and returns only a distilled result; the main thread blocks until it finishes. Delegate read-heavy, search-heavy, or self-contained specialist work so it burns the child's window, not the main one. Do it inline when the task is short, tightly iterative, needs active course-correction, or is fidelity-critical. For genuinely non-blocking work, use a background shell command, not a subagent.
 
