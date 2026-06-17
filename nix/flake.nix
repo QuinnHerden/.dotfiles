@@ -51,6 +51,14 @@
             shellcheck.enable = true;
           };
         };
+      # Shared so the VM boot test and the real config cannot drift.
+      nixDotsModules = [
+        home-manager.nixosModules.default
+        ./hosts/nix-dots
+        ./modules/home/integrated
+        ./modules/system/common
+        ./modules/system/nixos
+      ];
     in
     {
 
@@ -121,15 +129,29 @@
 
         "nix-dots" = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
-          modules = [
-            home-manager.nixosModules.default
-            ./hosts/nix-dots
-            ./modules/home/integrated
-            ./modules/system/common
-            ./modules/system/nixos
-          ];
+          modules = nixDotsModules;
         };
 
+      };
+
+      # Boot nix-dots in a QEMU VM and assert it actually comes up (building the
+      # toplevel only proves it compiles). Run by the nixos-vm-test CI job on a
+      # KVM runner; not part of the fast `flake check` gate.
+      checks.x86_64-linux.nix-dots-boot = nixpkgs.legacyPackages.x86_64-linux.testers.runNixOSTest {
+        name = "nix-dots-boot";
+        # Let the node evaluate its own nixpkgs from the host modules (which
+        # set nixpkgs.config.allowUnfree); the default read-only hostPkgs makes
+        # nixpkgs.config a unique option and conflicts with that.
+        node.pkgsReadOnly = false;
+        node.specialArgs = { inherit inputs; };
+        nodes.machine = {
+          imports = nixDotsModules;
+        };
+        testScript = ''
+          machine.wait_for_unit("multi-user.target")
+          machine.succeed("getent passwd quinnherden")
+          machine.succeed("test -d /home/quinnherden")
+        '';
       };
 
     };
