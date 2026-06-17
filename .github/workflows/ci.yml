@@ -14,6 +14,34 @@ permissions:
   contents: read
 
 jobs:
+  # Decide whether the nix builds need to run. Builds depend only on nix/ (the
+  # flake source) — everything else is referenced via mkOutOfStoreSymlink and
+  # never read at build time — so a non-nix change cannot alter a build output.
+  # On push/dispatch (no PR base) we run everything as the backstop.
+  changes:
+    name: changes
+    runs-on: ubuntu-latest
+    outputs:
+      build: ${{ steps.filter.outputs.build }}
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          fetch-depth: 0
+      - id: filter
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if [ -z "$BASE_SHA" ]; then
+            echo "build=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if git diff --name-only "$BASE_SHA" HEAD \
+            | grep -qE '^(nix/|\.github/workflows/ci\.yml$)'; then
+            echo "build=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "build=false" >> "$GITHUB_OUTPUT"
+          fi
+
   flake-check:
     name: flake check
     runs-on: ubuntu-latest
@@ -49,13 +77,14 @@ jobs:
       - name: pre-commit (all files)
         run: nix develop ./nix --command pre-commit run --all-files --show-diff-on-failure
 
-  # Full toplevel builds are the expensive step, so they run on merges to
-  # main/dev and on manual dispatch, not on every PR. PRs are gated by the
-  # fast cross-arch eval (flake-check) plus lint; main is the realize gate.
+  # Builds run on PRs that touch nix/ (and on every push/dispatch). They are
+  # gated by `changes` because only nix/ can affect a build output. The matrix
+  # is cheap (~4 min wall-clock, parallel); the VM boot test below is the slow
+  # one and shares the same gate.
   build:
     name: build ${{ matrix.name }}
-    needs: flake-check
-    if: github.event_name != 'pull_request'
+    needs: [flake-check, changes]
+    if: needs.changes.outputs.build == 'true'
     strategy:
       fail-fast: false
       matrix:
@@ -89,11 +118,12 @@ jobs:
         run: nix build --no-link --print-out-paths "./nix#${ATTR}"
 
   # Boots nix-dots in a QEMU VM and asserts it reaches multi-user.target.
-  # Needs KVM (x86_64 GitHub runners have it); runs on merges/dispatch, not PRs.
+  # Needs KVM (x86_64 GitHub runners have it). Same nix/ gate as the builds —
+  # it is the slow job (~11.5 min) so it only runs when nix/ actually changed.
   nixos-vm-test:
     name: nixos vm boot test (nix-dots)
-    needs: flake-check
-    if: github.event_name != 'pull_request'
+    needs: [flake-check, changes]
+    if: needs.changes.outputs.build == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
@@ -110,3 +140,30 @@ jobs:
           restore-prefixes-first-match: nix-vmtest-
       - name: boot nix-dots in a VM
         run: nix build --no-link -L ./nix#checks.x86_64-linux.nix-dots-boot
+
+  # Single required status check. Always runs; passes when every job is green or
+  # skipped, fails if any failed. Lets build/nixos-vm-test stay conditional while
+  # remaining enforceable as a branch-protection gate.
+  ci-required:
+    name: ci-required
+    if: always()
+    needs: [flake-check, lint, build, nixos-vm-test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: gate
+        env:
+          R_FLAKE: ${{ needs.flake-check.result }}
+          R_LINT: ${{ needs.lint.result }}
+          R_BUILD: ${{ needs.build.result }}
+          R_VM: ${{ needs.nixos-vm-test.result }}
+        run: |
+          echo "flake-check=$R_FLAKE lint=$R_LINT build=$R_BUILD vm=$R_VM"
+          for r in "$R_FLAKE" "$R_LINT" "$R_BUILD" "$R_VM"; do
+            case "$r" in
+              failure | cancelled)
+                echo "required job not green: $r"
+                exit 1
+                ;;
+            esac
+          done
+          echo "all required jobs green (success or skipped)"
