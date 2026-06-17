@@ -16,7 +16,7 @@
   config = lib.mkIf config.quinnherdenUser.enable {
     users.users."quinnherden" = {
       name = "quinnherden";
-      home = "/Users/quinnherden";
+      home = "/home/quinnherden";
 
       isNormalUser = true;
       extraGroups = [
