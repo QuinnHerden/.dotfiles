@@ -5,7 +5,7 @@ description: Author granular Anki flashcard decks in Markdown and compile them w
 
 # Authoring Anki decks with ankcompiler
 
-Turn source material into an atomic, high-retention Anki deck and compile it to `.apkg` with `ankc` (verified against ankc 0.2.0).
+Turn source material into an atomic, high-retention Anki deck and compile it to `.apkg` with `ankc` (ankc ≥ 0.3.0). The draft workflow below (`ankc uid --fix`) requires ankc ≥ 0.3.0.
 
 ## Tooling
 
@@ -18,10 +18,29 @@ Commands you'll use:
 - `ankc list deck` — list valid deck names. `ankc list file` — list a deck's source files.
 - `ankc check [--deck NAME | --all] [--path DIR] [--depth N] [--format text|json]` — validate source **without compiling**. The real pre-build gate.
 - `ankc build [--deck NAME | --all] [--path DIR (default .)] [--depth N] [--output DIR (default .)]` — compile to `.apkg`.
-- `ankc uid [--path] [--depth] [--check] [--force]` — stamp a `[^uid]` into any card block lacking one. `--check` = dry run; `--force` = stamp even with uncommitted changes.
+- `ankc uid [--fix] [--path] [--depth] [--check] [--force]` — `--fix` repairs a **draft** (single-`---`-separated cards): rewrites each card into canonical form and stamps a fresh uid wherever one is missing. Without `--fix` it's **append-only**: stamps missing uids in already-well-formed blocks, never restructures. `--check` = dry run (writes nothing); `--force` = run even with uncommitted changes.
 - `ankc gen chunk` — emit an empty note chunk (stub).
 
-## Card file format (exact — small mistakes break the build)
+## Card file format — write a draft, let `--fix` canonicalize it
+
+You don't hand-write the fiddly canonical format. **Write a draft**, then run `ankc uid --fix` to expand it into the buildable canonical form.
+
+### Draft (what you write)
+
+Cards separated by a **single `---`**, no uids needed. The first card sits directly after the frontmatter — the frontmatter's closing `---` is its opening delimiter, so no extra `---`.
+
+```
+---
+deck: Deck Name
+tags:
+  - tag1
+---
+Question text ::: Answer text
+---
+{{c1:: cloze-deleted text}} in a sentence
+```
+
+### Canonical (what `ankc uid --fix` produces / what the compiler needs)
 
 ```
 ---
@@ -44,14 +63,16 @@ Question text ::: Answer text
 [^uid]: Zk7pLm4Nv2
 ```
 
-Hard-won format rules (these caused real build failures):
+`ankc uid --fix` does the expansion: each draft card becomes `---` / blank / body / blank / `---` / `[^uid]` footer, with a fresh 10-char uid stamped wherever missing. It **only restructures genuine decks** (frontmatter with a `deck:` key); a non-deck `.md` or an already-canonical deck gets safe **append-only** stamping instead — prose is never turned into cards. It preserves existing `[^uid]`/`[^tag]`/`[^type]` footnotes, drops and regenerates a malformed uid, peels a footnote glued directly under an answer (no blank line) back out, and drops the obsolete trailing `.` sentinel. It's gated: `--check` previews and writes nothing, it refuses files with uncommitted git changes unless `--force`, writes atomically, and skips symlinks and CRLF files.
 
-1. **Double `---` after frontmatter.** The frontmatter's closing `---` must be immediately followed by another `---` (the first card's opening delimiter), back-to-back with no blank line between them.
-2. **Each card is**: `---`, blank line, content, blank line, `---`, then the `[^uid]:` footer. Cards are separated by these `---` delimiters.
+Format rules:
+
+1. **Draft separator is a single `---`** between cards; the first card follows the frontmatter directly. `--fix` turns this into the canonical fenced form above.
+2. **Each canonical card is**: `---`, blank line, content, blank line, `---`, then the `[^uid]:` footer.
 3. **`:::` separates question from answer** in Q&A cards (one line or multi-line). Use `{{c1:: ... }}` for cloze cards (no `:::`).
-4. **Every card needs a unique 10-char alphanumeric uid** in a `[^uid]:` footer after the card's closing `---`. Reusing or omitting one breaks the build. Two ways to get them: (a) generate a batch and paste one under each card — `for i in $(seq 1 N); do LC_ALL=C tr -dc 'A-Za-z0-9' < /dev/urandom | head -c 10; echo; done`; or (b) write each card with **its own closing `---` fence** (so consecutive cards are separated by two `---`, a close then an open) and run `ankc uid` to stamp the missing footers (`ankc uid --check` previews). **`ankc uid` only stamps fully-fenced cards** — a footerless card separated from its neighbor by a single bare `---` is silently merged into that neighbor and you lose cards. When in doubt, place the footers yourself.
-5. **A trailing `.` sentinel is no longer required** (ankc ≥ 0.2.0 normalizes the trailing newline). Old decks that end with a lone `.` still build; you just don't need to add one.
-6. Optional per-card extra tags: add `[^tag]: tagname` lines under the uid.
+4. **Every card needs a unique 10-char alphanumeric uid** in a `[^uid]:` footer. `ankc uid --fix` stamps these for you on a draft. For an **already-canonical** deck, plain `ankc uid` (append-only) stamps any missing uids without restructuring (`ankc uid --check` previews).
+5. **A trailing `.` sentinel is no longer required.** Old decks that end with a lone `.` still build; you don't need to add one, and `--fix` removes it.
+6. Optional per-card extra tags: add `[^tag]: tagname` lines under the uid. `--fix` preserves them.
 
 ## Cloze and rendering rules
 
@@ -62,7 +83,7 @@ Hard-won format rules (these caused real build failures):
 
 ## The `:::` / cloze safety trap (read before every build)
 
-`ankc` splits a Q&A card on the **FIRST `:::` on a line**. If a question or answer contains a **literal `:::`**, everything after it is silently swallowed and the answer is truncated. The build still **exits 0** and the uid count still matches — so this is a **false green** the count check cannot catch.
+`ankc` splits a Q&A card on the **FIRST `:::` on a line**. If a question or answer contains a **literal `:::`**, everything after it is silently swallowed and the answer is truncated. The build still **exits 0** and the uid count still matches — so this is a **false green** the count check cannot catch. `ankc uid --fix` does **not** rescue this — a literal `:::` inside content still needs rewording.
 
 Mitigation:
 
@@ -70,6 +91,8 @@ Mitigation:
 2. **Count-match is necessary but NOT sufficient.** It cannot detect delimiter corruption. After building, spot-read a few compiled cards (or trust `ankc check`).
 
 ## Build and verify
+
+Validation is **strict** in 0.3.0: card-bearing text (a `:::` or a `{{cN::}}` cloze) sitting **outside** a well-formed block is now an **ERROR** that aborts the build, not a silently dropped card. So `ankc check` / `ankc build` now catch two cards sharing a single `---`, an unterminated block, or an un-fixed draft — a merged/dropped card fails loud. The remedy is `ankc uid --fix`. (Prose without card syntax is still intentionally ignored.)
 
 `ankc build` is **silent on success** (exit 0, no stdout). A wrong `--deck` name, wrong path, or no match **also exits 0 with no package** — so never treat exit 0 as proof. Always assert the output file exists.
 
@@ -144,8 +167,8 @@ Match the card pattern to the kind of source. The default below is the definitio
 
 1. Read the source; list the atomic facts worth knowing cold. Cut anything that's a skill, not knowledge.
 2. Decide deck name + tags. Create `anki-decks/<deck-slug>/<deck-slug>.md`.
-3. Write cards following the format rules, material-type playbooks, and design principles.
-4. Give each card a `[^uid]:` footer (paste generated uids, or fence each card and run `ankc uid`).
-5. `grep -n ':::' deck.md` to catch delimiter traps. `ankc check` to validate.
+3. Write cards as a **draft** — single `---` separators, first card right after the frontmatter, no uids — following the material-type playbooks and design principles.
+4. `ankc uid --fix` to expand the draft into canonical form and stamp uids (`ankc uid --check` to preview first). For an already-canonical deck, plain `ankc uid` just stamps missing uids.
+5. `grep -n ':::' deck.md` to catch literal-`:::` traps (`--fix` won't fix these). `ankc check` to validate — it now ERRORs on any card text left outside a block.
 6. `mkdir -p dist`, `ankc build`, then `ls ./dist/*.apkg`. Verify source note count == apkg note count. Spot-read a few cards.
 7. Commit the `.md` (gitignore `dist/`/`*.apkg`). Tell the user to import the `.apkg` into Anki (File → Import).
