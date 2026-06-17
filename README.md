@@ -26,69 +26,71 @@ Personal Nix dotfiles: home-manager, nix-darwin, and NixOS across my Mac, my Nix
 
 ## The Claude Code setup
 
-Probably the most reusable part of this repo. `files/home/.claude/` holds:
+Likely the most reusable part of this repo. `files/home/.claude/` holds:
 
 - **agents/**: focused specialist subagents (system-architect, security-analyst, code-reviewer, data-engineer, cloud-platform, process-analyst, plus GTM, brand, and UX specialists). Each carries compressed named frameworks inline and a `Reference Library` pointer to the deeper source material.
 - **skills/**: repeatable procedures (extracting book knowledge into the knowledge base, stress-testing an agent, and more).
-- **knowledge/**: a 20/80 extraction library that backs the agents. It is a *private* git submodule (the extractions distill copyrighted source material), so it will not populate on a public clone. That is intentional, not a broken repo.
+- **knowledge/**: a 20/80 extraction library that backs the agents. It is a *private* git submodule, since the extractions distill copyrighted source material, so it will not populate on a public clone. That is intentional, not a broken repo.
 
-## Prerequisites
+## Install (reinstalling on a new machine)
 
-### On MacOS
+This is the runbook for setting up a machine, written for me. The host config is keyed by hostname, so the hostname must match an entry before `.switch` will resolve.
 
-#### Install Nix
+### 1. Prerequisites
 
-- `curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install`
+On macOS, install Nix:
 
-### On Generic Linux (non-NixOS)
+```bash
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+```
 
-#### Set hostname to match your host config
+On NixOS, get online and make git available:
 
-- `sudo hostname {hostname}` (e.g. `kali-bug`)
+```bash
+nmcli d wifi list
+nmcli d wifi connect {ssid} --ask
+nix-shell -p git
+```
 
-#### Ensure curl is available
+On generic Linux (non-NixOS), set the hostname and make sure curl is present:
 
-- `sudo apt install curl` or equivalent
+```bash
+sudo hostname {hostname}        # e.g. kali-bug
+sudo apt install curl           # or your distro's equivalent
+```
 
-### On All
+### 2. Clone
 
-#### Connect to the Internet
+```bash
+cd ~/
+git clone https://github.com/QuinnHerden/.dotfiles.git
+```
 
-##### NixOS
+### 3. Init
 
-- `nmcli d wifi list`
-- `nmcli d wifi connect {ssid} --ask`
+Run the bootstrap script. It is not idempotent in one pass; run it repeatedly until it exits 0.
 
-#### Ensure git is in your path
+```bash
+sh ~/.dotfiles/files/scripts/.init
+```
 
-##### NixOS
+### 4. Set hostname
 
-- `nix-shell -p git`
+The hostname selects which host config to sync to.
 
-## Installation
+```bash
+sudo hostname {hostname}        # NixOS / macOS
+```
 
-### Navigate Home
+On generic Linux this is already done from step 1. There, `.switch` resolves the `homeConfigurations` entry from `$(whoami)@$(hostname)`.
 
-- `cd ~/`
+### 5. Switch
 
-### Clone Repo
+Apply the config:
 
-- `git clone https://github.com/QuinnHerden/.dotfiles.git`
-
-### Init System
-
-- run `sh ~/.dotfiles/files/scripts/.init` repeatedly until you receive a successful exit status.
-
-### Set hostname
-
-Set your hostname to match the host config you want to sync to.
-
-- **NixOS / MacOS:** `sudo hostname {hostname}`
-- **Generic Linux:** already done in prerequisites; `.switch` uses `$(whoami)@$(hostname)` to resolve your `homeConfigurations` entry
-
-### Configure System
-
-- run `sh ~/.dotfiles/files/scripts/.switch` to configure your system.
+```bash
+sh ~/.dotfiles/files/scripts/.switch
+```
 
 ## Dev Containers
 
@@ -129,7 +131,7 @@ dev --rebuild                # rebuild the image (after dotfiles changes)
 
 The mounted directory is available at the same host path inside the container, so `docker compose` volume mounts resolve correctly on the VM.
 
-The first start takes ~15 seconds to install Claude Code via npm. Subsequent starts are near-instant (npm cache persists in a named volume).
+The first start installs Claude Code via npm and takes a few seconds. Subsequent starts are near-instant, since the npm cache persists in a named volume.
 
 ### Parallel development
 
