@@ -1,5 +1,7 @@
 # .dotfiles
 
+[![CI](https://github.com/QuinnHerden/.dotfiles/actions/workflows/ci.yml/badge.svg)](https://github.com/QuinnHerden/.dotfiles/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 Personal Nix dotfiles: home-manager, nix-darwin, and NixOS across my Mac, my NixOS workstations, and a Podman dev container, plus a Claude Code setup (custom agents, skills, and a knowledge base).
 
 > **This is my personal setup, not a template.** Hostnames, hosts, and secrets are mine, and the `knowledge/` submodule is private. Fork and adapt at your own pace; don't expect it to run clean on your machine. It is meant to be *read* for patterns, not cloned wholesale.
@@ -16,6 +18,27 @@ Personal Nix dotfiles: home-manager, nix-darwin, and NixOS across my Mac, my Nix
 | `files/scripts/` | Bootstrap (`.init`, `.switch`, `.update`) and the `dev` Podman wrapper. |
 | `container/` | The dev-container image (Containerfile and entrypoint). |
 | `.github/workflows/ci.yml` | CI: flake eval, lint, per-host builds, and a NixOS VM boot test. |
+
+```mermaid
+graph LR
+  flake["nix/flake.nix"]
+  flake --> darwin["darwinConfigurations"]
+  flake --> nixos["nixosConfigurations"]
+  flake --> home["homeConfigurations"]
+  darwin --> mac["mac-papi"]
+  nixos --> nbox["nix-box"]
+  nixos --> ndots["nix-dots"]
+  home --> dev["dev@dev-container"]
+  home --> kali["quinnherden@kali-bug"]
+  mods["nix/modules/{home,system,packages}"]
+  mac --> mods
+  nbox --> mods
+  ndots --> mods
+  dev --> mods
+  kali --> mods
+```
+
+The host matrix: each output kind maps to its host(s), and every host composes the shared `nix/modules` building blocks.
 
 ## Start here (reading, not installing)
 
