@@ -1,0 +1,94 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main, dev]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  flake-check:
+    name: flake check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - uses: DeterminateSystems/nix-installer-action@ef8a148080ab6020fd15196c2084a2eea5ff2d25 # v22
+      - uses: nix-community/cache-nix-action@7df957e333c1e5da7721f60227dbba6d06080569 # v7.0.2
+        with:
+          primary-key: nix-${{ runner.os }}-${{ hashFiles('nix/flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-
+      # Evaluates every output for every system without building (--no-build),
+      # so one x86_64 runner catches broken modules and option mistakes across
+      # all hosts (incl. aarch64 and darwin) without cross-compiling. The
+      # private knowledge/ submodule is intentionally not checked out: the flake
+      # uses mkOutOfStoreSymlink, so eval and build never read those files.
+      - name: nix flake check (all systems, eval only)
+        run: nix flake check --no-build --all-systems ./nix
+
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - uses: DeterminateSystems/nix-installer-action@ef8a148080ab6020fd15196c2084a2eea5ff2d25 # v22
+      - name: statix (nix lint)
+        run: nix run nixpkgs#statix -- check ./nix
+      - name: deadnix (dead nix code)
+        run: nix run nixpkgs#deadnix -- --fail ./nix
+      - name: shellcheck
+        run: |
+          nix run nixpkgs#shellcheck -- \
+            container/entrypoint.sh \
+            files/scripts/dev \
+            files/scripts/fzf-preview.sh \
+            files/scripts/sesh \
+            files/scripts/vec \
+            files/scripts/vecc
+      - name: nixfmt (format check)
+        run: nix run nixpkgs#nixfmt-rfc-style -- --check ./nix
+
+  # Full toplevel builds are the expensive step, so they run on merges to
+  # main/dev and on manual dispatch, not on every PR. PRs are gated by the
+  # fast cross-arch eval (flake-check) plus lint; main is the realize gate.
+  build:
+    name: build ${{ matrix.name }}
+    needs: flake-check
+    if: github.event_name != 'pull_request'
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: nix-dots (x86_64-linux)
+            os: ubuntu-latest
+            attr: nixosConfigurations.nix-dots.config.system.build.toplevel
+          - name: nix-box (aarch64-linux)
+            os: ubuntu-24.04-arm
+            attr: nixosConfigurations.nix-box.config.system.build.toplevel
+          - name: home dev@dev-container (aarch64-linux)
+            os: ubuntu-24.04-arm
+            attr: homeConfigurations."dev@dev-container".activationPackage
+          - name: home quinnherden@kali-bug (aarch64-linux)
+            os: ubuntu-24.04-arm
+            attr: homeConfigurations."quinnherden@kali-bug".activationPackage
+          - name: mac-papi (aarch64-darwin)
+            os: macos-latest
+            attr: darwinConfigurations.mac-papi.system
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - uses: DeterminateSystems/nix-installer-action@ef8a148080ab6020fd15196c2084a2eea5ff2d25 # v22
+      - uses: nix-community/cache-nix-action@7df957e333c1e5da7721f60227dbba6d06080569 # v7.0.2
+        with:
+          primary-key: nix-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('nix/flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-${{ runner.arch }}-
+      - name: nix build
+        env:
+          ATTR: ${{ matrix.attr }}
+        run: nix build --no-link --print-out-paths "./nix#${ATTR}"
