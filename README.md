@@ -20,25 +20,33 @@ Personal Nix dotfiles: home-manager, nix-darwin, and NixOS across my Mac, my Nix
 | `.github/workflows/ci.yml` | CI: flake eval, lint, per-host builds, and a NixOS VM boot test. |
 
 ```mermaid
-graph LR
+graph TD
+  hm["home-manager"]
   flake["nix/flake.nix"]
-  flake --> darwin["darwinConfigurations"]
-  flake --> nixos["nixosConfigurations"]
-  flake --> home["homeConfigurations"]
-  darwin --> mac["mac-papi"]
-  nixos --> nbox["nix-box"]
-  nixos --> ndots["nix-dots"]
-  home --> dev["dev@dev-container"]
-  home --> kali["quinnherden@kali-bug"]
-  mods["nix/modules/{home,system,packages}"]
-  mac --> mods
-  nbox --> mods
-  ndots --> mods
-  dev --> mods
-  kali --> mods
+
+  flake --> darwin["darwinConfigurations: mac-papi"]
+  flake --> nixos["nixosConfigurations: nix-box, nix-dots"]
+  flake --> home["homeConfigurations: dev@dev-container, quinnherden@kali-bug"]
+
+  hm -. "as a module" .-> darwin
+  hm -. "as a module" .-> nixos
+  hm -. "builds" .-> home
+
+  darwin --> sysd["modules/system: common + darwin"]
+  nixos --> sysn["modules/system: common + nixos"]
+  darwin --> mhi["modules/home/integrated"]
+  nixos --> mhi
+  home --> mhs["modules/home/standalone"]
+
+  mhi --> mhc["modules/home/content"]
+  mhs --> mhc
+  sysd --> pkg["modules/packages"]
+  sysn --> pkg
+  mhi --> pkg
+  mhs --> pkg
 ```
 
-The host matrix: each output kind maps to its host(s), and every host composes the shared `nix/modules` building blocks.
+The host matrix. Each flake output is a machine. home-manager is embedded as a module in the darwin and NixOS systems, and it builds the two standalone home configs. The darwin and NixOS hosts compose `modules/system` plus `modules/home/integrated`; the standalone home configs use only `modules/home/standalone`. Both home layers share `modules/home/content`, and the system and home package wrappers draw from `modules/packages`.
 
 ## Start here (reading, not installing)
 
