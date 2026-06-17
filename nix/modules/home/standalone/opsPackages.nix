@@ -27,11 +27,11 @@ in
 
   config = lib.mkIf config.opsPackages.enable {
     home.packages =
-      (pkg.common pkgs) ++
-      (pkg.linux pkgs) ++
-      (lib.optionals pkgs.stdenv.isx86_64 (pkg.linuxX86 pkgs)) ++
-      (lib.optionals config.opsPackages.enableHeavy (pkg.heavy pkgs)) ++
-      (lib.optionals config.opsPackages.enableGui (pkg.linuxGui pkgs));
+      (pkg.common pkgs)
+      ++ (pkg.linux pkgs)
+      ++ (lib.optionals pkgs.stdenv.isx86_64 (pkg.linuxX86 pkgs))
+      ++ (lib.optionals config.opsPackages.enableHeavy (pkg.heavy pkgs))
+      ++ (lib.optionals config.opsPackages.enableGui (pkg.linuxGui pkgs));
   };
 
 }

@@ -12,9 +12,9 @@
       enable = lib.mkEnableOption "enables commonFonts";
     };
   };
-  
+
   config = lib.mkIf config.commonFonts.enable {
-   fonts = {
+    fonts = {
       packages = with pkgs; [
         dina-font
         fira-code
@@ -26,6 +26,6 @@
         noto-fonts-emoji
         proggyfonts
       ];
-    }; 
+    };
   };
 }

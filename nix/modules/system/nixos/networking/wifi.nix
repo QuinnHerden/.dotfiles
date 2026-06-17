@@ -1,7 +1,6 @@
 {
   lib,
   config,
-  pkgs,
   ...
 }:
 
@@ -12,7 +11,7 @@
       enable = lib.mkEnableOption "enables wifi";
     };
   };
-  
+
   config = lib.mkIf config.wifi.enable {
     networking.networkmanager.enable = true;
   };

@@ -1,17 +1,20 @@
 {
-  common = pkgs: with pkgs; [
-  ];
+  common =
+    pkgs: with pkgs; [
+    ];
 
-  linux = pkgs: with pkgs; [
-    obs-studio
-    signal-desktop
-  ];
+  linux =
+    pkgs: with pkgs; [
+      obs-studio
+      signal-desktop
+    ];
 
-  linuxX86 = pkgs: with pkgs; [
-  ];
+  linuxX86 =
+    pkgs: with pkgs; [
+    ];
 
   darwin = {
-    brews = [];
+    brews = [ ];
     casks = [
       "discord"
       "fathom"
@@ -21,6 +24,6 @@
       "vb-cable"
       "whatsapp"
     ];
-    masApps = {};
+    masApps = { };
   };
 }

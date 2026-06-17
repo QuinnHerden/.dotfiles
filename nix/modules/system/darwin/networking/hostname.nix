@@ -1,7 +1,6 @@
 {
   lib,
   config,
-  pkgs,
   ...
 }:
 
@@ -16,7 +15,7 @@
       };
     };
   };
-  
+
   config = lib.mkIf config.hostname.enable {
     system.defaults.smb = {
       NetBIOSName = "${config.hostname.name}";

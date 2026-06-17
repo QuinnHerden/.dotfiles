@@ -1,8 +1,6 @@
-
 {
   lib,
   config,
-  pkgs,
   ...
 }:
 
@@ -13,7 +11,7 @@
       enable = lib.mkEnableOption "enables pam";
     };
   };
-  
+
   config = lib.mkIf config.pam.enable {
     security.pam = {
       u2f = {
@@ -29,7 +27,7 @@
         # login
         login.u2fAuth = true;
 
-        display-manager = { 
+        display-manager = {
           enable = true;
           # login splash screen
           text = ''

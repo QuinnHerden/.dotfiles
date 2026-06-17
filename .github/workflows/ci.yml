@@ -38,21 +38,16 @@ jobs:
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
       - uses: DeterminateSystems/nix-installer-action@ef8a148080ab6020fd15196c2084a2eea5ff2d25 # v22
-      - name: statix (nix lint)
-        run: nix run nixpkgs#statix -- check ./nix
-      - name: deadnix (dead nix code)
-        run: nix run nixpkgs#deadnix -- --fail ./nix
-      - name: shellcheck
-        run: |
-          nix run nixpkgs#shellcheck -- \
-            container/entrypoint.sh \
-            files/scripts/dev \
-            files/scripts/fzf-preview.sh \
-            files/scripts/sesh \
-            files/scripts/vec \
-            files/scripts/vecc
-      - name: nixfmt (format check)
-        run: nix run nixpkgs#nixfmt-rfc-style -- --check ./nix
+      - uses: nix-community/cache-nix-action@7df957e333c1e5da7721f60227dbba6d06080569 # v7.0.2
+        with:
+          primary-key: nix-${{ runner.os }}-${{ hashFiles('nix/flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-
+      # Run the exact same git-hooks pipeline as the local pre-commit hook, so
+      # CI and local commits share one source of truth (nix/flake.nix). Runs
+      # from the repo root, so it lints all of nix/ and the shell scripts and
+      # picks up the root statix.toml.
+      - name: pre-commit (all files)
+        run: nix develop ./nix --command pre-commit run --all-files --show-diff-on-failure
 
   # Full toplevel builds are the expensive step, so they run on merges to
   # main/dev and on manual dispatch, not on every PR. PRs are gated by the

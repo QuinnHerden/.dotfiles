@@ -1,7 +1,6 @@
 {
   lib,
   config,
-  pkgs,
   ...
 }:
 
@@ -12,7 +11,7 @@
       enable = lib.mkEnableOption "enables darwinSystem";
     };
   };
-  
+
   config = lib.mkIf config.darwinSystem.enable {
     ##### temporary requirement ####
     system.primaryUser = "quinnherden";
@@ -20,7 +19,7 @@
 
     ids.gids.nixbld = 350;
 
-    security.pki.certificateFiles = [];
+    security.pki.certificateFiles = [ ];
 
     time.timeZone = "America/New_York";
 
@@ -38,7 +37,7 @@
       BatteryShowPercentage = false;
 
       Bluetooth = true;
-      NowPlaying = true;    
+      NowPlaying = true;
 
       FocusModes = false;
       Sound = false;
@@ -73,7 +72,7 @@
       tilesize = 16;
       magnification = true;
       largesize = 64;
-      
+
       # corner hover quick launch
       wvous-bl-corner = 1; # '1' = disabled
       wvous-br-corner = 1;
@@ -88,8 +87,8 @@
     };
 
     #system.defaults.universalaccess = {
-      # remove animations when switching desktops
-      #reduceMotion = true;
+    # remove animations when switching desktops
+    #reduceMotion = true;
     #};
 
     system.defaults.finder = {
@@ -116,7 +115,7 @@
 
       # show hidden files
       AppleShowAllFiles = false;
-      
+
       # show breadcrumb path
       ShowPathbar = true;
 
@@ -146,7 +145,7 @@
       # what does the function key do
       AppleFnUsageType = "Do Nothing";
     };
-    
+
     system.defaults.NSGlobalDomain = {
       # trackpad speed
       "com.apple.trackpad.scaling" = 3.0;
