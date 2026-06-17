@@ -42,8 +42,6 @@ Question text ::: Answer text
 
 ---
 [^uid]: Zk7pLm4Nv2
-
-.
 ```
 
 Hard-won format rules (these caused real build failures):
@@ -52,7 +50,7 @@ Hard-won format rules (these caused real build failures):
 2. **Each card is**: `---`, blank line, content, blank line, `---`, then the `[^uid]:` footer. Cards are separated by these `---` delimiters.
 3. **`:::` separates question from answer** in Q&A cards (one line or multi-line). Use `{{c1:: ... }}` for cloze cards (no `:::`).
 4. **Every card needs a unique 10-char alphanumeric uid** in a `[^uid]:` footer after the card's closing `---`. Reusing or omitting one breaks the build. Two ways to get them: (a) generate a batch and paste one under each card — `for i in $(seq 1 N); do LC_ALL=C tr -dc 'A-Za-z0-9' < /dev/urandom | head -c 10; echo; done`; or (b) write each card with **its own closing `---` fence** (so consecutive cards are separated by two `---`, a close then an open) and run `ankc uid` to stamp the missing footers (`ankc uid --check` previews). **`ankc uid` only stamps fully-fenced cards** — a footerless card separated from its neighbor by a single bare `---` is silently merged into that neighbor and you lose cards. When in doubt, place the footers yourself.
-5. **End the file with a blank line then a lone `.`** after the last card's uid. python-frontmatter strips the trailing newline, and without this sentinel the *last* card's uid fails to parse (`No guid found in note meta chunk`).
+5. **A trailing `.` sentinel is no longer required** (ankc ≥ 0.2.0 normalizes the trailing newline). Old decks that end with a lone `.` still build; you just don't need to add one.
 6. Optional per-card extra tags: add `[^tag]: tagname` lines under the uid.
 
 ## Cloze and rendering rules
@@ -147,7 +145,7 @@ Match the card pattern to the kind of source. The default below is the definitio
 1. Read the source; list the atomic facts worth knowing cold. Cut anything that's a skill, not knowledge.
 2. Decide deck name + tags. Create `anki-decks/<deck-slug>/<deck-slug>.md`.
 3. Write cards following the format rules, material-type playbooks, and design principles.
-4. Give each card a `[^uid]:` footer (paste generated uids, or fence each card and run `ankc uid`); end the file with the `.` sentinel.
+4. Give each card a `[^uid]:` footer (paste generated uids, or fence each card and run `ankc uid`).
 5. `grep -n ':::' deck.md` to catch delimiter traps. `ankc check` to validate.
 6. `mkdir -p dist`, `ankc build`, then `ls ./dist/*.apkg`. Verify source note count == apkg note count. Spot-read a few cards.
 7. Commit the `.md` (gitignore `dist/`/`*.apkg`). Tell the user to import the `.apkg` into Anki (File → Import).
