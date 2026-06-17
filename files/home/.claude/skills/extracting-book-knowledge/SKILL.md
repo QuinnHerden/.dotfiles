@@ -74,4 +74,11 @@ Extractions are raw material. To put them to work, fold them into agents using t
 
 ## Deployment
 
-`knowledge/` is wired into home-manager and auto-linked on rebuild/restart, so new files appear at `~/.claude/knowledge/`. Commit to your dotfiles repo to sync across machines/containers.
+`knowledge/` is a **private git submodule** (the extractions distill copyrighted source material, so they stay out of the public dotfiles repo). It is symlinked to `~/.claude/knowledge/`, so new files appear there once the submodule is checked out.
+
+To add or change an extraction:
+1. Write the file under `~/.claude/knowledge/extractions/` (the submodule working tree).
+2. Commit and push **inside the submodule** (the private `claude-knowledge` repo).
+3. In the dotfiles repo, stage the bumped submodule pointer and commit it so other machines pick up the new revision.
+
+New clones need `git submodule update --init` (and credentials for the private repo) to populate the library.
