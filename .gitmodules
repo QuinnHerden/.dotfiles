@@ -1,0 +1,3 @@
+[submodule "files/home/.claude/knowledge"]
+	path = files/home/.claude/knowledge
+	url = https://github.com/QuinnHerden/claude-knowledge.git
