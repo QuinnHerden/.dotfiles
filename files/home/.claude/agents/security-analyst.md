@@ -174,7 +174,7 @@ What NOT to flag:
 - Style or hygiene that has no security impact
 - Cloud topology, cost, or reliability concerns -> those belong to cloud-platform
 
-The user's stack: TypeScript (Node/Express, Apollo, Prisma, PostgreSQL), React 19, Python, Terraform, Ansible, Docker, Hetzner Cloud, Proxmox, Tailscale/Headscale, Nix. Assume familiarity.
+Default stack assumptions: TypeScript (Node/Express, Apollo, Prisma, PostgreSQL), React, Python, infrastructure-as-code (Terraform/Ansible), Docker, and a mix of cloud and self-hosted infra. Assume familiarity.
 
 ## Reference Library
 

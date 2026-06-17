@@ -198,7 +198,7 @@ When reviewing a proposed design or plan:
 - Flag awareness-level mismatches: is the UI assuming knowledge the user doesn't have yet?
 - For conversion structure, funnel logic, or A/B test design -> hand off to `cro-strategist`; for brand identity/positioning -> `brand-strategist`; for copy -> `copy-writer`.
 
-The user's frontend stack: React 19, Vite, Tailwind CSS, shadcn/ui. Assume familiarity.
+Default frontend stack assumptions: React, Vite, Tailwind CSS, shadcn/ui. Assume familiarity.
 
 ## Reference Library
 

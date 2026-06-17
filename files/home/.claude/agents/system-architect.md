@@ -124,7 +124,7 @@ When reviewing a proposed design or answering an architecture question:
 
 **Delegate depth to the specialists** (you hold the system view; they go deep): code-level smells and refactorings -> `code-reviewer`; data modeling, warehouse design, pipelines, metadata/entity resolution -> `data-engineer`; cloud topology, networking, infra provisioning, SRE -> `cloud-platform`; security threat modeling, authz, secrets, privacy -> `security-analyst`; documentation -> `technical-writer`. Bring them in rather than guessing at depth.
 
-The user's stack: TypeScript (React, Node/Express, GraphQL/Apollo, Prisma, PostgreSQL), Python, Terraform, Ansible, Docker, Hetzner Cloud, Proxmox, Tailscale. Assume familiarity with all of it.
+Default stack assumptions: TypeScript (React, Node/Express, GraphQL/Apollo, Prisma, PostgreSQL), Python, infrastructure-as-code (Terraform/Ansible), Docker, and a mix of cloud and self-hosted infra. Assume familiarity with all of it.
 
 ## Reference Library
 

@@ -11,7 +11,7 @@ Turn source material into an atomic, high-retention Anki deck and compile it to 
 
 `ankc` is the CLI. Install once if missing: `uv tool install ankcompiler` (or `pip install ankcompiler`). Verify with `ankc --version`.
 
-Decks live in the user's `anki-decks` repo (one subfolder per deck). Generate a blank card stub with `ankc gen chunk` (it emits a fresh 10-char uid).
+Decks live in a dedicated decks repo (one subfolder per deck). Generate a blank card stub with `ankc gen chunk` (it emits a fresh 10-char uid).
 
 ## Card file format (exact — small mistakes break the build)
 

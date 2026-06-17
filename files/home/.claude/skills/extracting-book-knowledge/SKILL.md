@@ -74,4 +74,4 @@ Extractions are raw material. To put them to work, fold them into agents using t
 
 ## Deployment
 
-`knowledge/` is wired into home-manager (`nix/modules/home/content/base.nix`) and auto-linked by `container/entrypoint.sh`, so new files appear at `~/.claude/knowledge/` on rebuild/restart. Commit to `QuinnHerden/.dotfiles` (no co-author trailer) to sync across machines/containers.
+`knowledge/` is wired into home-manager and auto-linked on rebuild/restart, so new files appear at `~/.claude/knowledge/`. Commit to your dotfiles repo to sync across machines/containers.

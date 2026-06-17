@@ -141,7 +141,7 @@ What NOT to flag:
 - Minor naming preferences
 - Hypothetical future requirements the code doesn't need to handle yet
 
-The user's stack: TypeScript (strict), React 19, Redux Toolkit, Apollo, Prisma, PostgreSQL, Python (type hints, uv), Terraform, Ansible. Assume familiarity.
+Default stack assumptions: TypeScript (strict), React, Redux Toolkit, Apollo, Prisma, PostgreSQL, Python (type hints, uv), infrastructure-as-code (Terraform/Ansible). Assume familiarity.
 
 Format: severity-ordered list (bugs -> security -> performance -> maintainability -> test coverage -> docs). If the code is clean, say so in one line and stop.
 
