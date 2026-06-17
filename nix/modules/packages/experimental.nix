@@ -1,15 +1,18 @@
 {
-  common = pkgs: with pkgs; [
-  ];
+  common =
+    pkgs: with pkgs; [
+    ];
 
-  linux = pkgs: with pkgs; [
-  ];
+  linux =
+    pkgs: with pkgs; [
+    ];
 
-  linuxX86 = pkgs: with pkgs; [
-  ];
+  linuxX86 =
+    pkgs: with pkgs; [
+    ];
 
   darwin = {
-    brews = [];
+    brews = [ ];
     casks = [
       "protege"
     ];

@@ -1,18 +1,21 @@
 {
-  common = pkgs: with pkgs; [
-    nmap
-    wireshark
-  ];
+  common =
+    pkgs: with pkgs; [
+      nmap
+      wireshark
+    ];
 
-  linux = pkgs: with pkgs; [
-  ];
+  linux =
+    pkgs: with pkgs; [
+    ];
 
-  linuxX86 = pkgs: with pkgs; [
-  ];
+  linuxX86 =
+    pkgs: with pkgs; [
+    ];
 
   darwin = {
-    brews = [];
-    casks = [];
-    masApps = {};
+    brews = [ ];
+    casks = [ ];
+    masApps = { };
   };
 }

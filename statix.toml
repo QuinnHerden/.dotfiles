@@ -1,0 +1,4 @@
+# repeated_keys flags the idiomatic style of writing several leaves under one
+# prefix as separate statements (home.file = ...; home.packages = ...; etc).
+# That is deliberate and readable here, so the lint is disabled.
+disabled = ["repeated_keys"]

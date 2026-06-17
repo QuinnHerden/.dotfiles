@@ -1,28 +1,31 @@
 {
-  common = pkgs: with pkgs; [
-    ansible
-    awscli2
-    kubectx
-    kubernetes-helm
-    packer
-    terraform
-    tflint
-  ];
+  common =
+    pkgs: with pkgs; [
+      ansible
+      awscli2
+      kubectx
+      kubernetes-helm
+      packer
+      terraform
+      tflint
+    ];
 
-  linux = pkgs: with pkgs; [
-  ];
+  linux =
+    pkgs: with pkgs; [
+    ];
 
-  linuxX86 = pkgs: with pkgs; [
-    virtualbox
-  ];
+  linuxX86 =
+    pkgs: with pkgs; [
+      virtualbox
+    ];
 
   darwin = {
-    brews = [];
+    brews = [ ];
     casks = [
       "balenaetcher"
       "raspberry-pi-imager"
       "virtualbox"
     ];
-    masApps = {};
+    masApps = { };
   };
 }

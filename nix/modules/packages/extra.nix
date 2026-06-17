@@ -1,59 +1,62 @@
 {
-  common = pkgs: with pkgs; [
-    duckdb
-    gnupg
-    lazydocker
-    netclient
-    ngrok
-    podman
-    go
-    jq
-    nodejs
-    pipx
-    python314
-    stylua
-    uv
-    wget
-    yarn
-    bat
-    curlie
-    eslint_d
-    eza
-    ffmpeg
-    fzf
-    gawk
-    gh
-    git
-    gnugrep
-    htop
-    httrack
-    lazygit
-    neofetch
-    neovim
-    ollama
-    openssl
-    openvpn
-    pandoc
-    postgresql
-    posting
-    potrace
-    pre-commit
-    prettierd
-    ripgrep
-    thefuck
-    tmux
-    tree
-    tree-sitter
-    vim
-    zoxide
-  ];
+  common =
+    pkgs: with pkgs; [
+      duckdb
+      gnupg
+      lazydocker
+      netclient
+      ngrok
+      podman
+      go
+      jq
+      nodejs
+      pipx
+      python314
+      stylua
+      uv
+      wget
+      yarn
+      bat
+      curlie
+      eslint_d
+      eza
+      ffmpeg
+      fzf
+      gawk
+      gh
+      git
+      gnugrep
+      htop
+      httrack
+      lazygit
+      neofetch
+      neovim
+      ollama
+      openssl
+      openvpn
+      pandoc
+      postgresql
+      posting
+      potrace
+      pre-commit
+      prettierd
+      ripgrep
+      thefuck
+      tmux
+      tree
+      tree-sitter
+      vim
+      zoxide
+    ];
 
-  linux = pkgs: with pkgs; [
-    feh
-  ];
+  linux =
+    pkgs: with pkgs; [
+      feh
+    ];
 
-  linuxX86 = pkgs: with pkgs; [
-  ];
+  linuxX86 =
+    pkgs: with pkgs; [
+    ];
 
   darwin = {
     brews = [

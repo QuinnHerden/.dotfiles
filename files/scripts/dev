@@ -79,9 +79,9 @@ fi
 if [ -z "${DEV_DOCKER_SOCK:-}" ] && [ -f "$SOCK_PREF_FILE" ]; then
   DEV_DOCKER_SOCK=1
 fi
-SOCKET_MOUNT=""
+socket_mount=()
 if [ "${DEV_DOCKER_SOCK:-}" = "1" ] && [ -n "$PODMAN_SOCKET" ]; then
-  SOCKET_MOUNT="-v $PODMAN_SOCKET:/var/run/docker.sock --security-opt label=disable"
+  socket_mount=(-v "$PODMAN_SOCKET:/var/run/docker.sock" --security-opt label=disable)
 fi
 
 # --- Build image ---
@@ -146,12 +146,12 @@ if podman container exists "$NAME" 2>/dev/null; then
 fi
 
 # Resolve host dir to absolute path
-MOUNT_ARGS=""
-MOUNT_ENV=""
+mount_args=()
+mount_env=()
 if [ -n "$HOST_DIR" ]; then
   HOST_DIR_ABS="$(cd "$HOST_DIR" && pwd)"
-  MOUNT_ARGS="-v ${HOST_DIR_ABS}:${HOST_DIR_ABS}"
-  MOUNT_ENV="-e DEV_MOUNT=${HOST_DIR_ABS}"
+  mount_args=(-v "${HOST_DIR_ABS}:${HOST_DIR_ABS}")
+  mount_env=(-e "DEV_MOUNT=${HOST_DIR_ABS}")
 fi
 
 # Per-container persistent state, isolated per container and kept on the host.
@@ -160,7 +160,8 @@ fi
 # credentials and session state persist; the entrypoint persists gh auth here
 # too. The entrypoint symlinks the static config in from the dotfiles clone.
 DEV_STATE="${HOME}/.dev-containers/${NAME}"
-mkdir -m 700 -p "$DEV_STATE"
+mkdir -p "$DEV_STATE"
+chmod 700 "$DEV_STATE"
 
 # Global Claude memory is user-level (facts about you, projects, preferences),
 # so share the single canonical host dir across all containers rather than
@@ -170,13 +171,13 @@ mkdir -p "${HOME}/.claude/memory"
 ensure_image
 
 echo "Starting container '$NAME'..."
-eval podman run -d \
+podman run -d \
   --name "$NAME" \
   --hostname "$NAME" \
   --userns=keep-id \
-  $SOCKET_MOUNT \
-  $MOUNT_ARGS \
-  $MOUNT_ENV \
+  "${socket_mount[@]}" \
+  "${mount_args[@]}" \
+  "${mount_env[@]}" \
   -v "${DEV_STATE}:/home/dev/.dev-state" \
   -v "${HOME}/.claude/memory:/home/dev/.claude-memory" \
   -v "npm-cache-${NAME}:/home/dev/.npm" \

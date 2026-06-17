@@ -1,7 +1,4 @@
 {
-  lib,
-  config,
-  pkgs,
   ...
 }:
 
@@ -11,5 +8,5 @@
     ./x86_64-linuxSystem.nix
     ./aarch64-linuxSystem.nix
   ];
-  
+
 }

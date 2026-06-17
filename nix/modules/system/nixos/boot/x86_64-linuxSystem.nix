@@ -1,7 +1,6 @@
 {
   lib,
   config,
-  pkgs,
   ...
 }:
 
@@ -12,7 +11,7 @@
       enable = lib.mkEnableOption "enables x86_64-linuxSystem";
     };
   };
-  
+
   config = lib.mkIf config.x86_64-linuxSystem.enable {
     boot.loader = {
       systemd-boot.enable = true;

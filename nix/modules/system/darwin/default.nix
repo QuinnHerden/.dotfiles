@@ -1,7 +1,4 @@
 {
-  lib,
-  config,
-  pkgs,
   ...
 }:
 
@@ -12,5 +9,5 @@
     ./packages
     ./system
   ];
-  
+
 }

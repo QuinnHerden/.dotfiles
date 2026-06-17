@@ -1,7 +1,6 @@
 {
   lib,
   config,
-  pkgs,
   ...
 }:
 
@@ -12,7 +11,7 @@
       enable = lib.mkEnableOption "enables i3";
     };
   };
-  
+
   config = lib.mkIf config.i3.enable {
     services.xserver = {
       enable = true;

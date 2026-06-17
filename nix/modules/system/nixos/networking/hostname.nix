@@ -1,7 +1,6 @@
 {
   lib,
   config,
-  pkgs,
   ...
 }:
 
@@ -16,7 +15,7 @@
       };
     };
   };
-  
+
   config = lib.mkIf config.hostname.enable {
     networking = {
       hostName = "${config.hostname.name}";

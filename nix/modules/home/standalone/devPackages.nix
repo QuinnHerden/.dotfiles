@@ -15,9 +15,7 @@ in
 
   config = lib.mkIf config.devPackages.enable {
     home.packages =
-      (pkg.common pkgs) ++
-      (pkg.linux pkgs) ++
-      (lib.optionals pkgs.stdenv.isx86_64 (pkg.linuxX86 pkgs));
+      (pkg.common pkgs) ++ (pkg.linux pkgs) ++ (lib.optionals pkgs.stdenv.isx86_64 (pkg.linuxX86 pkgs));
   };
 
 }

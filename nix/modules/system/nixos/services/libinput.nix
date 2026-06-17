@@ -1,7 +1,6 @@
 {
   lib,
   config,
-  pkgs,
   ...
 }:
 
@@ -12,7 +11,7 @@
       enable = lib.mkEnableOption "enables libinput";
     };
   };
-  
+
   config = lib.mkIf config.libinput.enable {
     services.libinput = {
       enable = true;

@@ -1,7 +1,6 @@
 {
   lib,
   config,
-  pkgs,
   ...
 }:
 
@@ -12,7 +11,7 @@
       enable = lib.mkEnableOption "enables redshift";
     };
   };
-  
+
   config = lib.mkIf config.redshift.enable {
     location.provider = "geoclue2";
 

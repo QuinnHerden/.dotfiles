@@ -2,4 +2,4 @@
 
 echo "Updating flake lock"
 
-nix flake update --flake $HOME/.dotfiles/nix
+nix flake update --flake "$HOME/.dotfiles/nix"

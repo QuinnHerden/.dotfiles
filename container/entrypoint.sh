@@ -3,6 +3,7 @@ set -e
 
 # Source Nix
 if [ -f /home/dev/.nix-profile/etc/profile.d/nix.sh ]; then
+  # shellcheck disable=SC1091  # sourced at runtime, not available to the linter
   . /home/dev/.nix-profile/etc/profile.d/nix.sh
 fi
 
@@ -34,7 +35,7 @@ if [ -d "$DOT" ]; then
   for f in "$DOT"/*; do
     [ -e "$f" ] || continue
     name=$(basename "$f")
-    rm -rf "$CCDIR/$name"
+    rm -rf "${CCDIR:?}/$name"
     ln -sfn "$f" "$CCDIR/$name"
   done
 fi

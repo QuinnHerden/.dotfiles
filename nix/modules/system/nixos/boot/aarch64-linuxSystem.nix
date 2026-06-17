@@ -1,7 +1,6 @@
 {
   lib,
   config,
-  pkgs,
   ...
 }:
 
@@ -12,7 +11,7 @@
       enable = lib.mkEnableOption "enables aarch64-linuxSystem";
     };
   };
-  
+
   config = lib.mkIf config.aarch64-linuxSystem.enable {
     boot.loader = {
       grub.enable = false;
