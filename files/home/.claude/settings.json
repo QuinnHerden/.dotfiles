@@ -1,15 +1,7 @@
 {
   "permissions": {
-    "allow": [
-      "Bash(git status*)",
-      "Bash(git diff*)",
-      "Bash(git log*)",
-      "Bash(git branch*)",
-      "Bash(ls*)",
-      "Bash(which *)",
-      "Bash(echo *)",
-      "Bash(terraform plan*)"
-    ],
+    "defaultMode": "default",
+    "allow": [],
     "deny": [
       "Read(**/*.pem)",
       "Read(**/*.key)",
@@ -28,9 +20,10 @@
     "github@claude-plugins-official": true,
     "chrome-devtools-mcp@claude-plugins-official": true
   },
-  "commitTrailer": false,
+  "attribution": {
+    "commit": ""
+  },
   "effortLevel": "medium",
-  "skipDangerousModePermissionPrompt": true,
   "voiceEnabled": false,
   "editorMode": "vim"
 }
