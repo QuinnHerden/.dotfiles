@@ -29,6 +29,7 @@
 
   wifi.enable = true;
   openssh.enable = true;
+  firewall.enable = true;
   services.tailscale.enable = true;
 
   bluetooth.enable = true;
