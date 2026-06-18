@@ -26,7 +26,7 @@ The pattern: **Scope → Source → Extract → Draft → Stress-test → Ship.*
 
 ## 3. Extract
 
-- Use the `extracting-book-knowledge` skill to digest each source into the `claude-knowledge` submodule (write under `~/.dotfiles/files/home/.claude/knowledge/extractions/`, per that skill's Deployment steps). Faithful 20/80, cite section/article numbers, flag retrieval gaps rather than guessing, and no "where this could saturate" section.
+- Use the `extracting-book-knowledge` skill to digest each source into the private `dotfiles-private` submodule (write under `~/.dotfiles/private/knowledge/extractions/`, per that skill's Deployment steps). Faithful 20/80, cite section/article numbers, flag retrieval gaps rather than guessing, and no "where this could saturate" section.
 - **Cardinal rule: never fabricate an extraction.** If no real source exists, either digest one or mark the framework inline-only on purpose. A `Reference Library` pointer to an invented or nonexistent doc is worse than no pointer.
 - Verify the load-bearing specifics yourself (the numbers and clause/section references a reader would rely on), especially for legal/technical material.
 - Move consumed sources to `~/repos/education/done/`. Commit and push inside the submodule.

@@ -53,7 +53,7 @@ Likely the most reusable part of this repo. `files/home/.claude/` holds:
 
 - **agents/**: focused specialist subagents (system-architect, security-analyst, code-reviewer, data-engineer, cloud-platform, process-analyst, plus GTM, brand, and UX specialists). Each carries compressed named frameworks inline and a `Reference Library` pointer to the deeper source material.
 - **skills/**: repeatable procedures (extracting book knowledge into the knowledge base, stress-testing an agent, and more).
-- **knowledge/**: a 20/80 extraction library that backs the agents. It is a *private* git submodule, since the extractions distill copyrighted source material, so it will not populate on a public clone. That is intentional, not a broken repo.
+- **knowledge/**: a 20/80 extraction library that backs the agents. It lives in the private `private/` submodule (as `private/knowledge`, alongside the NixOS overlay), since the extractions distill copyrighted source material, so it will not populate on a public clone. That is intentional, not a broken repo.
 
 ## Install (reinstalling on a new machine)
 
@@ -93,7 +93,7 @@ git clone --recurse-submodules https://github.com/QuinnHerden/.dotfiles.git
 git submodule update --init
 ```
 
-Without the private overlay (`nix/private`), the NixOS rebuild scripts warn and fall back to an empty authorized-SSH-keys stub.
+Without the private overlay (`private/overlay`), the NixOS rebuild scripts warn and fall back to an empty authorized-SSH-keys stub.
 
 ### 3. Init
 
@@ -173,7 +173,7 @@ To supply your own last mile, pick one:
 - Edit the public modules directly.
 - Point `inputs.private` at your own overlay.
 
-The owner does the second: a private submodule at `nix/private`, plus an `--override-input private path:...` baked into the rebuild scripts. As a forker, ignore or deinit that submodule. The stub default keeps the flake evaluatable.
+The owner does the second: a single private submodule at `private/` (holding the overlay and the knowledge library), plus an `--override-input private path:...` baked into the rebuild scripts. As a forker, ignore or deinit that submodule. The stub default keeps the flake evaluatable.
 
 The template hosts (`hosts.nixos.template`, `hosts.darwin.template`, `hosts.home.template`) are built in CI to guarantee the public layer stays forkable.
 

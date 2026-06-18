@@ -11,9 +11,9 @@ if [ "$system_type" = "Darwin" ]; then
 fi
 
 if [ "$system_type" = "Linux" ]; then
-  # Pull real identifiers from the private overlay (nix/private submodule);
+  # Pull real identifiers from the private overlay (private/ submodule);
   # the public flake defaults to the generic stub when this is omitted.
-  priv="$HOME/.dotfiles/nix/private"
+  priv="$HOME/.dotfiles/private/overlay"
   if [ -e "$priv/default.nix" ]; then
     sudo nixos-rebuild test --flake "$HOME/.dotfiles/nix" \
       --override-input private "path:$priv"

@@ -10,7 +10,7 @@ Turn a source (book, PDF, epub, or a media collection) into a tight knowledge do
 ## Where things live
 
 - Sources: usually `~/repos/education/` (one folder per author/topic), but a path can be given.
-- Output: one doc per atomic unit at `~/.dotfiles/files/home/.claude/knowledge/extractions/<slug>.md` (runtime: `~/.claude/knowledge/extractions/`).
+- Output: one doc per atomic unit at `~/.dotfiles/private/knowledge/extractions/<slug>.md` (runtime: `~/.claude/knowledge/extractions/`).
 - `<slug>`: lowercase-kebab, recognizable (`clean-code`, `traffic-secrets`, `data-warehouse-toolkit`).
 
 ## Step 1 — Define atomic units
@@ -62,11 +62,11 @@ Keep it tight and high-signal — readable in ~5 minutes and applyable. Do not p
 - **One or a few:** spawn a Sonnet agent per unit (the `general-purpose` agent), each doing Step 2–4 and writing its own file. For 2-3, run them in parallel in one message; background them (`run_in_background`) if the user is feeding a stream.
 - **A large batch (many books):** use a **Workflow** — one Sonnet agent per unit, fanned out (`parallel`), capped ~12 concurrent. Pass each unit's source dir and slug; have each agent locate its epub/pdf, extract, and write. Return a `{ok, failed}` manifest.
 
-Reusable per-agent prompt: instruct the agent to (1) get the text per Step 2 for its source type, (2) extract per Steps 3–4, (3) WRITE to `~/.dotfiles/files/home/.claude/knowledge/extractions/<slug>.md` (note: the dotfiles path, not `~/.claude`), and (4) return a one-line confirmation with the slug + chosen tags.
+Reusable per-agent prompt: instruct the agent to (1) get the text per Step 2 for its source type, (2) extract per Steps 3–4, (3) WRITE to `~/.dotfiles/private/knowledge/extractions/<slug>.md` (note: the dotfiles path, not `~/.claude`), and (4) return a one-line confirmation with the slug + chosen tags.
 
 ## Step 6 — Verify
 
-After the run, confirm files on disk: `ls ~/.dotfiles/files/home/.claude/knowledge/extractions/`. Note: this is zsh — it does not word-split unquoted vars, so verify with `echo "$LIST" | tr ' ' '\n' | while read s; do [ -f "$s.md" ] || echo missing $s; done`, not `for s in $LIST`. Spot-check one or two docs for fidelity (real frameworks, no fabrication, undersized files flag a failed read).
+After the run, confirm files on disk: `ls ~/.dotfiles/private/knowledge/extractions/`. Note: this is zsh — it does not word-split unquoted vars, so verify with `echo "$LIST" | tr ' ' '\n' | while read s; do [ -f "$s.md" ] || echo missing $s; done`, not `for s in $LIST`. Spot-check one or two docs for fidelity (real frameworks, no fabrication, undersized files flag a failed read).
 
 ## Step 7 — Saturate (separate, on request)
 
@@ -74,11 +74,11 @@ Extractions are raw material. To put them to work, fold them into agents using t
 
 ## Deployment
 
-`knowledge/` is a **private git submodule** (the extractions distill copyrighted source material, so they stay out of the public dotfiles repo). It is symlinked to `~/.claude/knowledge/`, so new files appear there once the submodule is checked out.
+The knowledge library lives in the **private `dotfiles-private` submodule** at `private/knowledge/` (the extractions distill copyrighted source material, so they stay out of the public dotfiles repo). It is symlinked to `~/.claude/knowledge/`, so new files appear there once the submodule is checked out.
 
 To add or change an extraction:
 1. Write the file under `~/.claude/knowledge/extractions/` (the submodule working tree).
-2. Commit and push **inside the submodule** (the private `claude-knowledge` repo).
+2. Commit and push **inside the submodule** (the private `dotfiles-private` repo).
 3. In the dotfiles repo, stage the bumped submodule pointer and commit it so other machines pick up the new revision.
 
 New clones need `git submodule update --init` (and credentials for the private repo) to populate the library.
