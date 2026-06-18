@@ -3,7 +3,7 @@
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
-    selected=$(find ~/docs/personal/repos ~/docs/oolessence/herden-io ~/docs/oolessence/sculpted-io ~/docs/oolessence/oolessence-io ~/ -mindepth 1 -maxdepth 1 -type d | fzf)
+    selected=$(find ~/Documents/personal/repos ~/Documents/oolessence/herden-io ~/Documents/oolessence/sculpted-io ~/Documents/oolessence/oolessence-io ~/ -mindepth 1 -maxdepth 1 -type d | fzf)
 fi
 
 if [[ -z $selected ]]; then
