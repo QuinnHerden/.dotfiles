@@ -126,8 +126,8 @@
       # ssh
       rmkh = "rm ~/.ssh/known_hosts";
 
-      # terraform
-      tf = "terraform";
+      # opentofu
+      tf = "tofu";
 
       # thefuck
       fuck = "f";
