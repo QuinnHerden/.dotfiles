@@ -10,7 +10,16 @@ fi
 
 if [ "$system_type" = "Linux" ]; then
   if command -v nixos-rebuild >/dev/null 2>&1; then
-    sudo nixos-rebuild switch --flake "$HOME/.dotfiles/nix"
+    # Pull real identifiers from the private overlay (nix/private submodule);
+    # the public flake defaults to the generic stub when this is omitted.
+    priv="$HOME/.dotfiles/nix/private"
+    if [ -e "$priv/default.nix" ]; then
+      sudo nixos-rebuild switch --flake "$HOME/.dotfiles/nix" \
+        --override-input private "path:$priv"
+    else
+      echo "warning: private overlay missing at $priv (run: git submodule update --init); using public stub" >&2
+      sudo nixos-rebuild switch --flake "$HOME/.dotfiles/nix"
+    fi
   else
     echo "Using host: $(whoami)@$(hostname)"
     if command -v home-manager >/dev/null 2>&1; then

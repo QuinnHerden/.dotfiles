@@ -11,5 +11,14 @@ if [ "$system_type" = "Darwin" ]; then
 fi
 
 if [ "$system_type" = "Linux" ]; then
-  sudo nixos-rebuild test --flake "$HOME/.dotfiles/nix"
+  # Pull real identifiers from the private overlay (nix/private submodule);
+  # the public flake defaults to the generic stub when this is omitted.
+  priv="$HOME/.dotfiles/nix/private"
+  if [ -e "$priv/default.nix" ]; then
+    sudo nixos-rebuild test --flake "$HOME/.dotfiles/nix" \
+      --override-input private "path:$priv"
+  else
+    echo "warning: private overlay missing at $priv (run: git submodule update --init); using public stub" >&2
+    sudo nixos-rebuild test --flake "$HOME/.dotfiles/nix"
+  fi
 fi

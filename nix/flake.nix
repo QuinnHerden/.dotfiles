@@ -6,6 +6,14 @@
       url = "github:NixOS/nixpkgs/nixos-25.05";
     };
 
+    # Private "last-mile" layer (real identifiers). Defaults to an in-repo
+    # public stub so the public flake evaluates standalone (CI + forks). The
+    # owner's rebuild scripts override this to the nix/private submodule.
+    private = {
+      url = "path:./private-stub";
+      flake = false;
+    };
+
     darwin = {
       url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -52,13 +60,16 @@
           };
         };
       # Module list for a NixOS host. Shared by mkHost and the VM boot test so
-      # the test and the real config cannot drift.
+      # the test and the real config cannot drift. Includes the private overlay
+      # (inputs.private), which defaults to the public stub and is overridden by
+      # the rebuild scripts; the VM test thus exercises the seam against the stub.
       nixosSystemModules = hostPath: [
         home-manager.nixosModules.default
         hostPath
         ./modules/home/integrated
         ./modules/system/common
         ./modules/system/nixos
+        (import inputs.private)
       ];
 
       nixDotsModules = nixosSystemModules ./hosts/nix-dots;

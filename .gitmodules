@@ -1,3 +1,6 @@
 [submodule "files/home/.claude/knowledge"]
 	path = files/home/.claude/knowledge
 	url = https://github.com/QuinnHerden/dotfiles-knowledge.git
+[submodule "nix/private"]
+	path = nix/private
+	url = https://github.com/QuinnHerden/dotfiles-private.git
