@@ -16,9 +16,7 @@ in
   config = lib.mkIf config.extraPackages.enable {
     environment.systemPackages = pkg.common pkgs;
     homebrew = {
-      brews = pkg.darwin.brews;
-      casks = pkg.darwin.casks;
-      masApps = pkg.darwin.masApps;
+      inherit (pkg.darwin) brews casks masApps;
     };
   };
 
