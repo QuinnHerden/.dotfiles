@@ -140,7 +140,7 @@ Generic starting points live in `nix/hosts/_template/`, one directory per platfo
    ```bash
    nixos-generate-config --show-hardware-config > nix/hosts/<name>/hardware-configuration.nix
    ```
-3. In `nix/hosts/<name>/default.nix`, set `hostname.name` and the package toggles.
+3. In `nix/hosts/<name>/default.nix`, set `hostname.name`, `user.name`, and the package toggles.
 4. Add an entry under `hosts.nixos` in `nix/flake.nix`:
    ```nix
    <name> = {
@@ -156,13 +156,13 @@ Generic starting points live in `nix/hosts/_template/`, one directory per platfo
 
 ### Darwin host
 
-Copy `nix/hosts/_template/darwin/` to `nix/hosts/<name>/`, then add an entry under `hosts.darwin` with `builder = "darwin"` and `hostPath = ./hosts/<name>`.
+Copy `nix/hosts/_template/darwin/` to `nix/hosts/<name>/`, set `hostname.name` and `user.name`, then add an entry under `hosts.darwin` with `builder = "darwin"` and `hostPath = ./hosts/<name>`.
 
 ### Standalone home-manager host
 
 Copy `nix/hosts/_template/home/` to `nix/hosts/<name>/`, set `home.username` and `home.homeDirectory` in its `default.nix`, then add an entry under `hosts.home` with `builder = "home"`, the right `system` (e.g. `aarch64-linux`), and `hostPath = ./hosts/<name>`.
 
-**Caveat:** the username is still hardcoded to `quinnherden` in the nixos and darwin system modules. Full username parameterization is a tracked follow-up. The home template is fully generic.
+The username is set in one place per host: `user.name` for NixOS/darwin (the `user` option, which drives the system user, home directory, and home-manager user), and `home.username` for standalone home-manager hosts. Authorized SSH keys come from the private overlay, not the host file.
 
 ## Fork this
 
