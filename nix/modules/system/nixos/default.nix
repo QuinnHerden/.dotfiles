@@ -11,7 +11,6 @@
     ./security
     ./services
     ./users
-    ./vpns
   ];
 
 }
