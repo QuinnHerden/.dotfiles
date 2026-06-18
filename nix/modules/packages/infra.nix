@@ -7,6 +7,7 @@
       kubernetes-helm
       packer
       opentofu
+      spacectl
       tflint
     ];
 
