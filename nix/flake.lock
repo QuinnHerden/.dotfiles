@@ -131,12 +131,25 @@
         "type": "github"
       }
     },
+    "private": {
+      "flake": false,
+      "locked": {
+        "path": "./private-stub",
+        "type": "path"
+      },
+      "original": {
+        "path": "./private-stub",
+        "type": "path"
+      },
+      "parent": []
+    },
     "root": {
       "inputs": {
         "darwin": "darwin",
         "git-hooks": "git-hooks",
         "home-manager": "home-manager",
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs_2",
+        "private": "private"
       }
     }
   },
