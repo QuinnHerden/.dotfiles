@@ -81,6 +81,12 @@ if [ -z "${DEV_DOCKER_SOCK:-}" ] && [ -f "$SOCK_PREF_FILE" ]; then
 fi
 socket_mount=()
 if [ "${DEV_DOCKER_SOCK:-}" = "1" ] && [ -n "$PODMAN_SOCKET" ]; then
+  # `label=disable` turns off SELinux confinement for this container so it can
+  # write the bind-mounted socket. Combined with the host-root-equivalent socket,
+  # this gives the container full control of the host runtime: treat any code run
+  # inside it (including Claude in dangerous mode) as running on the host. To
+  # narrow this, front the socket with a docker-socket-proxy that exposes only
+  # the needed API surface and point DOCKER_HOST at the proxy instead.
   socket_mount=(-v "$PODMAN_SOCKET:/var/run/docker.sock" --security-opt label=disable)
 fi
 
