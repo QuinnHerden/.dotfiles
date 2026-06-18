@@ -84,10 +84,16 @@ sudo apt install curl           # or your distro's equivalent
 
 ### 2. Clone
 
+The repo has private submodules. A plain clone works (the flake falls back to public stubs), but as the owner, init the submodules so the real identifiers load:
+
 ```bash
 cd ~/
-git clone https://github.com/QuinnHerden/.dotfiles.git
+git clone --recurse-submodules https://github.com/QuinnHerden/.dotfiles.git
+# or, after a plain clone:
+git submodule update --init
 ```
+
+Without the private overlay (`nix/private`), the NixOS rebuild scripts warn and fall back to an empty authorized-SSH-keys stub.
 
 ### 3. Init
 
@@ -114,6 +120,62 @@ Apply the config:
 ```bash
 sh ~/.dotfiles/files/scripts/.switch
 ```
+
+## Add a machine
+
+Hosts are data. Each machine is an entry in the `hosts` attrset in `nix/flake.nix`, mapped through `mkHost`. Adding a machine means adding an entry plus its host directory; you never copy a builder block.
+
+Generic starting points live in `nix/hosts/_template/`, one directory per platform (each holds a `default.nix`, so copying the directory needs no rename):
+
+| Directory | For |
+|------|-----|
+| `nixos/` (`default.nix` + `hardware-configuration.nix`) | A NixOS host |
+| `darwin/` | A nix-darwin host |
+| `home/` | A standalone home-manager host |
+
+### NixOS host
+
+1. Copy `nix/hosts/_template/nixos/` to `nix/hosts/<name>/`.
+2. Replace the stub hardware config with real output:
+   ```bash
+   nixos-generate-config --show-hardware-config > nix/hosts/<name>/hardware-configuration.nix
+   ```
+3. In `nix/hosts/<name>/default.nix`, set `hostname.name` and the package toggles.
+4. Add an entry under `hosts.nixos` in `nix/flake.nix`:
+   ```nix
+   <name> = {
+     builder = "nixos";
+     hostPath = ./hosts/<name>;
+   };
+   ```
+5. Set the system hostname to `<name>` (see step 4 of the install runbook).
+6. Switch:
+   ```bash
+   sh ~/.dotfiles/files/scripts/.switch
+   ```
+
+### Darwin host
+
+Copy `nix/hosts/_template/darwin/` to `nix/hosts/<name>/`, then add an entry under `hosts.darwin` with `builder = "darwin"` and `hostPath = ./hosts/<name>`.
+
+### Standalone home-manager host
+
+Copy `nix/hosts/_template/home/` to `nix/hosts/<name>/`, set `home.username` and `home.homeDirectory` in its `default.nix`, then add an entry under `hosts.home` with `builder = "home"`, the right `system` (e.g. `aarch64-linux`), and `hostPath = ./hosts/<name>`.
+
+**Caveat:** the username is still hardcoded to `quinnherden` in the nixos and darwin system modules. Full username parameterization is a tracked follow-up. The home template is fully generic.
+
+## Fork this
+
+The public flake evaluates and builds standalone, with no access to anything private. Real identifiers (such as the authorized SSH key) live in a private overlay behind `inputs.private`, which defaults to an in-repo public stub at `nix/private-stub`. CI and forks build against that stub.
+
+To supply your own last mile, pick one:
+
+- Edit the public modules directly.
+- Point `inputs.private` at your own overlay.
+
+The owner does the second: a private submodule at `nix/private`, plus an `--override-input private path:...` baked into the rebuild scripts. As a forker, ignore or deinit that submodule. The stub default keeps the flake evaluatable.
+
+The template hosts (`hosts.nixos.template`, `hosts.darwin.template`, `hosts.home.template`) are built in CI to guarantee the public layer stays forkable.
 
 ## Dev Containers
 

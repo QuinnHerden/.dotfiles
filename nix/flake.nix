@@ -106,6 +106,9 @@
           };
 
       # The host matrix. Adding a machine is an entry here plus its host dir.
+      # The `template` entries are generic, forkable examples (see hosts/_template)
+      # that CI builds to keep the public layer evaluatable without the private
+      # overlay.
       hosts = {
         nixos = {
           nix-box = {
@@ -116,12 +119,20 @@
             builder = "nixos";
             hostPath = ./hosts/nix-dots;
           };
+          template = {
+            builder = "nixos";
+            hostPath = ./hosts/_template/nixos;
+          };
         };
         # Docs: https://daiderd.com/nix-darwin/manual/index.html
         darwin = {
           mac-papi = {
             builder = "darwin";
             hostPath = ./hosts/mac-papi;
+          };
+          template = {
+            builder = "darwin";
+            hostPath = ./hosts/_template/darwin;
           };
         };
         home = {
@@ -134,6 +145,11 @@
             builder = "home";
             system = "aarch64-linux";
             hostPath = ./hosts/dev-container;
+          };
+          template = {
+            builder = "home";
+            system = "aarch64-linux";
+            hostPath = ./hosts/_template/home;
           };
         };
       };
