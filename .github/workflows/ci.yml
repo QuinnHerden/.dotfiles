@@ -55,8 +55,9 @@ jobs:
       # Evaluates every output for every system without building (--no-build),
       # so one x86_64 runner catches broken modules and option mistakes across
       # all hosts (incl. aarch64 and darwin) without cross-compiling. The
-      # private knowledge/ submodule is intentionally not checked out: the flake
-      # uses mkOutOfStoreSymlink, so eval and build never read those files.
+      # private submodules are intentionally not checked out: knowledge/ is read
+      # via mkOutOfStoreSymlink, and nix/private defaults to the public stub
+      # (inputs.private), so eval and build never need the private repos.
       - name: nix flake check (all systems, eval only)
         run: nix flake check --no-build --all-systems ./nix
 
@@ -104,6 +105,16 @@ jobs:
           - name: mac-papi (aarch64-darwin)
             os: macos-latest
             attr: darwinConfigurations.mac-papi.system
+          # Generic forkable templates (hosts/_template). Built so the public
+          # layer is provably buildable without the private overlay. The darwin
+          # template is eval-only (flake check --all-systems) since its build
+          # path is already covered by mac-papi on the costly macOS runner.
+          - name: template nixos (x86_64-linux)
+            os: ubuntu-latest
+            attr: nixosConfigurations.template.config.system.build.toplevel
+          - name: template home (aarch64-linux)
+            os: ubuntu-24.04-arm
+            attr: homeConfigurations.template.activationPackage
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
