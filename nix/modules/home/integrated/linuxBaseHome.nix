@@ -11,7 +11,7 @@
       enable = lib.mkEnableOption "enables linux baseHome";
 
       name = lib.mkOption {
-        default = "driver";
+        default = config.user.name;
       };
     };
   };

@@ -9,16 +9,12 @@ _:
 
   hostname.enable = true;
 
-  commonBaseHome = {
-    enable = true;
-    name = "quinnherden";
-  };
-  linuxBaseHome = {
-    enable = true;
-    name = "quinnherden";
-  };
+  commonBaseHome.enable = true;
+  linuxBaseHome.enable = true;
 
-  quinnherdenUser.enable = true;
+  # The username is set per host (see hosts/<name>); the templates leave it at
+  # the generic default.
+  user.enable = true;
 
   pam.enable = true;
 

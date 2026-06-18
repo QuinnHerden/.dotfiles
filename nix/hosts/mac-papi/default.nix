@@ -1,7 +1,4 @@
-{
-  pkgs,
-  ...
-}:
+_:
 
 {
   system.stateVersion = 4; # $ darwin-rebuild changelog
@@ -12,21 +9,13 @@
     name = "mac-papi";
   };
 
-  users.users.quinnherden = {
-    name = "quinnherden";
-    home = "/Users/quinnherden";
-
-    shell = pkgs.zsh;
-  };
-
-  commonBaseHome = {
+  user = {
     enable = true;
     name = "quinnherden";
   };
-  darwinBaseHome = {
-    enable = true;
-    name = "quinnherden";
-  };
+
+  commonBaseHome.enable = true;
+  darwinBaseHome.enable = true;
 
   ############
   # packages #

@@ -11,7 +11,7 @@
       enable = lib.mkEnableOption "enables darwin baseHome";
 
       name = lib.mkOption {
-        default = "driver";
+        default = config.user.name;
       };
     };
   };
