@@ -6,7 +6,7 @@
       kubectx
       kubernetes-helm
       packer
-      terraform
+      opentofu
       tflint
     ];
 
