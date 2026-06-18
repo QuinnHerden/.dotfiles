@@ -8,7 +8,7 @@
 
     # Private "last-mile" layer (real identifiers). Defaults to an in-repo
     # public stub so the public flake evaluates standalone (CI + forks). The
-    # owner's rebuild scripts override this to the nix/private submodule.
+    # owner's rebuild scripts override this to the private/ submodule's overlay.
     private = {
       url = "path:./private-stub";
       flake = false;

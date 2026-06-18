@@ -36,7 +36,7 @@
     ".claude/skills".source =
       config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/home/.claude/skills";
     ".claude/knowledge".source =
-      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/home/.claude/knowledge";
+      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/private/knowledge";
     ".claude/rules".source =
       config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/home/.claude/rules";
     ".claude/output-styles".source =

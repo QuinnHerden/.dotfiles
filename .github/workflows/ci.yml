@@ -55,9 +55,9 @@ jobs:
       # Evaluates every output for every system without building (--no-build),
       # so one x86_64 runner catches broken modules and option mistakes across
       # all hosts (incl. aarch64 and darwin) without cross-compiling. The
-      # private submodules are intentionally not checked out: knowledge/ is read
-      # via mkOutOfStoreSymlink, and nix/private defaults to the public stub
-      # (inputs.private), so eval and build never need the private repos.
+      # private submodule (private/) is intentionally not checked out: its
+      # knowledge/ is read via mkOutOfStoreSymlink, and its overlay defaults to
+      # the public stub (inputs.private), so eval and build never need it.
       - name: nix flake check (all systems, eval only)
         run: nix flake check --no-build --all-systems ./nix
 
