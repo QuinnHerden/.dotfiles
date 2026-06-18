@@ -51,14 +51,81 @@
             shellcheck.enable = true;
           };
         };
-      # Shared so the VM boot test and the real config cannot drift.
-      nixDotsModules = [
+      # Module list for a NixOS host. Shared by mkHost and the VM boot test so
+      # the test and the real config cannot drift.
+      nixosSystemModules = hostPath: [
         home-manager.nixosModules.default
-        ./hosts/nix-dots
+        hostPath
         ./modules/home/integrated
         ./modules/system/common
         ./modules/system/nixos
       ];
+
+      nixDotsModules = nixosSystemModules ./hosts/nix-dots;
+
+      # Build a host config from its spec. Each builder type folds in its
+      # standard module list, so a host is data (an entry in `hosts` below),
+      # not a copy-pasted builder block.
+      mkHost =
+        spec:
+        if spec.builder == "nixos" then
+          nixpkgs.lib.nixosSystem {
+            specialArgs = { inherit inputs; };
+            modules = nixosSystemModules spec.hostPath;
+          }
+        else if spec.builder == "darwin" then
+          darwin.lib.darwinSystem {
+            specialArgs = { inherit inputs; };
+            modules = [
+              home-manager.darwinModules.default
+              spec.hostPath
+              ./modules/home/integrated
+              ./modules/system/common
+              ./modules/system/darwin
+            ];
+          }
+        else
+          home-manager.lib.homeManagerConfiguration {
+            pkgs = nixpkgs.legacyPackages.${spec.system};
+            extraSpecialArgs = { inherit inputs; };
+            modules = [
+              spec.hostPath
+              ./modules/home/standalone
+            ];
+          };
+
+      # The host matrix. Adding a machine is an entry here plus its host dir.
+      hosts = {
+        nixos = {
+          nix-box = {
+            builder = "nixos";
+            hostPath = ./hosts/nix-box;
+          };
+          nix-dots = {
+            builder = "nixos";
+            hostPath = ./hosts/nix-dots;
+          };
+        };
+        # Docs: https://daiderd.com/nix-darwin/manual/index.html
+        darwin = {
+          mac-papi = {
+            builder = "darwin";
+            hostPath = ./hosts/mac-papi;
+          };
+        };
+        home = {
+          "quinnherden@kali-bug" = {
+            builder = "home";
+            system = "aarch64-linux";
+            hostPath = ./hosts/kali-bug;
+          };
+          "dev@dev-container" = {
+            builder = "home";
+            system = "aarch64-linux";
+            hostPath = ./hosts/dev-container;
+          };
+        };
+      };
     in
     {
 
@@ -76,63 +143,11 @@
         }
       );
 
-      darwinConfigurations = {
-        # Docs: https://daiderd.com/nix-darwin/manual/index.html
+      darwinConfigurations = nixpkgs.lib.mapAttrs (_: mkHost) hosts.darwin;
 
-        "mac-papi" = darwin.lib.darwinSystem {
-          specialArgs = { inherit inputs; };
-          modules = [
-            home-manager.darwinModules.default
-            ./hosts/mac-papi
-            ./modules/home/integrated
-            ./modules/system/common
-            ./modules/system/darwin
-          ];
-        };
+      homeConfigurations = nixpkgs.lib.mapAttrs (_: mkHost) hosts.home;
 
-      };
-
-      homeConfigurations = {
-
-        "quinnherden@kali-bug" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.aarch64-linux;
-          extraSpecialArgs = { inherit inputs; };
-          modules = [
-            ./hosts/kali-bug
-            ./modules/home/standalone
-          ];
-        };
-
-        "dev@dev-container" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.aarch64-linux;
-          extraSpecialArgs = { inherit inputs; };
-          modules = [
-            ./hosts/dev-container
-            ./modules/home/standalone
-          ];
-        };
-
-      };
-
-      nixosConfigurations = {
-
-        "nix-box" = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs; };
-          modules = [
-            home-manager.nixosModules.default
-            ./hosts/nix-box
-            ./modules/home/integrated
-            ./modules/system/common
-            ./modules/system/nixos
-          ];
-        };
-
-        "nix-dots" = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs; };
-          modules = nixDotsModules;
-        };
-
-      };
+      nixosConfigurations = nixpkgs.lib.mapAttrs (_: mkHost) hosts.nixos;
 
       # Boot nix-dots in a QEMU VM and assert it actually comes up (building the
       # toplevel only proves it compiles). Run by the nixos-vm-test CI job on a
