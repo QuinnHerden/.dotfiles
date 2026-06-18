@@ -56,8 +56,14 @@ if [ -d /home/dev/.dev-state ]; then
   ln -sfn /home/dev/.dev-state/config/gh "$HOME/.config/gh"
 fi
 
-# Fix git credential helper for container context
-git config --global credential.helper "!$(which gh) auth git-credential"
+# Fix git credential helper for container context. Resolve gh lazily at git
+# runtime (it is on PATH when git invokes the helper) and only set it if present,
+# so an absent gh does not leave a broken `!  auth git-credential` helper.
+if command -v gh >/dev/null 2>&1; then
+  git config --global credential.helper "!gh auth git-credential"
+else
+  git config --global --unset-all credential.helper 2>/dev/null || true
+fi
 
 # Install/repair Claude Code (runtime install — cached via npm prefix volume).
 # claude-code ships a JS stub plus a platform-native optional dependency that is
