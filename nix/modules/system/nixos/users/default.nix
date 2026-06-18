@@ -5,7 +5,7 @@
 {
 
   imports = [
-    ./quinnherdenUser.nix
+    ./primaryUser.nix
   ];
 
 }

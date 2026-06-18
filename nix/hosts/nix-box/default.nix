@@ -9,6 +9,7 @@
   ];
 
   hostname.name = "nix-box";
+  user.name = "quinnherden";
 
   ############
   # packages #

@@ -9,6 +9,7 @@
   ];
 
   hostname.name = "nix-dots";
+  user.name = "quinnherden";
 
   ############
   # packages #

@@ -14,7 +14,7 @@
 
   config = lib.mkIf config.darwinSystem.enable {
     ##### temporary requirement ####
-    system.primaryUser = "quinnherden";
+    system.primaryUser = config.user.name;
     ################################
 
     ids.gids.nixbld = 350;
