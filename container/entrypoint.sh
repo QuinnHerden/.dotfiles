@@ -66,6 +66,9 @@ else
 fi
 
 # Install/repair Claude Code (runtime install — cached via npm prefix volume).
+# Intentionally tracks @latest (#125): Claude Code ships frequently and we want
+# the newest CLI, so the image is deliberately not a frozen artifact for this one
+# component (the Nix toolchain is pinned). Bump by restarting the container.
 # claude-code ships a JS stub plus a platform-native optional dependency that is
 # fetched by its postinstall; an interrupted or optional-omitting install leaves
 # `claude` on PATH but non-functional. So verify it actually *runs* (not just
