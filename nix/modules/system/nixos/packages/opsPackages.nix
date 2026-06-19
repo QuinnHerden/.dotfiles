@@ -11,11 +11,27 @@ in
 
 {
 
-  options.opsPackages.enable = lib.mkEnableOption "enables opsPackages";
+  options.opsPackages = {
+    enable = lib.mkEnableOption "enables opsPackages";
+    enableGui = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Include GUI/desktop packages (disable for headless environments)";
+    };
+    enableHeavy = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Include heavy tools like ffmpeg, ollama, pandoc (disable for lightweight environments)";
+    };
+  };
 
   config = lib.mkIf config.opsPackages.enable {
     environment.systemPackages =
-      (pkg.common pkgs) ++ (pkg.linux pkgs) ++ (lib.optionals pkgs.stdenv.isx86_64 (pkg.linuxX86 pkgs));
+      (pkg.common pkgs)
+      ++ (pkg.linux pkgs)
+      ++ (lib.optionals pkgs.stdenv.isx86_64 (pkg.linuxX86 pkgs))
+      ++ (lib.optionals config.opsPackages.enableHeavy (pkg.heavy pkgs))
+      ++ (lib.optionals config.opsPackages.enableGui (pkg.linuxGui pkgs));
   };
 
 }
