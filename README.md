@@ -175,7 +175,14 @@ To supply your own last mile, pick one:
 - Edit the public modules directly.
 - Point `inputs.private` at your own overlay.
 
-The owner does the second: a single private submodule at `private/` (holding the overlay and the knowledge library), plus an `--override-input private path:...` baked into the rebuild scripts. As a forker, ignore or deinit that submodule. The stub default keeps the flake evaluatable.
+The owner does the second: a single private submodule at `private/` (holding the overlay and the knowledge library), plus an `--override-input private path:...` baked into the rebuild scripts. The stub default keeps the flake evaluatable, so a fork needs no submodule access.
+
+A fork cannot clone that private submodule (it is owner-only). A plain `git clone` (without `--recurse-submodules`) already leaves `private/` empty and builds clean against the stub; nothing dangles, because the `~/.claude/knowledge` link is created at activation only when `private/knowledge` is actually present. To drop the inherited submodule reference entirely:
+
+```bash
+git submodule deinit -f private && git rm -f private && rm -rf .git/modules/private
+git commit -m "drop private submodule"
+```
 
 The template hosts (`hosts.nixos.template`, `hosts.darwin.template`, `hosts.home.template`) are built in CI to guarantee the public layer stays forkable.
 

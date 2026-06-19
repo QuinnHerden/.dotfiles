@@ -35,8 +35,9 @@
       config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/home/.claude/agents";
     ".claude/skills".source =
       config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/home/.claude/skills";
-    ".claude/knowledge".source =
-      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/private/knowledge";
+    # .claude/knowledge is handled by the activation script below, not here: its
+    # source is the private/knowledge submodule, which a fork cannot clone, so an
+    # unconditional symlink would dangle (#177).
     ".claude/rules".source =
       config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/home/.claude/rules";
     ".claude/output-styles".source =
@@ -56,6 +57,27 @@
       recursive = true;
     };
   };
+
+  # Link the private Claude knowledge library only when it is actually checked
+  # out. The source (private/knowledge) is a submodule a fork cannot clone, and
+  # it is an out-of-store path pure eval cannot stat, so the presence check has
+  # to run at activation: link when present, drop a stale link when absent (so a
+  # fork never gets a dangling ~/.claude/knowledge). #177. Honors
+  # $DRY_RUN_CMD/$VERBOSE_ARG so `home-manager switch --dry-run` stays read-only.
+  # A real directory at the target is left untouched in both branches, so a
+  # stale dir is never clobbered into a nested link nor deleted. Dev containers
+  # serve knowledge differently and are not handled here (see #181).
+  home.activation.claudeKnowledge = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    src="${config.home.homeDirectory}/.dotfiles/private/knowledge"
+    dst="${config.home.homeDirectory}/.claude/knowledge"
+    if [ -d "$dst" ] && [ ! -L "$dst" ]; then
+      echo "claude knowledge: $dst is a real directory, leaving it untouched" >&2
+    elif [ -e "$src" ]; then
+      $DRY_RUN_CMD ln -sfn $VERBOSE_ARG "$src" "$dst"
+    elif [ -L "$dst" ] || [ ! -e "$dst" ]; then
+      $DRY_RUN_CMD rm -f $VERBOSE_ARG "$dst"
+    fi
+  '';
 
   home.sessionPath = [
     "$HOME/.local/bin/"
