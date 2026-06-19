@@ -78,6 +78,25 @@ jobs:
       - name: pre-commit (all files)
         run: nix develop ./nix --command pre-commit run --all-files --show-diff-on-failure
 
+  # The template host (hosts/_template) ships a placeholder bootstrap password
+  # so a fresh fork can log in (see #176). This guard fails if that placeholder
+  # ever leaks into a real host config, so a fork that copies the template and
+  # forgets to change it cannot ship a known credential. Cheap and content-only,
+  # so it always runs (not gated on the nix/ filter).
+  placeholder-guard:
+    name: placeholder guard
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - name: no placeholder credential outside _template
+        run: |
+          if grep -rn 'changeme' nix/hosts --include='*.nix' \
+            | grep -v '^nix/hosts/_template/'; then
+            echo "placeholder bootstrap password found outside hosts/_template/ — change it before merging"
+            exit 1
+          fi
+          echo "no placeholder credential outside the template"
+
   # Builds run on PRs that touch nix/ (and on every push/dispatch). They are
   # gated by `changes` because only nix/ can affect a build output. The matrix
   # is cheap (~4 min wall-clock, parallel); the VM boot test below is the slow
@@ -158,18 +177,19 @@ jobs:
   ci-required:
     name: ci-required
     if: always()
-    needs: [flake-check, lint, build, nixos-vm-test]
+    needs: [flake-check, lint, placeholder-guard, build, nixos-vm-test]
     runs-on: ubuntu-latest
     steps:
       - name: gate
         env:
           R_FLAKE: ${{ needs.flake-check.result }}
           R_LINT: ${{ needs.lint.result }}
+          R_GUARD: ${{ needs.placeholder-guard.result }}
           R_BUILD: ${{ needs.build.result }}
           R_VM: ${{ needs.nixos-vm-test.result }}
         run: |
-          echo "flake-check=$R_FLAKE lint=$R_LINT build=$R_BUILD vm=$R_VM"
-          for r in "$R_FLAKE" "$R_LINT" "$R_BUILD" "$R_VM"; do
+          echo "flake-check=$R_FLAKE lint=$R_LINT guard=$R_GUARD build=$R_BUILD vm=$R_VM"
+          for r in "$R_FLAKE" "$R_LINT" "$R_GUARD" "$R_BUILD" "$R_VM"; do
             case "$r" in
               failure | cancelled)
                 echo "required job not green: $r"
