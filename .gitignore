@@ -12,5 +12,5 @@ files/config/karabiner/automatic_backups/
 lazy-lock.json
 
 # SSH
-.ssh/id_rsa*
+.ssh/id_*
 .ssh/known_hosts*

@@ -7,9 +7,10 @@
 [safe]
 	# Allow git/nix-flake operations on the dotfiles clone inside dev containers
 	# (built as one uid, run under --userns=keep-id). Harmless where the path
-	# does not exist.
+	# does not exist. Scoped to this one path on purpose: a `*` wildcard would
+	# globally disable git's dubious-ownership protection (the mitigation for
+	# CVE-2022-24765).
 	directory = /home/dev/.dotfiles
-	directory = *
 [color]
 	ui = auto
 [pull]
