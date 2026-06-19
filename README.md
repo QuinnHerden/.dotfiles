@@ -4,7 +4,7 @@
 
 Personal Nix dotfiles: home-manager, nix-darwin, and NixOS across my Mac, my NixOS workstations, and a Podman dev container, plus a Claude Code setup (custom agents, skills, and a knowledge base).
 
-> **This is my personal setup, not a template.** Hostnames, hosts, and secrets are mine, and the `knowledge/` submodule is private. Fork and adapt at your own pace; don't expect it to run clean on your machine. It is meant to be *read* for patterns, not cloned wholesale.
+> **This is my personal setup, not a template.** The hostnames and host configs are mine, and the private last mile (my SSH key and the knowledge library) lives in a separate private submodule behind `inputs.private`, not in this tree. The public tree carries no secrets: it evaluates and builds against an in-repo stub. Fork and adapt at your own pace; don't expect it to run clean on your machine. It is meant to be *read* for patterns, not cloned wholesale.
 
 ## What's in here
 
