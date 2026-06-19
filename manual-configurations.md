@@ -1,5 +1,9 @@
 # Manual Configurations
 
+One-time, click-through setup that cannot be expressed in Nix (recovery-mode steps, GUI app preferences, hardware enrollment). Run after `.switch`.
+
+The macOS apps below are installed declaratively as homebrew casks. The ones listed here are in `nix/modules/packages/ops.nix`; casks overall are spread across several `nix/modules/packages/*.nix` files. Keep this list in sync with those.
+
 ## NixOS
 
 ### System
