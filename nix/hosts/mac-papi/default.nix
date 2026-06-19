@@ -4,6 +4,8 @@ _:
   system.stateVersion = 4; # $ darwin-rebuild changelog
   nixpkgs.hostPlatform = "aarch64-darwin";
 
+  time.timeZone = "America/New_York";
+
   hostname = {
     enable = true;
     name = "mac-papi";

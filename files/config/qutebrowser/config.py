@@ -13,6 +13,11 @@
 # Change the argument to True to still load settings configured via autoconfig.yml
 config.load_autoconfig(False)
 
+# Userscripts dir, derived from the running user's home so this config is
+# portable across machines and platforms (was a hardcoded /Users/<owner> path).
+import os
+_userscripts = 'file://' + os.path.expanduser('~/.local/share/qutebrowser/userscripts/*')
+
 # Which cookies to accept. With QtWebEngine, this setting also controls
 # other features with tracking capabilities similar to those of cookies;
 # including IndexedDB, DOM storage, filesystem API, service workers, and
@@ -126,11 +131,11 @@ config.set('content.javascript.enabled', True, 'qute://*/*')
 
 # Allow locally loaded documents to access remote URLs.
 # Type: Bool
-config.set('content.local_content_can_access_remote_urls', True, 'file:///Users/quinnherden/.local/share/qutebrowser/userscripts/*')
+config.set('content.local_content_can_access_remote_urls', True, _userscripts)
 
 # Allow locally loaded documents to access other local URLs.
 # Type: Bool
-config.set('content.local_content_can_access_file_urls', False, 'file:///Users/quinnherden/.local/share/qutebrowser/userscripts/*')
+config.set('content.local_content_can_access_file_urls', False, _userscripts)
 
 # Render all web contents using a dark theme. On QtWebEngine < 6.7, this
 # setting requires a restart and does not support URL patterns, only the

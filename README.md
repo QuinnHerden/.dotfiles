@@ -186,6 +186,14 @@ git commit -m "drop private submodule"
 
 The template hosts (`hosts.nixos.template`, `hosts.darwin.template`, `hosts.home.template`) are built in CI to guarantee the public layer stays forkable.
 
+### Residual owner-specific values
+
+A few things still carry the owner's identity or preferences; change them when you fork:
+
+- **CI build matrix** (`.github/workflows/ci.yml`): replace the owner-host entries (marked `OWNER HOSTS`) with your own. Keep the `template *` entries (marked `KEEP THESE`) — they are the check that proves your fork still builds standalone.
+- **iTerm2 profile** (`files/home/iterm2/profile.json`): the profile `Name` is `quinnherden` and a `Working Directory` path is the owner's home (inert, since `Custom Directory` is `No`). Edit if you import this profile.
+- **Timezone**: set `time.timeZone` per host (the templates default to `UTC`).
+
 ## Dev Containers
 
 Isolated dev environments using Podman. Each container gets the full dotfiles toolchain (zsh, nvim, lazygit, lazydocker, Claude Code) via Nix + home-manager.
