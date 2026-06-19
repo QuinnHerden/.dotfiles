@@ -1,6 +1,9 @@
-{
-  ...
-}:
+_:
+
+let
+  mkPackageModule = import ../../packages/mkPackageModule.nix;
+  categories = import ../../packages/categories.nix;
+in
 
 {
 
@@ -8,13 +11,13 @@
 
   imports = [
     ../content/base.nix
-    ./commsPackages.nix
-    ./devPackages.nix
-    ./experimentalPackages.nix
-    ./extraPackages.nix
-    ./infraPackages.nix
-    ./opsPackages.nix
-    ./secPackages.nix
-  ];
+  ]
+  ++ map (
+    category:
+    mkPackageModule {
+      inherit category;
+      platform = "home";
+    }
+  ) categories;
 
 }

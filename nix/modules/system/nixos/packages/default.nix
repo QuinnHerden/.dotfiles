@@ -1,17 +1,18 @@
-{
-  ...
-}:
+_:
+
+let
+  mkPackageModule = import ../../../packages/mkPackageModule.nix;
+  categories = import ../../../packages/categories.nix;
+in
 
 {
 
-  imports = [
-    ./commsPackages.nix
-    ./devPackages.nix
-    ./experimentalPackages.nix
-    ./extraPackages.nix
-    ./infraPackages.nix
-    ./opsPackages.nix
-    ./secPackages.nix
-  ];
+  imports = map (
+    category:
+    mkPackageModule {
+      inherit category;
+      platform = "nixos";
+    }
+  ) categories;
 
 }
