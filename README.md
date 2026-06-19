@@ -11,8 +11,9 @@ Personal Nix dotfiles: home-manager, nix-darwin, and NixOS across my Mac, my Nix
 | Path | What it is |
 |------|------------|
 | `nix/flake.nix` | The host matrix. Every machine (darwin / NixOS / home-manager) is an output here. |
-| `nix/hosts/` | Per-machine config: `dev-container`, `mac-papi`, `nix-box`, `nix-dots`, `kali-bug`. |
-| `nix/modules/` | Shared building blocks (`home`, `system`, `packages`). Package data is centralized in `packages/` and consumed by thin per-platform wrappers. |
+| `nix/hosts/` | Per-machine config: `dev-container`, `mac-papi`, `nix-box`, `nix-dots`, `kali-bug`. Plus `_template/` (forkable per-platform starters) and `_shared/` (the workstation profile the NixOS hosts share). |
+| `nix/modules/` | Shared building blocks (`home`, `system`, `packages`). Package data is centralized in `packages/`; one generator (`mkPackageModule`) renders it into the per-platform sink (`home.packages`, `environment.systemPackages`, or homebrew). |
+| `docs/architecture.md` | How it all fits together: the host matrix, module layering, the package generator, the public/private seam, and CI. Read this to fork deeply. |
 | `files/config/` | App dotfiles: nvim, i3, rofi, qutebrowser, karabiner. |
 | `files/home/` | Home-level files, including `.claude/` (the Claude Code setup). |
 | `files/scripts/` | Bootstrap (`.init`, `.switch`, `.update`) and the `dev` Podman wrapper. |
@@ -46,6 +47,8 @@ The host matrix: each output kind maps to its host(s), and every host composes t
 2. `nix/hosts/dev-container/`, the smallest and most self-contained host. The best first example.
 3. `files/scripts/dev`, the Podman dev-container wrapper.
 4. `files/home/.claude/`, the Claude Code setup (below).
+
+For the design behind all of this, read [docs/architecture.md](docs/architecture.md).
 
 ## The Claude Code setup
 
