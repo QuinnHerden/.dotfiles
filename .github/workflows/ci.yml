@@ -109,6 +109,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          # OWNER HOSTS — replace these with your own hosts when you fork.
           - name: nix-dots (x86_64-linux)
             os: ubuntu-latest
             attr: nixosConfigurations.nix-dots.config.system.build.toplevel
@@ -124,10 +125,11 @@ jobs:
           - name: mac-papi (aarch64-darwin)
             os: macos-latest
             attr: darwinConfigurations.mac-papi.system
-          # Generic forkable templates (hosts/_template). Built so the public
-          # layer is provably buildable without the private overlay. The darwin
-          # template is eval-only (flake check --all-systems) since its build
-          # path is already covered by mac-papi on the costly macOS runner.
+          # KEEP THESE — generic forkable templates (nix/hosts/_template). They
+          # prove the public layer builds without the private overlay, so a fork
+          # should keep them even after replacing the owner hosts above. The
+          # darwin template is eval-only (flake check --all-systems) since its
+          # build path is already covered by mac-papi on the costly macOS runner.
           - name: template nixos (x86_64-linux)
             os: ubuntu-latest
             attr: nixosConfigurations.template.config.system.build.toplevel
