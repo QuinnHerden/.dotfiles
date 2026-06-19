@@ -30,9 +30,11 @@ RUN curl -fsSL "https://releases.nixos.org/nix/nix-${NIX_VERSION}/install" -o /t
     && sh /tmp/nix-install --no-daemon \
     && rm /tmp/nix-install
 
+# CONTAINER_HOST is deliberately NOT baked here. The `dev` launcher sets it only
+# when it mounts the (opt-in) podman socket, so the image is never pre-wired to
+# talk to a socket it isn't given. See files/scripts/dev.
 ENV PATH="/home/dev/.npm-global/bin:/home/dev/.local/bin:/home/dev/.nix-profile/bin:${PATH}" \
     NPM_CONFIG_PREFIX=/home/dev/.npm-global \
-    CONTAINER_HOST="unix:///var/run/docker.sock" \
     CLAUDE_CONFIG_DIR=/home/dev/.dev-state/claude \
     USER=dev \
     HOME=/home/dev
@@ -67,7 +69,7 @@ RUN set -eu; cd /home/dev/.dotfiles/nix \
 COPY --chown=dev:dev . /home/dev/.dotfiles
 
 # --- Docker/Podman CLI alias for Makefile compatibility ---
-# CONTAINER_HOST env var tells podman to use the mounted socket
+# Inert unless the launcher mounts the socket and sets CONTAINER_HOST (opt-in).
 RUN mkdir -p /home/dev/.local/bin \
     && printf '#!/bin/sh\nexec podman "$@"\n' > /home/dev/.local/bin/docker \
     && chmod +x /home/dev/.local/bin/docker

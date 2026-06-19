@@ -1,93 +1,145 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Dev boxes via Podman. Each box is a persistent host dir, ~/containers/<name>,
+# mounted into the container as its home (put repos under ~/containers/<name>/
+# repos). Per-box state (Claude creds, gh/git auth) persists under it in
+# .dev-state, so you authenticate once and it survives --stop/--restart.
+#
+# The Podman machine is initialized (see `dev --vm-init`) to mount ONLY a narrow
+# set of host dirs (the boxes tree, the Claude knowledge dir, and the Claude
+# memory dir), never your home root. So host secrets (~/.aws, ~/.ssh, ~/.gnupg,
+# ~/.claude.json, the SSH key in ~/.dotfiles/private/overlay, ...) are invisible
+# to the VM and therefore to every container, including ones spawned through the
+# podman socket. That structural blindness is the fix for the #191 escape:
+# a sibling container cannot bind-mount a host path the VM cannot see.
+BOXES_ROOT="$HOME/containers"
+
+# The narrow host dirs the machine is allowed to see. Anything not listed here is
+# unreachable from the VM and from every container. Keep secrets OUT of these.
+VM_VOLUMES=(
+  "$BOXES_ROOT"
+  "$HOME/.dotfiles/private/knowledge"
+  "$HOME/.claude/memory"
+)
+
+IMAGE_NAME="dev-container"
+MACHINE="podman-machine-default"
+
 # Per-host preferences (marker files; intentionally NOT synced via dotfiles, so
-# the host-root-equivalent socket default never rides along to another machine).
+# the socket default never rides along to another machine).
 # If a second preference is ever added, collapse these into one key=value config.
 DEV_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/dev"
 SOCK_PREF_FILE="$DEV_CONFIG_DIR/docker-sock"
 
 if [ "${1:-}" = "--help" ] || [ "${1:-}" = "-h" ]; then
   cat <<'HELP'
-dev — isolated dev containers via Podman
+dev: isolated dev boxes via Podman
+
+Each box is a host dir ~/containers/<name>, mounted as the container's home
+(put repos under ~/containers/<name>/repos). The Podman machine only sees
+~/containers, the Claude knowledge dir, and the Claude memory dir, never your
+home root, so host secrets stay unreachable from containers.
 
 Usage:
-  dev <name> <host-dir>                  create a container with a directory mounted
-  dev <name>                             create a container (no mount)
-  dev --exec <name>                      shell into a running container
-  dev --stop <name>                      stop and remove a container
-  dev --restart <name> [host-dir]        stop + recreate a container
-  dev --rebuild                          rebuild the dev-container image
-  dev --sock <on|off|status>             toggle the docker socket default
-  dev --ls                               list running dev containers
-  dev --help                             show this help
+  dev <name>                   create a box (home = ~/containers/<name>)
+  dev --exec <name>            shell into a running box
+  dev --stop <name>            stop and remove a box
+  dev --restart <name>         stop + recreate a box
+  dev --rebuild                rebuild the dev-container image
+  dev --vm-init                (re)create the Podman machine with the narrow,
+                               secret-blind mount set, then verify it
+  dev --sock <on|off|status>   toggle the podman socket default
+  dev --ls                     list running boxes
+  dev --help                   show this help
 
-The mounted directory is available at the same path inside the container
-and on the VM, so docker compose volume mounts resolve correctly.
+The box home is mounted at the same path inside the container and on the VM, so
+docker compose volume mounts resolve correctly. Static Claude config (settings,
+skills, agents) lives in the dotfiles clone and is symlinked in at start, so
+editing ~/.dotfiles is live; restart the box to pick up newly added files.
 
-Per-container state (Claude credentials/sessions/projects/history and gh/git
-auth) persists at ~/.dev-containers/<dev-name> on the host, so you authenticate
-once. It survives --stop/--restart by design; delete that dir to fully reset a
-container. Global Claude memory is shared from ~/.claude/memory across all
-containers. Static Claude config (settings, skills, agents) lives in the
-dotfiles clone and is symlinked into the config dir at container start, so
-editing ~/.dotfiles is live; restart the container to pick up newly added files.
-
-Docker socket (host-root-equivalent, so opt-in):
-  dev --sock on       mount it by default for new containers (set once)
-  DEV_DOCKER_SOCK=1   mount it for a single launch (overrides the default)
-  DEV_DOCKER_SOCK=0   skip it for a single launch even if the default is on
+Spawning containers (podman socket):
+  With the socket on, the box can drive the VM's podman daemon to spawn sibling
+  containers, reachable on the host via published ports. The VM is secret-blind
+  (dev --vm-init), so spawned containers cannot read host secrets, but they CAN
+  read box dirs and the knowledge mount, so never put secrets in a box dir.
+    dev --sock on       enable by default for new boxes (set once)
+    DEV_DOCKER_SOCK=1   enable for a single launch (overrides the default)
+    DEV_DOCKER_SOCK=0   disable for a single launch even if the default is on
 
 Example:
-  dev work ~/repos                       mount all repos
-  dev --exec work                        shell in
-  cd ~/repos/motifs && make upd          compose just works
+  dev --vm-init                provision the secret-blind machine (once)
+  dev --sock on                let boxes spawn containers (once)
+  dev work                     home = ~/containers/work, repos in repos/
+  dev --exec work              shell in
+  cd ~/work/repos/motifs && make upd     compose just works
 HELP
   exit 0
 fi
 
-# --- Docker socket default toggle ---
+# --- Podman socket default toggle ---
 if [ "${1:-}" = "--sock" ]; then
   case "${2:-status}" in
     on)
       mkdir -p "$DEV_CONFIG_DIR"; : > "$SOCK_PREF_FILE"
-      echo "Docker socket: ON by default for new containers (host-root-equivalent)." ;;
+      echo "Podman socket: ON by default for new boxes." ;;
     off)
       rm -f "$SOCK_PREF_FILE"
-      echo "Docker socket: OFF by default." ;;
+      echo "Podman socket: OFF by default." ;;
     status)
-      [ -f "$SOCK_PREF_FILE" ] && echo "Docker socket default: on" || echo "Docker socket default: off" ;;
+      [ -f "$SOCK_PREF_FILE" ] && echo "Podman socket default: on" || echo "Podman socket default: off" ;;
     *)
       echo "Usage: dev --sock <on|off|status>" >&2; exit 2 ;;
   esac
   exit 0
 fi
 
-IMAGE_NAME="dev-container"
+# --- Provision the secret-blind Podman machine ---
+# Re-creating the machine is destructive (it drops the VM's containers and
+# images), so this refuses to clobber an existing machine; remove it first. The
+# narrow --volume set is the security boundary, and the acceptance test proves it
+# took: if a container in the fresh VM can still read /Users, the volumes did not
+# replace the default $HOME mount on this podman version and we fail loudly
+# rather than hand back a VM that silently re-exposes #191.
+if [ "${1:-}" = "--vm-init" ]; then
+  if podman machine inspect "$MACHINE" >/dev/null 2>&1; then
+    echo "Machine '$MACHINE' already exists. Remove it first (this drops its containers/images):" >&2
+    echo "  podman machine stop $MACHINE && podman machine rm $MACHINE" >&2
+    exit 1
+  fi
+  vol_args=()
+  for v in "${VM_VOLUMES[@]}"; do
+    mkdir -p "$v"            # ensure the host dir exists, else the mount is invalid
+    vol_args+=(--volume "$v")
+  done
+  echo "Initializing '$MACHINE' with secret-blind mounts:"
+  printf '  %s\n' "${VM_VOLUMES[@]}"
+  podman machine init "$MACHINE" "${vol_args[@]}" --cpus 5 --memory 8192 --disk-size 100
+  podman machine start "$MACHINE"
 
-# Detect podman/docker socket for socket mounting
-if podman machine inspect >/dev/null 2>&1; then
-  PODMAN_SOCKET="/run/user/$(podman machine ssh id -u)/podman/podman.sock"
-elif [ -S "/var/run/docker.sock" ]; then
-  PODMAN_SOCKET="/var/run/docker.sock"
-else
-  PODMAN_SOCKET=""
-fi
-# The container runtime socket is host-root-equivalent, so it is opt-in.
-# Persistent default: `dev --sock on`. Per-launch override: DEV_DOCKER_SOCK=1/0
-# (the gate below matches exactly "1", so any other value means off).
-if [ -z "${DEV_DOCKER_SOCK:-}" ] && [ -f "$SOCK_PREF_FILE" ]; then
-  DEV_DOCKER_SOCK=1
-fi
-socket_mount=()
-if [ "${DEV_DOCKER_SOCK:-}" = "1" ] && [ -n "$PODMAN_SOCKET" ]; then
-  # `label=disable` turns off SELinux confinement for this container so it can
-  # write the bind-mounted socket. Combined with the host-root-equivalent socket,
-  # this gives the container full control of the host runtime: treat any code run
-  # inside it (including Claude in dangerous mode) as running on the host. To
-  # narrow this, front the socket with a docker-socket-proxy that exposes only
-  # the needed API surface and point DOCKER_HOST at the proxy instead.
-  socket_mount=(-v "$PODMAN_SOCKET:/var/run/docker.sock" --security-opt label=disable)
+  echo ""
+  echo "Verifying the VM cannot see host secrets..."
+  # The sentinel (echoed inside the probe container) proves the probe actually
+  # ran. Without it, a container that failed to start (e.g. couldn't pull alpine)
+  # would yield empty output and falsely look "blind"; fail closed instead.
+  probe="$(podman machine ssh "$MACHINE" \
+    'podman run --rm -v /Users:/host alpine sh -c "echo __PROBE_RAN__; ls /host 2>/dev/null"' 2>/dev/null || true)"
+  case "$probe" in
+    *__PROBE_RAN__*) ;;
+    *)
+      echo "FAIL: isolation probe did not run (image pull or VM error); NOT verified." >&2
+      echo "Re-run 'dev --vm-init' once the VM has network to pull alpine." >&2
+      exit 1 ;;
+  esac
+  leak="$(printf '%s' "${probe#*__PROBE_RAN__}" | tr -d '[:space:]')"
+  if [ -n "$leak" ]; then
+    echo "FAIL: a container in the VM can read /Users." >&2
+    echo "The --volume set did not replace the default \$HOME mount on this podman" >&2
+    echo "version. Fix via containers.conf ([machine] volumes=[]) and re-init." >&2
+    exit 1
+  fi
+  echo "OK: /Users is unreachable from containers in the VM."
+  exit 0
 fi
 
 # --- Build image ---
@@ -123,11 +175,11 @@ fi
 
 # --- Restart ---
 if [ "${1:-}" = "--restart" ]; then
-  RNAME="${2:?Usage: dev --restart <name> [host-dir]}"
+  RNAME="${2:?Usage: dev --restart <name>}"
   NAME="dev-${RNAME}"
   podman stop "$NAME" 2>/dev/null; podman rm "$NAME" 2>/dev/null
   echo "Stopped $NAME, relaunching..."
-  exec "$0" "$RNAME" ${3:+"$3"}
+  exec "$0" "$RNAME"
 fi
 
 # --- List ---
@@ -142,13 +194,13 @@ if [ "${1:-}" = "--exec" ]; then
   exec podman exec -it "$NAME" zsh
 fi
 
-# --- Create container ---
-CNAME="${1:?Usage: dev <name> [host-dir]}"
+# --- Create box ---
+CNAME="${1:?Usage: dev <name>}"
 NAME="dev-${CNAME}"
-HOST_DIR="${2:-}"
+BOX_DIR="$BOXES_ROOT/$CNAME"
 
 if podman container exists "$NAME" 2>/dev/null; then
-  echo "Container '$NAME' already exists."
+  echo "Box '$NAME' already exists."
   echo ""
   echo "  Shell:   dev --exec $CNAME"
   echo "  Stop:    dev --stop $CNAME"
@@ -156,59 +208,79 @@ if podman container exists "$NAME" 2>/dev/null; then
   exit 0
 fi
 
-# Resolve host dir to absolute path
-mount_args=()
-mount_env=()
-if [ -n "$HOST_DIR" ]; then
-  HOST_DIR_ABS="$(cd "$HOST_DIR" && pwd)"
-  mount_args=(-v "${HOST_DIR_ABS}:${HOST_DIR_ABS}")
-  mount_env=(-e "DEV_MOUNT=${HOST_DIR_ABS}")
+# Detect the VM's rootless podman socket. The path is inside the VM; the box runs
+# in the VM, so a bind mount of this path resolves. No fallback: if the machine
+# is absent the socket feature is simply unavailable (fail closed: never mount
+# some other socket).
+PODMAN_SOCKET=""
+if podman machine inspect "$MACHINE" >/dev/null 2>&1; then
+  PODMAN_SOCKET="/run/user/$(podman machine ssh "$MACHINE" id -u)/podman/podman.sock"
 fi
 
-# Per-container persistent state, isolated per container and kept on the host.
-# Mounted at /home/dev/.dev-state and organized by tool (claude/, config/gh).
-# CLAUDE_CONFIG_DIR (set in the image) points Claude at .dev-state/claude, so
-# credentials and session state persist; the entrypoint persists gh auth here
-# too. The entrypoint symlinks the static config in from the dotfiles clone.
-DEV_STATE="${HOME}/.dev-containers/${NAME}"
-mkdir -p "$DEV_STATE"
-chmod 700 "$DEV_STATE"
+# The socket is opt-in. Persistent default: `dev --sock on`. Per-launch override:
+# DEV_DOCKER_SOCK=1/0 (the gate below matches exactly "1", so anything else = off).
+if [ -z "${DEV_DOCKER_SOCK:-}" ] && [ -f "$SOCK_PREF_FILE" ]; then
+  DEV_DOCKER_SOCK=1
+fi
+if [ "${DEV_DOCKER_SOCK:-}" = "1" ] && [ -z "$PODMAN_SOCKET" ]; then
+  echo "Note: socket requested but machine '$MACHINE' not found; run 'dev --vm-init'." >&2
+  echo "      Starting the box without the socket." >&2
+fi
+socket_mount=()
+if [ "${DEV_DOCKER_SOCK:-}" = "1" ] && [ -n "$PODMAN_SOCKET" ]; then
+  # Lets the box drive the VM daemon to spawn sibling containers, reachable on
+  # the host via published ports. The VM is secret-blind (dev --vm-init), so
+  # spawned containers cannot reach host secrets; they CAN read box dirs and the
+  # knowledge mount. `label=disable` lets the container write the bind-mounted
+  # socket (SELinux). CONTAINER_HOST is set here, not baked into the image, so a
+  # box only points at the socket when it is actually mounted.
+  socket_mount=(
+    -v "$PODMAN_SOCKET:/var/run/docker.sock"
+    --security-opt label=disable
+    -e CONTAINER_HOST="unix:///var/run/docker.sock"
+  )
+fi
 
-# Global Claude memory is user-level (facts about you, projects, preferences),
-# so share the single canonical host dir across all containers rather than
-# isolating it per container. Per-project memory lives under projects/ instead.
-mkdir -p "${HOME}/.claude/memory"
+# Box home: a persistent host dir, mounted same-path so repo and compose paths
+# resolve identically on the VM and in the container. The entrypoint symlinks it
+# to ~/<name> for convenience. Per-box state lives under it in .dev-state and is
+# mounted at /home/dev/.dev-state (where the image's CLAUDE_CONFIG_DIR points).
+mkdir -p "$BOX_DIR/repos" "$BOX_DIR/.dev-state"
+chmod 700 "$BOX_DIR/.dev-state"
+
+# Global Claude memory is user-level (facts about you, projects, preferences), so
+# share the single canonical host dir across all boxes. It is one of the
+# machine's narrow mounts. Per-project memory lives under projects/ instead.
+mkdir -p "$HOME/.claude/memory"
 
 # Claude knowledge library lives in the private submodule on the host. Mount it
-# read-only so the in-container Claude can read it; skipped if not checked out
-# (e.g. a fork without the private submodule). The entrypoint links it in.
+# read-only so the in-box Claude can read it; skipped if not checked out (e.g. a
+# fork without the private submodule). The entrypoint links it in.
 knowledge_mount=()
-if [ -d "${HOME}/.dotfiles/private/knowledge" ]; then
-  knowledge_mount=(-v "${HOME}/.dotfiles/private/knowledge:/home/dev/.claude-knowledge:ro")
+if [ -d "$HOME/.dotfiles/private/knowledge" ]; then
+  knowledge_mount=(-v "$HOME/.dotfiles/private/knowledge:/home/dev/.claude-knowledge:ro")
 fi
 
 ensure_image
 
-echo "Starting container '$NAME'..."
+echo "Starting box '$NAME' (home: $BOX_DIR)..."
 podman run -d \
   --name "$NAME" \
   --hostname "$NAME" \
   --userns=keep-id \
   "${socket_mount[@]}" \
-  "${mount_args[@]}" \
-  "${mount_env[@]}" \
-  -v "${DEV_STATE}:/home/dev/.dev-state" \
-  -v "${HOME}/.claude/memory:/home/dev/.claude-memory" \
+  -v "$BOX_DIR:$BOX_DIR" \
+  -e "DEV_MOUNT=$BOX_DIR" \
+  -v "$BOX_DIR/.dev-state:/home/dev/.dev-state" \
+  -v "$HOME/.claude/memory:/home/dev/.claude-memory" \
   "${knowledge_mount[@]}" \
   -v "npm-cache-${NAME}:/home/dev/.npm" \
   -e DEV_DETACHED=1 \
   "$IMAGE_NAME"
 
 echo ""
-echo "=== Container '$NAME' started ==="
-if [ -n "$HOST_DIR" ]; then
-  echo "  Mounted: $HOST_DIR_ABS"
-fi
+echo "=== Box '$NAME' started ==="
+echo "  Home:    $BOX_DIR  (repos in repos/)"
 echo ""
 echo "  Shell:   dev --exec $CNAME"
 echo "  Stop:    dev --stop $CNAME"
