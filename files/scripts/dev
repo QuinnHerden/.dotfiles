@@ -179,6 +179,14 @@ chmod 700 "$DEV_STATE"
 # isolating it per container. Per-project memory lives under projects/ instead.
 mkdir -p "${HOME}/.claude/memory"
 
+# Claude knowledge library lives in the private submodule on the host. Mount it
+# read-only so the in-container Claude can read it; skipped if not checked out
+# (e.g. a fork without the private submodule). The entrypoint links it in.
+knowledge_mount=()
+if [ -d "${HOME}/.dotfiles/private/knowledge" ]; then
+  knowledge_mount=(-v "${HOME}/.dotfiles/private/knowledge:/home/dev/.claude-knowledge:ro")
+fi
+
 ensure_image
 
 echo "Starting container '$NAME'..."
@@ -191,6 +199,7 @@ podman run -d \
   "${mount_env[@]}" \
   -v "${DEV_STATE}:/home/dev/.dev-state" \
   -v "${HOME}/.claude/memory:/home/dev/.claude-memory" \
+  "${knowledge_mount[@]}" \
   -v "npm-cache-${NAME}:/home/dev/.npm" \
   -e DEV_DETACHED=1 \
   "$IMAGE_NAME"
