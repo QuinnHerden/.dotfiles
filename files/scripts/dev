@@ -86,8 +86,14 @@ if [ "${DEV_DOCKER_SOCK:-}" = "1" ] && [ -n "$PODMAN_SOCKET" ]; then
   # this gives the container full control of the host runtime: treat any code run
   # inside it (including Claude in dangerous mode) as running on the host. To
   # narrow this, front the socket with a docker-socket-proxy that exposes only
-  # the needed API surface and point DOCKER_HOST at the proxy instead.
-  socket_mount=(-v "$PODMAN_SOCKET:/var/run/docker.sock" --security-opt label=disable)
+  # the needed API surface and point CONTAINER_HOST at the proxy instead.
+  # CONTAINER_HOST is set here, not baked into the image, so the container is
+  # only ever pointed at a socket that is actually mounted (see Containerfile).
+  socket_mount=(
+    -v "$PODMAN_SOCKET:/var/run/docker.sock"
+    --security-opt label=disable
+    -e CONTAINER_HOST="unix:///var/run/docker.sock"
+  )
 fi
 
 # --- Build image ---
