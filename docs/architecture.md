@@ -1,6 +1,6 @@
 # Architecture
 
-How this repo is built and why. Read this if you are studying it for patterns or forking it deeply. For the install runbook, the add-a-machine steps, and the Claude Code setup, see the [README](../README.md).
+How this repo is built and why. Read this if you are studying it for patterns or forking it deeply. For the install and add-a-machine runbooks, see [runbook.md](runbook.md); for the orientation and the Claude Code setup, see the [README](../README.md).
 
 ## Configuration as data
 
@@ -149,6 +149,6 @@ The public layer is built to fork without owner access:
 - **Templates.** `nix/hosts/_template/{nixos,darwin,home}/` are copy-the-directory starting points (each holds a `default.nix`, so no rename on copy). The `template` host in each flake group is built in CI to guarantee the public layer stays evaluatable and buildable without the private overlay.
 - **Bootstrap login.** Authorized SSH keys come from the private overlay, which a fork lacks. So the NixOS template sets `initialPassword = "changeme"` on the primary user (`#176`), which applies only at first user creation, to keep a fresh build reachable on first boot. The `placeholder-guard` job prevents that placeholder from leaking into a real host config. The owner's real hosts do not set it.
 - **Self-healing knowledge link.** The conditional `claudeKnowledge` activation script (`#177`, above) means a fork never gets a dangling `~/.claude/knowledge`.
-- **Residual owner values.** A few things still carry the owner's identity: the CI build matrix (`OWNER HOSTS` vs `KEEP THESE`), the iTerm2 profile name in `files/home/iterm2/profile.json`, and per-host `time.timeZone`. The README's "Residual owner-specific values" section lists what to change.
+- **Residual owner values.** A few things still carry the owner's identity: the CI build matrix (`OWNER HOSTS` vs `KEEP THESE`), the iTerm2 profile name in `files/home/iterm2/profile.json`, and per-host `time.timeZone`. The runbook's [Residual owner-specific values](runbook.md#residual-owner-specific-values) lists what to change.
 
 To supply your own last mile, either edit the public modules directly or point `inputs.private` at your own overlay. The stub default keeps the flake evaluatable either way, so a fork needs no submodule access.
