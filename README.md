@@ -14,6 +14,7 @@ Personal Nix dotfiles: home-manager, nix-darwin, and NixOS across my Mac, my Nix
 | `nix/hosts/` | Per-machine config: `dev-container`, `mac-papi`, `nix-box`, `nix-dots`, `kali-bug`. Plus `_template/` (forkable per-platform starters) and `_shared/` (the workstation profile the NixOS hosts share). |
 | `nix/modules/` | Shared building blocks (`home`, `system`, `packages`). Package data is centralized in `packages/`; one generator (`mkPackageModule`) renders it into the per-platform sink (`home.packages`, `environment.systemPackages`, or homebrew). |
 | `docs/architecture.md` | How it all fits together: the host matrix, module layering, the package generator, the public/private seam, and CI. Read this to fork deeply. |
+| `docs/runbook.md` | Operator how-to: reinstalling, adding a machine, forking. |
 | `files/config/` | App dotfiles: nvim, i3, rofi, qutebrowser, karabiner. |
 | `files/home/` | Home-level files, including `.claude/` (the Claude Code setup). |
 | `files/scripts/` | Bootstrap (`.init`, `.switch`, `.update`) and the `dev` Podman wrapper. |
@@ -57,145 +58,6 @@ Likely the most reusable part of this repo. `files/home/.claude/` holds:
 - **agents/**: focused specialist subagents (system-architect, security-analyst, code-reviewer, data-engineer, cloud-platform, process-analyst, plus GTM, brand, and UX specialists). Each carries compressed named frameworks inline and a `Reference Library` pointer to the deeper source material.
 - **skills/**: repeatable procedures (extracting book knowledge into the knowledge base, stress-testing an agent, and more).
 - **knowledge/**: a 20/80 extraction library that backs the agents. It lives in the private `private/` submodule (as `private/knowledge`, alongside the NixOS overlay), since the extractions distill copyrighted source material, so it will not populate on a public clone. That is intentional, not a broken repo.
-
-## Install (reinstalling on a new machine)
-
-This is the runbook for setting up a machine, written for me. The host config is keyed by hostname, so the hostname must match an entry before `.switch` will resolve.
-
-### 1. Prerequisites
-
-On macOS, install Nix:
-
-```bash
-curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
-```
-
-On NixOS, get online and make git available:
-
-```bash
-nmcli d wifi list
-nmcli d wifi connect {ssid} --ask
-nix-shell -p git
-```
-
-On generic Linux (non-NixOS), set the hostname and make sure curl is present:
-
-```bash
-sudo hostname {hostname}        # e.g. kali-bug
-sudo apt install curl           # or your distro's equivalent
-```
-
-### 2. Clone
-
-The repo has private submodules. A plain clone works (the flake falls back to public stubs), but as the owner, init the submodules so the real identifiers load:
-
-```bash
-cd ~/
-git clone --recurse-submodules https://github.com/QuinnHerden/.dotfiles.git
-# or, after a plain clone:
-git submodule update --init
-```
-
-Without the private overlay (`private/overlay`), the NixOS rebuild scripts warn and fall back to an empty authorized-SSH-keys stub.
-
-### 3. Init
-
-Run the bootstrap script. It is not idempotent in one pass; run it repeatedly until it exits 0.
-
-```bash
-sh ~/.dotfiles/files/scripts/.init
-```
-
-### 4. Set hostname
-
-The hostname selects which host config to sync to.
-
-```bash
-sudo hostname {hostname}        # NixOS / macOS
-```
-
-On generic Linux this is already done from step 1. There, `.switch` resolves the `homeConfigurations` entry from `$(whoami)@$(hostname)`.
-
-### 5. Switch
-
-Apply the config:
-
-```bash
-sh ~/.dotfiles/files/scripts/.switch
-```
-
-## Add a machine
-
-Hosts are data. Each machine is an entry in the `hosts` attrset in `nix/flake.nix`, mapped through `mkHost`. Adding a machine means adding an entry plus its host directory; you never copy a builder block.
-
-Generic starting points live in `nix/hosts/_template/`, one directory per platform (each holds a `default.nix`, so copying the directory needs no rename):
-
-| Directory | For |
-|------|-----|
-| `nixos/` (`default.nix` + `hardware-configuration.nix`) | A NixOS host |
-| `darwin/` | A nix-darwin host |
-| `home/` | A standalone home-manager host |
-
-### NixOS host
-
-1. Copy `nix/hosts/_template/nixos/` to `nix/hosts/<name>/`.
-2. Replace the stub hardware config with real output:
-   ```bash
-   nixos-generate-config --show-hardware-config > nix/hosts/<name>/hardware-configuration.nix
-   ```
-3. In `nix/hosts/<name>/default.nix`, set `hostname.name`, `user.name`, and the package toggles.
-4. Add an entry under `hosts.nixos` in `nix/flake.nix`:
-   ```nix
-   <name> = {
-     builder = "nixos";
-     hostPath = ./hosts/<name>;
-   };
-   ```
-5. Set the system hostname to `<name>` (see step 4 of the install runbook).
-6. Switch:
-   ```bash
-   sh ~/.dotfiles/files/scripts/.switch
-   ```
-
-> **Bootstrap login:** authorized SSH keys come from the owner's private overlay, which a fork does not have, so the template sets a placeholder `initialPassword` (`changeme`) on the primary user to keep a fresh build reachable on first boot. Change it before any real use: add your own SSH key via a private overlay, or replace it with a `hashedPassword` (`mkpasswd -m sha-512`). The owner's real hosts do not set it.
-
-### Darwin host
-
-Copy `nix/hosts/_template/darwin/` to `nix/hosts/<name>/`, set `hostname.name` and `user.name`, then add an entry under `hosts.darwin` with `builder = "darwin"` and `hostPath = ./hosts/<name>`.
-
-### Standalone home-manager host
-
-Copy `nix/hosts/_template/home/` to `nix/hosts/<name>/`, set `home.username` and `home.homeDirectory` in its `default.nix`, then add an entry under `hosts.home` with `builder = "home"`, the right `system` (e.g. `aarch64-linux`), and `hostPath = ./hosts/<name>`.
-
-The username is set in one place per host: `user.name` for NixOS/darwin (the `user` option, which drives the system user, home directory, and home-manager user), and `home.username` for standalone home-manager hosts. Authorized SSH keys come from the private overlay, not the host file.
-
-## Fork this
-
-The public flake evaluates and builds standalone, with no access to anything private. Real identifiers (such as the authorized SSH key) live in a private overlay behind `inputs.private`, which defaults to an in-repo public stub at `nix/private-stub`. CI and forks build against that stub.
-
-To supply your own last mile, pick one:
-
-- Edit the public modules directly.
-- Point `inputs.private` at your own overlay.
-
-The owner does the second: a single private submodule at `private/` (holding the overlay and the knowledge library), plus an `--override-input private path:...` baked into the rebuild scripts. The stub default keeps the flake evaluatable, so a fork needs no submodule access.
-
-A fork cannot clone that private submodule (it is owner-only). A plain `git clone` (without `--recurse-submodules`) already leaves `private/` empty and builds clean against the stub; nothing dangles, because the `~/.claude/knowledge` link is created at activation only when `private/knowledge` is actually present. To drop the inherited submodule reference entirely:
-
-```bash
-git submodule deinit -f private && git rm -f private && rm -rf .git/modules/private
-git commit -m "drop private submodule"
-```
-
-The template hosts (`hosts.nixos.template`, `hosts.darwin.template`, `hosts.home.template`) are built in CI to guarantee the public layer stays forkable.
-
-### Residual owner-specific values
-
-A few things still carry the owner's identity or preferences; change them when you fork:
-
-- **CI build matrix** (`.github/workflows/ci.yml`): replace the owner-host entries (marked `OWNER HOSTS`) with your own. Keep the `template *` entries (marked `KEEP THESE`) — they are the check that proves your fork still builds standalone.
-- **iTerm2 profile** (`files/home/iterm2/profile.json`): the profile `Name` is `quinnherden` and a `Working Directory` path is the owner's home (inert, since `Custom Directory` is `No`). Edit if you import this profile.
-- **Timezone**: set `time.timeZone` per host (the templates default to `UTC`).
 
 ## Dev Containers
 
@@ -250,11 +112,12 @@ dev branch-b ~/repos
 ```
 
 
-## Post Installation
+## Next steps
 
-### MacOS Manual Configurations
-
-- [Configurations](manual-configurations.md)
+- **Reinstalling or adding a machine:** [docs/runbook.md](docs/runbook.md).
+- **Forking:** [docs/runbook.md#fork-this](docs/runbook.md#fork-this); the design behind the public/private seam is in [docs/architecture.md](docs/architecture.md).
+- **Post-install manual steps** (YubiKey, macOS GUI apps): [docs/manual-configurations.md](docs/manual-configurations.md).
+- **How it's built and why:** [docs/architecture.md](docs/architecture.md).
 
 ## License
 
