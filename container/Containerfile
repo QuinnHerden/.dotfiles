@@ -1,5 +1,10 @@
 FROM debian:bookworm-slim AS base
 
+# Pinned tool versions (bump deliberately; do not float). The debian base could
+# additionally be digest-pinned (FROM debian:bookworm-slim@sha256:...) for
+# stricter reproducibility. See #125.
+ARG PODMAN_COMPOSE_VERSION=1.6.0
+
 # System dependencies for Nix and dev tooling
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
@@ -9,7 +14,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     sudo \
     jq \
     python3-pip \
-    && pip3 install --break-system-packages podman-compose \
+    && pip3 install --break-system-packages "podman-compose==${PODMAN_COMPOSE_VERSION}" \
     && rm -rf /var/lib/apt/lists/*
 
 # Create dev user
@@ -19,14 +24,11 @@ RUN useradd -m -s /bin/bash dev \
 USER dev
 WORKDIR /home/dev
 
-# --- Install Nix (single-user) ---
-RUN curl -L https://nixos.org/nix/install | sh -s -- --no-daemon
-
-# --- Clone dotfiles and cache nixpkgs download ---
-ARG DOTFILES_REPO=https://github.com/QuinnHerden/.dotfiles.git
-ARG DOTFILES_BRANCH=main
-
-RUN git clone --branch ${DOTFILES_BRANCH} ${DOTFILES_REPO} /home/dev/.dotfiles
+# --- Install Nix (single-user), pinned to a specific release ---
+ARG NIX_VERSION=2.34.7
+RUN curl -fsSL "https://releases.nixos.org/nix/nix-${NIX_VERSION}/install" -o /tmp/nix-install \
+    && sh /tmp/nix-install --no-daemon \
+    && rm /tmp/nix-install
 
 ENV PATH="/home/dev/.npm-global/bin:/home/dev/.local/bin:/home/dev/.nix-profile/bin:${PATH}" \
     NPM_CONFIG_PREFIX=/home/dev/.npm-global \
@@ -39,11 +41,30 @@ ENV PATH="/home/dev/.npm-global/bin:/home/dev/.local/bin:/home/dev/.nix-profile/
 RUN mkdir -p /home/dev/.config/nix \
     && echo "experimental-features = nix-command flakes" > /home/dev/.config/nix/nix.conf
 
-# Pre-fetch flake inputs (big download — cached in this layer if flake.lock unchanged)
+# --- Pre-fetch flake inputs (the big download) ---
+# Copy only what `nix flake archive` needs to resolve inputs: the lockfile, the
+# flake, and the path: inputs it references (private-stub). This layer therefore
+# caches on flake.lock and is not invalidated by unrelated dotfiles changes.
+COPY --chown=dev:dev nix/flake.nix nix/flake.lock /home/dev/.dotfiles/nix/
+COPY --chown=dev:dev nix/private-stub /home/dev/.dotfiles/nix/private-stub
 RUN cd /home/dev/.dotfiles/nix && nix flake archive --no-write-lock-file
 
-# --- Run home-manager switch ---
-RUN nix run nixpkgs#home-manager -- switch --flake /home/dev/.dotfiles/nix#dev@dev-container
+# --- Build + activate home-manager from the LOCKED flake input ---
+# home-manager depends only on nix/** (the files/ entries are runtime
+# mkOutOfStoreSymlink targets, not build inputs), so copy just nix/ and activate
+# before the rest of the tree. A README/agent/files change then busts only the
+# final COPY below, not this expensive layer. Uses the flake's locked
+# home-manager input, not a floating `nix run nixpkgs#home-manager`.
+COPY --chown=dev:dev nix /home/dev/.dotfiles/nix
+RUN set -eu; cd /home/dev/.dotfiles/nix \
+    && out=$(nix build --no-link --print-out-paths '.#homeConfigurations."dev@dev-container".activationPackage') \
+    && "$out/activate"
+
+# --- Copy the rest of the dotfiles tree (private/ and .git excluded; see
+# .containerignore). These are the runtime symlink targets and do not affect the
+# home-manager build above. This re-copies nix/ too (already placed above);
+# that is harmless and keeps the final tree a faithful copy of the repo. ---
+COPY --chown=dev:dev . /home/dev/.dotfiles
 
 # --- Docker/Podman CLI alias for Makefile compatibility ---
 # CONTAINER_HOST env var tells podman to use the mounted socket
@@ -52,7 +73,7 @@ RUN mkdir -p /home/dev/.local/bin \
     && chmod +x /home/dev/.local/bin/docker
 
 # --- Entrypoint ---
-COPY --chown=dev:dev entrypoint.sh /home/dev/entrypoint.sh
+COPY --chown=dev:dev container/entrypoint.sh /home/dev/entrypoint.sh
 RUN chmod +x /home/dev/entrypoint.sh
 
 WORKDIR /home/dev

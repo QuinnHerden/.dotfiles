@@ -91,9 +91,14 @@ if [ "${DEV_DOCKER_SOCK:-}" = "1" ] && [ -n "$PODMAN_SOCKET" ]; then
 fi
 
 # --- Build image ---
+# Context is the repo root so the Containerfile can COPY the dotfiles tree (see
+# .containerignore for what is excluded). Layer caching is left on: the COPY
+# layers are content-addressed, so the expensive Nix layers only re-run when
+# nix/flake.lock changes, not on every dotfiles commit. Force a clean rebuild
+# with: podman build --no-cache -t dev-container -f container/Containerfile .
 build_image() {
   echo "Building dev container image..."
-  podman build --no-cache -t "$IMAGE_NAME" -f "$HOME/.dotfiles/container/Containerfile" "$HOME/.dotfiles/container/"
+  podman build -t "$IMAGE_NAME" -f "$HOME/.dotfiles/container/Containerfile" "$HOME/.dotfiles/"
 }
 
 ensure_image() {

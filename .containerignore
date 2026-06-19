@@ -1,0 +1,24 @@
+# Build context for the dev container is the repo root (see files/scripts/dev).
+# Excluded so the image stays stub-based and secret-free, and so layer caching
+# keys on real source changes only:
+#   - private/ : the private submodule (SSH overlay + knowledge library). The
+#     container builds against the public stub (inputs.private); never bake the
+#     private overlay or its SSH key into the image.
+#   - .git/    : large and changes on every commit, which would bust the COPY
+#     layer (and the Nix layers below it) regardless of what actually changed.
+.git
+private
+
+# Nix build result symlinks, if any are lying around in the working tree.
+result
+result-*
+
+# Deny-by-default for secret-shaped files so nothing sensitive is ever baked
+# into a layer, even if it appears in the working tree later (the image is built
+# from the live tree, not a clean clone). None exist today; this is insurance.
+**/.env
+**/*.pem
+**/*.key
+**/id_rsa*
+**/id_ed25519*
+**/.ssh/
