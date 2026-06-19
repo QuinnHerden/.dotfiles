@@ -154,6 +154,8 @@ Generic starting points live in `nix/hosts/_template/`, one directory per platfo
    sh ~/.dotfiles/files/scripts/.switch
    ```
 
+> **Bootstrap login:** authorized SSH keys come from the owner's private overlay, which a fork does not have, so the template sets a placeholder `initialPassword` (`changeme`) on the primary user to keep a fresh build reachable on first boot. Change it before any real use: add your own SSH key via a private overlay, or replace it with a `hashedPassword` (`mkpasswd -m sha-512`). The owner's real hosts do not set it.
+
 ### Darwin host
 
 Copy `nix/hosts/_template/darwin/` to `nix/hosts/<name>/`, set `hostname.name` and `user.name`, then add an entry under `hosts.darwin` with `builder = "darwin"` and `hostPath = ./hosts/<name>`.
