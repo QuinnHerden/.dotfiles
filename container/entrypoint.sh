@@ -47,6 +47,20 @@ if [ -d /home/dev/.claude-memory ]; then
   ln -sfn /home/dev/.claude-memory "$CCDIR/memory"
 fi
 
+# Claude knowledge library, mounted read-only from the host's private submodule
+# (see the dev launcher). The agents reference ~/.claude/knowledge by literal
+# path, while Claude reads its config from CLAUDE_CONFIG_DIR, so link it into
+# both. Skipped when the mount is absent (e.g. a fork without the submodule).
+# ~/.claude/knowledge is unmanaged by home-manager since #177; if it is ever
+# re-added to home.file, this rm -rf would clobber the managed copy.
+if [ -d /home/dev/.claude-knowledge ]; then
+  for kdst in "$HOME/.claude/knowledge" "${CCDIR:?}/knowledge"; do
+    mkdir -p "$(dirname "$kdst")"
+    rm -rf "$kdst"
+    ln -sfn /home/dev/.claude-knowledge "$kdst"
+  done
+fi
+
 # Persist gh CLI auth in the per-container state so it survives recreation. git
 # uses `gh auth git-credential`, so this fixes git auth too.
 if [ -d /home/dev/.dev-state ]; then
