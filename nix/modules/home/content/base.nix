@@ -188,7 +188,7 @@
         export DOCKER_HOST="unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}' 2>/dev/null)"
       fi
 
-      eval "$(zoxide init --cmd cd zsh)"
+      [[ -o interactive ]] && eval "$(zoxide init --cmd cd zsh)"
     '';
   };
 
