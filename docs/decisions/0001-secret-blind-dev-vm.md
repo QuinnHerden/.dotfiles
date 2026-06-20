@@ -94,6 +94,6 @@ the image).
   a network pivot.
 - Re-provisioning the machine is destructive (drops its containers and images).
   `dev --vm-init` refuses to clobber an existing machine; remove it first.
-- Repos now live under `~/containers/<name>/repos`; binding an arbitrary host dir
-  outside `~/containers` is no longer supported (by design; it would require the
-  VM to see that path).
+- The host box dir is bind-mounted as `/home/dev`; repos live directly in
+  `~/containers/<name>`. Binding an arbitrary host dir outside `~/containers`
+  is no longer supported (by design; it would require the VM to see that path).

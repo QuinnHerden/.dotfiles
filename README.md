@@ -63,7 +63,7 @@ Likely the most reusable part of this repo. `files/home/.claude/` holds:
 
 Isolated dev boxes using Podman. Each box gets the full dotfiles toolchain (zsh, nvim, lazygit, lazydocker, Claude Code) via Nix + home-manager.
 
-A box is a persistent host dir, `~/containers/<name>`, mounted as the container's home. Repos go under `~/containers/<name>/repos`. Per-box state (Claude creds, gh/git auth) persists in `.dev-state`, so you authenticate once and it survives stop/restart.
+A box is a persistent host dir, `~/containers/<name>`, bind-mounted as `/home/dev`. On first boot the image skeleton is copied in; repos go directly in the box dir. Per-box state (Claude creds, gh/git auth) persists in `.dev-state`, so you authenticate once and it survives stop/restart.
 
 The Podman machine is provisioned to mount only `~/containers`, the Claude knowledge dir, and the Claude memory dir, never your home root. So host secrets (`~/.aws`, `~/.ssh`, `~/.gnupg`, `~/.claude.json`) are unreachable from any container, including ones Claude spawns through the podman socket. See [docs/decisions/0001-secret-blind-dev-vm.md](docs/decisions/0001-secret-blind-dev-vm.md).
 

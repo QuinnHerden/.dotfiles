@@ -2,9 +2,11 @@
 set -euo pipefail
 
 # Dev boxes via Podman. Each box is a persistent host dir, ~/containers/<name>,
-# mounted into the container as its home (put repos under ~/containers/<name>/
-# repos). Per-box state (Claude creds, gh/git auth) persists under it in
-# .dev-state, so you authenticate once and it survives --stop/--restart.
+# bind-mounted as /home/dev in the container. On first boot the entrypoint
+# populates it from the image's skel (Nix, dotfiles, home-manager state); on
+# subsequent boots existing files are preserved. Per-box state (Claude creds,
+# gh/git auth) persists under .dev-state inside the box dir, so you authenticate
+# once and it survives --stop/--restart.
 #
 # The Podman machine is initialized (see `dev --vm-init`) to mount ONLY a narrow
 # set of host dirs (the boxes tree, the Claude knowledge dir, and the Claude
@@ -241,11 +243,10 @@ if [ "${DEV_DOCKER_SOCK:-}" = "1" ] && [ -n "$PODMAN_SOCKET" ]; then
   )
 fi
 
-# Box home: a persistent host dir, mounted same-path so repo and compose paths
-# resolve identically on the VM and in the container. The entrypoint symlinks it
-# to ~/<name> for convenience. Per-box state lives under it in .dev-state and is
-# mounted at /home/dev/.dev-state (where the image's CLAUDE_CONFIG_DIR points).
-mkdir -p "$BOX_DIR/repos" "$BOX_DIR/.dev-state"
+# Box home: the host box dir is bind-mounted as /home/dev. On first boot the
+# entrypoint copies the image skel into it; subsequent boots preserve existing
+# files. Per-box state lives under .dev-state (where CLAUDE_CONFIG_DIR points).
+mkdir -p "$BOX_DIR/.dev-state"
 chmod 700 "$BOX_DIR/.dev-state"
 
 # Global Claude memory is user-level (facts about you, projects, preferences), so
@@ -255,10 +256,11 @@ mkdir -p "$HOME/.claude/memory"
 
 # Claude knowledge library lives in the private submodule on the host. Mount it
 # read-only so the in-box Claude can read it; skipped if not checked out (e.g. a
-# fork without the private submodule). The entrypoint links it in.
+# fork without the private submodule). The entrypoint links it in. Mounted
+# outside /home/dev so the bind mount doesn't shadow it.
 knowledge_mount=()
 if [ -d "$HOME/.dotfiles/private/knowledge" ]; then
-  knowledge_mount=(-v "$HOME/.dotfiles/private/knowledge:/home/dev/.claude-knowledge:ro")
+  knowledge_mount=(-v "$HOME/.dotfiles/private/knowledge:/run/claude-knowledge:ro")
 fi
 
 ensure_image
@@ -269,18 +271,16 @@ podman run -d \
   --hostname "$NAME" \
   --userns=keep-id \
   "${socket_mount[@]}" \
-  -v "$BOX_DIR:$BOX_DIR" \
-  -e "DEV_MOUNT=$BOX_DIR" \
-  -v "$BOX_DIR/.dev-state:/home/dev/.dev-state" \
-  -v "$HOME/.claude/memory:/home/dev/.claude-memory" \
+  -v "$BOX_DIR:/home/dev" \
+  -v "$HOME/.claude/memory:/run/claude-memory" \
   "${knowledge_mount[@]}" \
-  -v "npm-cache-${NAME}:/home/dev/.npm" \
+  -v "npm-cache-${NAME}:/run/npm-cache" \
   -e DEV_DETACHED=1 \
   "$IMAGE_NAME"
 
 echo ""
 echo "=== Box '$NAME' started ==="
-echo "  Home:    $BOX_DIR  (repos in repos/)"
+echo "  Home:    $BOX_DIR  (mounted as ~/)"
 echo ""
 echo "  Shell:   dev --exec $CNAME"
 echo "  Stop:    dev --stop $CNAME"

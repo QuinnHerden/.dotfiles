@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     sudo \
     jq \
+    rsync \
     python3-pip \
     && pip3 install --break-system-packages "podman-compose==${PODMAN_COMPOSE_VERSION}" \
     && rm -rf /var/lib/apt/lists/*
@@ -74,10 +75,18 @@ RUN mkdir -p /home/dev/.local/bin \
     && printf '#!/bin/sh\nexec podman "$@"\n' > /home/dev/.local/bin/docker \
     && chmod +x /home/dev/.local/bin/docker
 
-# --- Entrypoint ---
-COPY --chown=dev:dev container/entrypoint.sh /home/dev/entrypoint.sh
-RUN chmod +x /home/dev/entrypoint.sh
+# --- Snapshot the fully-built home as the skel layer ---
+# The launcher bind-mounts the host box dir directly as /home/dev. On first
+# boot the entrypoint copies skel contents into it (--no-clobber / --ignore-
+# existing), so image content (Nix, dotfiles, home-manager) is populated once
+# and user state is preserved on subsequent boots. Uses mv to avoid doubling
+# image size.
+RUN sudo mv /home/dev /home/dev.skel && sudo mkdir /home/dev && sudo chown dev:dev /home/dev
+
+# --- Entrypoint (outside /home/dev so the overlay doesn't shadow it) ---
+COPY --chown=dev:dev container/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 WORKDIR /home/dev
-ENTRYPOINT ["/home/dev/entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["zsh"]

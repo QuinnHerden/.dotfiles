@@ -1,6 +1,18 @@
 #!/bin/bash
 set -e
 
+# --- Populate home from skel ---
+# The launcher bind-mounts the host box dir directly as /home/dev. On first
+# boot the dir is nearly empty; copy the image's skeleton (Nix profile,
+# dotfiles, home-manager state) into it. On subsequent boots, existing files
+# are left alone (--ignore-existing) so user state is preserved. New files
+# added by an image rebuild are picked up on the next restart.
+if [ -d /home/dev.skel ]; then
+  echo "Syncing home from skel..." >&2
+  rsync -rlD --ignore-existing /home/dev.skel/ /home/dev/
+  echo "Home ready." >&2
+fi
+
 # Source Nix
 if [ -f /home/dev/.nix-profile/etc/profile.d/nix.sh ]; then
   # shellcheck disable=SC1091  # sourced at runtime, not available to the linter
@@ -12,11 +24,9 @@ export NPM_CONFIG_PREFIX=/home/dev/.npm-global
 export PATH="/home/dev/.npm-global/bin:$PATH"
 mkdir -p /home/dev/.npm-global
 
-# Symlink mounted dir into home for convenience (e.g. ~/dev_0 -> /Users/.../containers/dev_0)
-if [ -n "${DEV_MOUNT:-}" ] && [ -d "$DEV_MOUNT" ]; then
-  LINK_NAME=$(basename "$DEV_MOUNT")
-  [ ! -e "$HOME/$LINK_NAME" ] && ln -sfn "$DEV_MOUNT" "$HOME/$LINK_NAME"
-fi
+# Link external mounts into home. These are mounted outside /home/dev (at
+# /run/*) so the bind mount doesn't shadow them.
+[ -d /run/npm-cache ] && ln -sfn /run/npm-cache /home/dev/.npm
 
 # Wire up Claude config + state.
 # CLAUDE_CONFIG_DIR (set in the image) points Claude at the per-container
@@ -42,9 +52,9 @@ fi
 
 # Global (user-level) Claude memory is shared across all containers (mounted by
 # the launcher), not per-container like the rest of the config dir.
-if [ -d /home/dev/.claude-memory ]; then
+if [ -d /run/claude-memory ]; then
   rm -rf "$CCDIR/memory"
-  ln -sfn /home/dev/.claude-memory "$CCDIR/memory"
+  ln -sfn /run/claude-memory "$CCDIR/memory"
 fi
 
 # Claude knowledge library, mounted read-only from the host's private submodule
@@ -53,11 +63,11 @@ fi
 # both. Skipped when the mount is absent (e.g. a fork without the submodule).
 # ~/.claude/knowledge is unmanaged by home-manager since #177; if it is ever
 # re-added to home.file, this rm -rf would clobber the managed copy.
-if [ -d /home/dev/.claude-knowledge ]; then
+if [ -d /run/claude-knowledge ]; then
   for kdst in "$HOME/.claude/knowledge" "${CCDIR:?}/knowledge"; do
     mkdir -p "$(dirname "$kdst")"
     rm -rf "$kdst"
-    ln -sfn /home/dev/.claude-knowledge "$kdst"
+    ln -sfn /run/claude-knowledge "$kdst"
   done
 fi
 

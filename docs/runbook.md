@@ -115,7 +115,7 @@ The username is set in one place per host: `user.name` for NixOS/darwin (the `us
 
 ## Dev boxes (Podman)
 
-A dev box is a persistent host dir, `~/containers/<name>`, mounted as the container's home. Repos go under `~/containers/<name>/repos`; per-box state (Claude creds, gh/git auth) persists in `.dev-state`. The Podman machine is provisioned to mount only `~/containers`, the Claude knowledge dir, and the Claude memory dir, never your home root, so host secrets stay unreachable from any container. The security rationale is [docs/decisions/0001-secret-blind-dev-vm.md](decisions/0001-secret-blind-dev-vm.md).
+A dev box is a persistent host dir, `~/containers/<name>`, bind-mounted as `/home/dev`. On first boot the image skeleton is copied in; subsequent boots preserve existing files. Repos go directly in the box dir. Per-box state (Claude creds, gh/git auth) persists in `.dev-state`. The Podman machine is provisioned to mount only `~/containers`, the Claude knowledge dir, and the Claude memory dir, never your home root, so host secrets stay unreachable from any container. The security rationale is [docs/decisions/0001-secret-blind-dev-vm.md](decisions/0001-secret-blind-dev-vm.md).
 
 ### Fresh setup
 
