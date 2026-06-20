@@ -27,7 +27,7 @@ jobs:
         with:
           token: ${{ steps.app-token.outputs.token }}
       - uses: DeterminateSystems/nix-installer-action@ef8a148080ab6020fd15196c2084a2eea5ff2d25 # v22
-      - uses: DeterminateSystems/update-flake-lock@b044cabb7988ec21289924a967891203e5630b2d # v9
+      - uses: DeterminateSystems/update-flake-lock@fd9359ac79d0e912f1b4b947a48470b3e2799b56 # main 2025-06-20
         with:
           path-to-flake-dir: ./nix
           token: ${{ steps.app-token.outputs.token }}
