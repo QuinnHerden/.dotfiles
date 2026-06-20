@@ -13,6 +13,27 @@ if [ -d /home/dev.skel ]; then
   echo "Home ready." >&2
 fi
 
+# --- Init dotfiles git repo ---
+# The image's .dotfiles is a plain copy (.git is excluded by .containerignore).
+# Clone on first boot so git pull + hm-switch work inside the container.
+if [ -d /home/dev/.dotfiles ] && [ ! -d /home/dev/.dotfiles/.git ]; then
+  echo "Initializing dotfiles repo..." >&2
+  tmp=$(mktemp -d -p /home/dev)
+  if git clone --bare https://github.com/QuinnHerden/.dotfiles.git "$tmp"; then
+    if mv "$tmp" /home/dev/.dotfiles/.git; then
+      git -C /home/dev/.dotfiles config core.bare false
+      git -C /home/dev/.dotfiles checkout -- .
+      echo "Dotfiles repo ready." >&2
+    else
+      rm -rf "$tmp"
+      echo "Dotfiles repo init failed (could not move .git into place)." >&2
+    fi
+  else
+    rm -rf "$tmp"
+    echo "Dotfiles repo init skipped (clone failed, will retry next boot)." >&2
+  fi
+fi
+
 # Source Nix
 if [ -f /home/dev/.nix-profile/etc/profile.d/nix.sh ]; then
   # shellcheck disable=SC1091  # sourced at runtime, not available to the linter
