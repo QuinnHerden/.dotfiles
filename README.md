@@ -61,54 +61,58 @@ Likely the most reusable part of this repo. `files/home/.claude/` holds:
 
 ## Dev Containers
 
-Isolated dev environments using Podman. Each container gets the full dotfiles toolchain (zsh, nvim, lazygit, lazydocker, Claude Code) via Nix + home-manager.
+Isolated dev boxes using Podman. Each box gets the full dotfiles toolchain (zsh, nvim, lazygit, lazydocker, Claude Code) via Nix + home-manager.
+
+A box is a persistent host dir, `~/containers/<name>`, bind-mounted as `/home/dev`. On first boot the image skeleton is copied in; repos go directly in the box dir. Per-box state (Claude creds, gh/git auth) persists in `.dev-state`, so you authenticate once and it survives stop/restart.
+
+The Podman machine is provisioned to mount only `~/containers`, the Claude knowledge dir, and the Claude memory dir, never your home root. So host secrets (`~/.aws`, `~/.ssh`, `~/.gnupg`, `~/.claude.json`) are unreachable from any container, including ones Claude spawns through the podman socket. See [docs/decisions/0001-secret-blind-dev-vm.md](docs/decisions/0001-secret-blind-dev-vm.md).
 
 ### Prerequisites
 
-1. Install [Podman Desktop](https://podman-desktop.io/)
-2. Initialize and start the podman machine:
+1. Install [Podman Desktop](https://podman-desktop.io/).
+2. Provision the secret-blind machine (once). This creates the machine with the narrow mount set and runs an isolation acceptance test:
    ```bash
-   podman machine init
-   podman machine start
+   dev --vm-init
    ```
-3. Build the dev container image:
+3. Optional: let boxes spawn sibling containers via the podman socket (once):
    ```bash
-   dev --rebuild
+   dev --sock on
    ```
 
 ### Usage
 
 ```bash
-# Create a container with a host directory mounted
-dev work ~/repos
+# Create a box (home = ~/containers/work)
+dev work
 
 # Shell into it
 dev --exec work
 
-# Inside the container: repos are at ~/repos
-cd ~/repos/motifs
+# Inside the box: repos live under repos/
+cd ~/work/repos/motifs
 make install && make upd     # compose volume paths resolve correctly
 
-# Manage containers
-dev --ls                     # list running dev containers
+# Manage boxes
+dev --ls                     # list running boxes
 dev --stop work              # stop and remove
-dev --restart work ~/repos   # stop + recreate
+dev --restart work           # stop + recreate
 dev --rebuild                # rebuild the image (after dotfiles changes)
 ```
 
-The mounted directory is available at the same host path inside the container, so `docker compose` volume mounts resolve correctly on the VM.
+The box home is mounted at the same host path inside the container, so `docker compose` volume mounts resolve correctly on the VM. You can no longer bind an arbitrary host dir outside `~/containers`.
+
+With the socket on, a box can drive the VM's podman daemon to spawn sibling containers, reachable on the host via published ports. The machine is secret-blind, so spawned containers cannot read host secrets. They can read box dirs and the knowledge mount, so never put secrets in a box dir.
 
 The first start installs Claude Code via npm and takes a few seconds. Subsequent starts are near-instant, since the npm cache persists in a named volume.
 
 ### Parallel development
 
-Mount the same directory into multiple containers for parallel branch work:
+Create multiple boxes for parallel branch work. Each has its own home, repos, shell, Claude instance, and compose stack:
 
 ```bash
-dev branch-a ~/repos
-dev branch-b ~/repos
-# Each container has its own shell, Claude instance, and compose stack
-# but shares the same host repos (use separate branches/worktrees)
+dev branch-a
+dev branch-b
+# clone the repo into each box's repos/ and work separate branches
 ```
 
 

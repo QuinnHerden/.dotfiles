@@ -1,6 +1,6 @@
 # Runbook
 
-Operator how-to: reinstalling a machine, adding a machine, and forking. For the design behind any of this, see [architecture.md](architecture.md). Back to the [README](../README.md).
+Operator how-to: reinstalling a machine, adding a machine, dev boxes, and forking. For the design behind any of this, see [architecture.md](architecture.md). Back to the [README](../README.md).
 
 ## Install (reinstalling on a new machine)
 
@@ -112,6 +112,54 @@ Copy `nix/hosts/_template/darwin/` to `nix/hosts/<name>/`, set `hostname.name`, 
 Copy `nix/hosts/_template/home/` to `nix/hosts/<name>/`, set `home.username` and `home.homeDirectory` in its `default.nix`, then add an entry under `hosts.home` with `builder = "home"`, the right `system` (e.g. `aarch64-linux`), and `hostPath = ./hosts/<name>`.
 
 The username is set in one place per host: `user.name` for NixOS/darwin (the `user` option, which drives the system user, home directory, and home-manager user), and `home.username` for standalone home-manager hosts. Authorized SSH keys come from the private overlay, not the host file.
+
+## Dev boxes (Podman)
+
+A dev box is a persistent host dir, `~/containers/<name>`, bind-mounted as `/home/dev`. On first boot the image skeleton is copied in; subsequent boots preserve existing files. Repos go directly in the box dir. Per-box state (Claude creds, gh/git auth) persists in `.dev-state`. The Podman machine is provisioned to mount only `~/containers`, the Claude knowledge dir, and the Claude memory dir, never your home root, so host secrets stay unreachable from any container. The security rationale is [docs/decisions/0001-secret-blind-dev-vm.md](decisions/0001-secret-blind-dev-vm.md).
+
+### Fresh setup
+
+1. Install [Podman Desktop](https://podman-desktop.io/).
+2. Provision the secret-blind machine (once). This creates the machine with the narrow mount set and runs the isolation acceptance test:
+   ```bash
+   dev --vm-init
+   ```
+3. Optional: let boxes spawn sibling containers via the podman socket:
+   ```bash
+   dev --sock on
+   ```
+4. Create a box:
+   ```bash
+   dev <name>
+   ```
+
+### Migration (existing users)
+
+> **Breaking change.** The old `dev <name> <host-dir>` interface is gone, and per-box state moved from `~/.dev-containers/<name>` to `~/containers/<name>/.dev-state`. The old state is abandoned: re-authenticate `gh` and Claude in the new box.
+
+The machine must be re-provisioned to drop the default `$HOME` mount that caused [#191](decisions/0001-secret-blind-dev-vm.md). This is destructive: it drops the current machine's containers and images.
+
+1. Remove the current machine:
+   ```bash
+   podman machine stop podman-machine-default && podman machine rm podman-machine-default
+   ```
+2. Provision the secret-blind machine (runs the isolation acceptance test):
+   ```bash
+   dev --vm-init
+   ```
+3. Optional: re-enable the socket so boxes can spawn containers:
+   ```bash
+   dev --sock on
+   ```
+4. Create a box:
+   ```bash
+   dev <name>
+   ```
+5. Inside the box, re-authenticate (old `~/.dev-containers/<name>` auth does not carry over):
+   ```bash
+   gh auth login
+   claude    # sign in when prompted
+   ```
 
 ## Fork this
 
