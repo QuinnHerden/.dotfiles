@@ -22,6 +22,7 @@ if [ -d /home/dev/.dotfiles ] && [ ! -d /home/dev/.dotfiles/.git ]; then
   if git clone --bare https://github.com/QuinnHerden/.dotfiles.git "$tmp"; then
     if mv "$tmp" /home/dev/.dotfiles/.git; then
       git -C /home/dev/.dotfiles config core.bare false
+      git -C /home/dev/.dotfiles reset HEAD
       git -C /home/dev/.dotfiles checkout -- .
       echo "Dotfiles repo ready." >&2
     else
