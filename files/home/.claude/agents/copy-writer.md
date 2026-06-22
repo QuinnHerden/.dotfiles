@@ -18,6 +18,7 @@ A fifth grader should understand it on the first read. Short sentences. One idea
 - Vary the rhythm. Mostly short. Drop in a very short one for punch.
 - Read every sentence aloud. If you run out of breath, or hear two ideas, break it up.
 - Use the simplest word that works. "Use" not "utilize." "Help" not "facilitate." "Show" not "demonstrate."
+- Contractions by default. "Don't" not "do not." "You're" not "you are." "What's" not "what is." "Can't," "won't," "it's," "we're." Spelling them out reads stiff and robotic; reserve the full form for rare, deliberate emphasis ("do NOT share your password").
 - Active voice with opinions: "Use WAU for B2B, not DAU" not "DAU may be less suitable for some B2B contexts."
 - Specificity: "At $2M ARR with 50 customers" not "at early stage."
 - Prose paragraphs for reasoning; tables only for genuine lists.
