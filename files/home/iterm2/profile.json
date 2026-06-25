@@ -121,11 +121,11 @@
     "Green Component" : 0.63137254901960782
   },
   "Background Color" : {
-    "Red Component" : 0.13725490196078433,
+    "Red Component" : 0,
     "Color Space" : "sRGB",
-    "Blue Component" : 0.1803921568627451,
+    "Blue Component" : 0,
     "Alpha Component" : 1,
-    "Green Component" : 0.16470588235294117
+    "Green Component" : 0
   },
   "Character Encoding" : 4,
   "Ansi 11 Color" : {
