@@ -50,6 +50,7 @@
     # `recursive = true`: combined with mkOutOfStoreSymlink it makes activation
     # write per-file symlinks back through the symlink into the repo, clobbering
     # tracked files (and, with `-b backup`, littering *.backup). See #206.
+    # nvim writes lazy-lock.json into this dir at runtime (in-tree, gitignored).
     ".config/nvim".source =
       config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/config/nvim";
 
