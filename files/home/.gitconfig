@@ -24,4 +24,4 @@
 	helper = 
 	helper = !gh auth git-credential
 [credential]
-	helper = !/home/dev/.nix-profile/bin/gh auth git-credential
+	helper = !gh auth git-credential
