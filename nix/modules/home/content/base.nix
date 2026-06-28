@@ -46,16 +46,17 @@
       config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/home/.claude/hooks";
 
     # ./config
-    ".config/nvim" = {
-      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/config/nvim";
-      recursive = true;
-    };
+    # A single out-of-store symlink to the live repo dir. Do NOT add
+    # `recursive = true`: combined with mkOutOfStoreSymlink it makes activation
+    # write per-file symlinks back through the symlink into the repo, clobbering
+    # tracked files (and, with `-b backup`, littering *.backup). See #206.
+    # nvim writes lazy-lock.json into this dir at runtime (in-tree, gitignored).
+    ".config/nvim".source =
+      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/config/nvim";
 
-    # ./local
-    ".local/scripts" = {
-      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/scripts";
-      recursive = true;
-    };
+    # ./local — same rule as .config/nvim above: no `recursive = true`. See #206.
+    ".local/scripts".source =
+      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/files/scripts";
   };
 
   # Link the private Claude knowledge library only when it is actually checked
