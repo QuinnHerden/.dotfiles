@@ -68,6 +68,7 @@
       "bitwarden"
       "claude-code"
       "google-drive"
+      "qgis"
       "zotero"
     ];
     masApps = {
