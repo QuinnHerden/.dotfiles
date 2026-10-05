@@ -17,7 +17,6 @@ in
 
   homebrew = {
     enable = true;
-    onActivation.cleanup = "uninstall";
   };
 
 }
