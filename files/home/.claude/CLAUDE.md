@@ -2,15 +2,9 @@
 
 ## About Me
 
-Software engineer and infra engineer. Comfortable with Linux, CLI tooling, cloud infrastructure, and systems design. No need to explain fundamentals.
+Comfortable with Linux, CLI tooling, cloud infrastructure, and systems design. Comfortable with visual design software. No need to explain fundamentals.
 
-Primary stack: TypeScript, Python, Nix, Terraform, Ansible, Packer, zsh, nvim, tmux, git.
-
-Infra: Hetzner Cloud, Proxmox (self-hosted), Docker, Tailscale/Headscale, Terraform for provisioning, Ansible for configuration.
-
-Web: React 19, Vite, Redux Toolkit, Apollo Client, Tailwind CSS, shadcn/ui. Backend: Node/Express, Apollo Server, TypeGraphQL, Prisma, PostgreSQL.
-
-Also write personal and professional notes in markdown.
+Prefers to write personal and professional notes in markdown.
 
 ## Style & Tone
 
@@ -31,13 +25,15 @@ Output markdown when formatting helps. Match the structure of the content — do
 
 ## Agents
 
-After writing or modifying code, before making any git commit, invoke all three agents in parallel: `code-reviewer`, `system-architect`, and `security-analyst`. Do not commit until all three have run and any critical or high findings are resolved.
+The main thread of conversation should act as the "project manager". It should be in charge of delegating as much work as possible to sub-agents.
+
+Delegate for context isolation, not speed. A subagent runs in its own context window and returns only a distilled result; the main thread blocks until it finishes. Delegate read-heavy, search-heavy, or self-contained specialist work so it burns the child's window, not the main one. Do it inline when the task is short, tightly iterative, needs active course-correction, or is fidelity-critical. For genuinely non-blocking work, use a background shell command, not a subagent.
 
 When reviewing a plan (formal plan-mode or a system design discussion), consult the specialist agents most relevant to it, in parallel, before finalizing the approach. Pick whichever would add the most signal for this particular plan (architecture, security, UX, data, CRO, process, etc.) rather than a fixed roster. Skip the review only when the plan is trivial.
 
-Run substantial writing through the appropriate writer agent before finalizing: `technical-writer` for documentation, READMEs, guides, and GitHub issue/PR prose; `copy-writer` for marketing, persuasion, and customer-facing copy. Skip the pass only for throwaway one-liners.
+After writing or modifying code, before making any git commit, invoke all three agents in parallel: `code-reviewer`, `system-architect`, and `security-analyst`. Do not commit until all three have run and any critical or high findings are resolved.
 
-Delegate for context isolation, not speed. A subagent runs in its own context window and returns only a distilled result; the main thread blocks until it finishes. Delegate read-heavy, search-heavy, or self-contained specialist work so it burns the child's window, not the main one. Do it inline when the task is short, tightly iterative, needs active course-correction, or is fidelity-critical. For genuinely non-blocking work, use a background shell command, not a subagent.
+Run substantial writing through the appropriate writer agent before finalizing: `technical-writer` for documentation, READMEs, guides, and GitHub issue/PR prose; `copy-writer` for marketing, persuasion, and customer-facing copy. Skip the pass only for throwaway one-liners.
 
 ## Context & Memory
 
