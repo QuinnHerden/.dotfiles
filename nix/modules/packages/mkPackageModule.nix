@@ -29,36 +29,40 @@ let
   pkg = import (./. + "/${category}.nix");
   opt = config.${name};
 
-  # A category gets GUI/heavy toggles when its data declares those attrs (ops,
-  # infra), and only on the linux platforms (home, nixos); darwin installs
-  # the common set with no split. Keyed off the data shape, not the name, so the
-  # helper holds no category-specific knowledge.
-  hasToggles = (pkg ? heavy || pkg ? linuxGui) && (platform == "home" || platform == "nixos");
+  # A category gets a heavy/GUI toggle for each of those attrs its data declares,
+  # and only on the linux platforms (home, nixos); darwin installs the common set
+  # with no split. Keyed off the data shape, not the name, so the helper holds no
+  # category-specific knowledge.
+  isLinux = platform == "home" || platform == "nixos";
+  hasHeavy = pkg ? heavy && isLinux;
+  hasGui = pkg ? linuxGui && isLinux;
 
   # Linux package selection. Referenced only by the home/nixos branches below;
   # must stay out of the darwin branch, since it touches linux-only data
-  # (pkg.linux/linuxGui/heavy) and the ops-only toggle options.
+  # (pkg.linux/linuxGui/heavy) and the linux-only toggle options.
   linuxSelection =
     (pkg.common pkgs)
     ++ (pkg.linux pkgs)
     ++ (lib.optionals pkgs.stdenv.isx86_64 (pkg.linuxX86 pkgs))
-    ++ (lib.optionals (hasToggles && pkg ? heavy && opt.enableHeavy) (pkg.heavy pkgs))
-    ++ (lib.optionals (hasToggles && pkg ? linuxGui && opt.enableGui) (pkg.linuxGui pkgs));
+    ++ (lib.optionals (hasHeavy && opt.enableHeavy) (pkg.heavy pkgs))
+    ++ (lib.optionals (hasGui && opt.enableGui) (pkg.linuxGui pkgs));
 in
 {
   options.${name} = {
     enable = lib.mkEnableOption "enables ${name}";
   }
-  // lib.optionalAttrs hasToggles {
+  // lib.optionalAttrs hasGui {
     enableGui = lib.mkOption {
       type = lib.types.bool;
       default = true;
       description = "Include GUI/desktop packages (disable for headless/container environments)";
     };
+  }
+  // lib.optionalAttrs hasHeavy {
     enableHeavy = lib.mkOption {
       type = lib.types.bool;
       default = true;
-      description = "Include heavy tools like ffmpeg, ollama, pandoc (disable for lightweight/container environments)";
+      description = "Include this category's heavy packages (disable for lightweight/container environments)";
     };
   };
 
