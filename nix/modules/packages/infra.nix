@@ -2,13 +2,21 @@
   common =
     pkgs: with pkgs; [
       ansible
-      awscli2
+      ansible-lint
+      hcloud
       kubectx
       kubernetes-helm
-      packer
       opentofu
+      rclone
+      restic
       spacectl
       tflint
+    ];
+
+  heavy =
+    pkgs: with pkgs; [
+      awscli2
+      packer
     ];
 
   linux =

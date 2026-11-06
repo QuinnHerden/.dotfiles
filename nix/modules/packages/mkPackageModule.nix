@@ -29,8 +29,8 @@ let
   pkg = import (./. + "/${category}.nix");
   opt = config.${name};
 
-  # A category gets GUI/heavy toggles when its data declares those attrs (only
-  # ops today), and only on the linux platforms (home, nixos); darwin installs
+  # A category gets GUI/heavy toggles when its data declares those attrs (ops,
+  # infra), and only on the linux platforms (home, nixos); darwin installs
   # the common set with no split. Keyed off the data shape, not the name, so the
   # helper holds no category-specific knowledge.
   hasToggles = (pkg ? heavy || pkg ? linuxGui) && (platform == "home" || platform == "nixos");
@@ -42,8 +42,8 @@ let
     (pkg.common pkgs)
     ++ (pkg.linux pkgs)
     ++ (lib.optionals pkgs.stdenv.isx86_64 (pkg.linuxX86 pkgs))
-    ++ (lib.optionals (hasToggles && opt.enableHeavy) (pkg.heavy pkgs))
-    ++ (lib.optionals (hasToggles && opt.enableGui) (pkg.linuxGui pkgs));
+    ++ (lib.optionals (hasToggles && pkg ? heavy && opt.enableHeavy) (pkg.heavy pkgs))
+    ++ (lib.optionals (hasToggles && pkg ? linuxGui && opt.enableGui) (pkg.linuxGui pkgs));
 in
 {
   options.${name} = {
