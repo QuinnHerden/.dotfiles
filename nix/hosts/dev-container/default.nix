@@ -29,6 +29,8 @@ in
   ];
 
   devPackages.enable = true;
+  infraPackages.enable = true;
+  infraPackages.enableHeavy = false;
   opsPackages.enable = true;
   opsPackages.enableGui = false;
   opsPackages.enableHeavy = false;
