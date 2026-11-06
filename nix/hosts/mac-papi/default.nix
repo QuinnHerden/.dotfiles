@@ -1,4 +1,4 @@
-_:
+{ pkgs, ... }:
 
 {
   system.stateVersion = 4; # $ darwin-rebuild changelog
@@ -29,5 +29,11 @@ _:
   commsPackages.enable = true;
   extraPackages.enable = true;
   experimentalPackages.enable = true;
+
+  # infra's heavy set is linux-only in mkPackageModule; keep it on the Mac.
+  environment.systemPackages = with pkgs; [
+    awscli2
+    packer
+  ];
 
 }

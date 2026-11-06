@@ -3,6 +3,7 @@
     pkgs: with pkgs; [
       bat
       curlie
+      dnsutils
       eslint_d
       eza
       fzf
