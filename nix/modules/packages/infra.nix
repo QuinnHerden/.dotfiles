@@ -21,6 +21,7 @@
 
   linux =
     pkgs: with pkgs; [
+      tailscale
     ];
 
   linuxX86 =
