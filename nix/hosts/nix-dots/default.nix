@@ -15,6 +15,8 @@
   # packages #
   ############
   opsPackages.enable = true;
+
+  nextcloud.enable = true;
   devPackages.enable = true;
   infraPackages.enable = true;
   secPackages.enable = true;
