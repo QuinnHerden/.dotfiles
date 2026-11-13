@@ -8,6 +8,11 @@ set -euo pipefail
 # gh/git auth) persists under .dev-state inside the box dir, so you authenticate
 # once and it survives --stop/--restart.
 #
+# /nix is a per-box named volume (nix-<name>) so the Nix store persists across
+# container recreation. Image rebuilds do NOT update the store in existing boxes;
+# run `hm-switch` inside the box for that. To reset to a fresh store, remove the
+# volume: `podman volume rm nix-<name>`.
+#
 # The Podman machine is initialized (see `dev --vm-init`) to mount ONLY a narrow
 # set of host dirs (the boxes tree, the Claude knowledge dir, and the Claude
 # memory dir), never your home root. So host secrets (~/.aws, ~/.ssh, ~/.gnupg,
@@ -193,7 +198,7 @@ fi
 # --- Exec ---
 if [ "${1:-}" = "--exec" ]; then
   NAME="dev-${2:?Usage: dev --exec <name>}"
-  exec podman exec -it "$NAME" zsh
+  exec podman exec -it "$NAME" sh -c 'command -v zsh >/dev/null 2>&1 && exec zsh || { echo "zsh unavailable; falling back to sh" >&2; exec sh; }'
 fi
 
 # --- Create box ---
@@ -274,6 +279,7 @@ podman run -d \
   -v "$BOX_DIR:/home/dev" \
   -v "$HOME/.claude/memory:/run/claude-memory" \
   "${knowledge_mount[@]}" \
+  -v "nix-${NAME}:/nix" \
   -v "npm-cache-${NAME}:/run/npm-cache" \
   -e DEV_DETACHED=1 \
   "$IMAGE_NAME"
