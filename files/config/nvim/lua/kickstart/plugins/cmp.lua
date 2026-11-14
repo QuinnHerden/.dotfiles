@@ -40,6 +40,7 @@ return {
       local cmp = require 'cmp'
       local luasnip = require 'luasnip'
       luasnip.config.setup {}
+      cmp.register_source('citekeys', require('custom.citekeys').new())
 
       cmp.setup {
         snippet = {
@@ -107,6 +108,7 @@ return {
           { name = 'path' },
         },
       }
+      cmp.setup.filetype('markdown', { sources = vim.list_extend(vim.deepcopy(cmp.get_config().sources), { { name = 'citekeys' } }) })
     end,
   },
 }
