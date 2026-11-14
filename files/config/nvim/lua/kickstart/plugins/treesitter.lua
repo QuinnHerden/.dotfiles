@@ -1,6 +1,9 @@
 return {
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
+    -- The config below uses the master-branch API (nvim-treesitter.configs); the default `main` branch dropped it.
+    -- master is frozen and won't follow nvim 0.12: migrate to the `main` API before bumping nvim to 0.12.
+    branch = 'master',
     lazy = false,
     build = ':TSUpdate',
     opts = {
@@ -18,7 +21,10 @@ return {
     },
     config = function(_, opts)
       -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-      if not pcall(require, 'nvim-treesitter.configs') then return end
+      if not pcall(require, 'nvim-treesitter.configs') then
+        vim.notify('nvim-treesitter.configs not found: is the plugin on the master branch?', vim.log.levels.ERROR)
+        return
+      end
 
       -- Prefer git instead of curl in order to improve connectivity in some environments
       require('nvim-treesitter.install').prefer_git = true
