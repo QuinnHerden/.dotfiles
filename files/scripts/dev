@@ -266,7 +266,10 @@ fi
 ensure_image
 
 echo "Starting box '$NAME' (home: $BOX_DIR)..."
+# --init: PID 1 is otherwise the entrypoint's `sleep infinity`, which does not reap
+# orphaned children, so every orphan (git, esbuild, chromium) stays a zombie.
 podman run -d \
+  --init \
   --name "$NAME" \
   --hostname "$NAME" \
   --userns=keep-id \
