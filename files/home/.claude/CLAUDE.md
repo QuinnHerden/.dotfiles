@@ -31,7 +31,7 @@ Delegate for context isolation, not speed. A subagent runs in its own context wi
 
 When reviewing a plan (formal plan-mode or a system design discussion), consult the specialist agents most relevant to it, in parallel, before finalizing the approach. Pick whichever would add the most signal for this particular plan (architecture, security, UX, data, CRO, process, etc.) rather than a fixed roster. Skip the review only when the plan is trivial.
 
-After writing or modifying code, before making any git commit, invoke all three agents in parallel: `code-reviewer`, `system-architect`, and `security-analyst`. Do not commit until all three have run and any critical or high findings are resolved.
+After writing or modifying code, before making any git commit, invoke all three agents in parallel: `code-reviewer`, `system-architect`, and `security-analyst`. Do not commit until all three have run and any critical findings are resolved. Don't fix high or lower findings on your own; list them for me to decide.
 
 Run substantial writing through the appropriate writer agent before finalizing: `technical-writer` for documentation, READMEs, guides, and GitHub issue/PR prose; `copy-writer` for marketing, persuasion, and customer-facing copy. Skip the pass only for throwaway one-liners.
 
