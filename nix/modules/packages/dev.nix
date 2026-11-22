@@ -37,6 +37,7 @@
   darwin = {
     brews = [ ];
     casks = [
+      "android-platform-tools"
       "dbeaver-community"
       "docker-desktop"
       "google-chrome"

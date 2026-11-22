@@ -74,6 +74,7 @@
       "google-drive"
       "nextcloud"
       "qgis"
+      "tranvuongquocdat/sidescreen/sidescreen"
       "zotero"
     ];
     masApps = {
