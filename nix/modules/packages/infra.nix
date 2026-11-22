@@ -3,6 +3,7 @@
     pkgs: with pkgs; [
       ansible
       ansible-lint
+      backblaze-b2
       hcloud
       kubectx
       kubernetes-helm
